@@ -1,0 +1,101 @@
+.main-blog {
+  overflow: hidden;
+}
+.main-blog__title {
+  margin-bottom: 3.2rem;
+}
+.main-blog__header {
+  margin-bottom: 6.4rem;
+}
+.main-blog__all-tags {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.main-blog__all-tags li {
+  flex: none;
+}
+.main-blog__all-tags li:not(:hover):not(.active) {
+  color: rgb(var(--color-foreground-secondary));
+  transition: all var(--duration-default);
+}
+.main-blog__all-tags::-webkit-scrollbar {
+  height: 0.4rem;
+  width: 0.4rem;
+  cursor: pointer;
+}
+.main-blog__all-tags::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--color-foreground));
+  border: 0;
+}
+.main-blog__all-tags::-webkit-scrollbar-track {
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+.blog-articles__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 3.2rem;
+  row-gap: 6rem;
+  padding: 3rem 0 0;
+}
+.blog-articles__list-article {
+  position: relative;
+}
+@media screen and (min-width: 750px) {
+  .blog-articles__list {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 10rem;
+    padding: 5rem 0 0;
+  }
+  .blog-articles__list-article .article_img::after {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    right: -1.6rem;
+    bottom: 0;
+    background: rgb(var(--color-border));
+    pointer-events: none;
+  }
+  .blog-articles__list-article:nth-child(2n+1):not(:nth-last-child(2))::after {
+    content: "";
+    position: absolute;
+    bottom: -5rem;
+    left: 0;
+    width: 300vw;
+    margin-left: -100vw;
+    display: block;
+    height: 1px;
+    background: rgb(var(--color-border));
+    pointer-events: none;
+  }
+}
+@media screen and (min-width: 750px) and (min-width: 990px) {
+  .blog-articles__list-article:nth-child(2n+1):not(:nth-last-child(2))::after {
+    bottom: -8rem;
+  }
+}
+@media screen and (min-width: 750px) {
+  .blog-articles__list-article:nth-child(2n) .article_img::after {
+    display: none;
+  }
+  .blog-articles__list-article:last-child .article_img::after {
+    display: none !important;
+  }
+}
+@media screen and (min-width: 990px) {
+  .blog-articles__list {
+    grid-template-columns: repeat(var(--per-row), 1fr);
+    padding: 8rem 0 2rem;
+    row-gap: 16rem;
+  }
+  .blog-articles__list-article .article_img::after {
+    display: none;
+  }
+  .blog-articles__list-article:not(.hide_border) .article_img::after {
+    display: block;
+  }
+}

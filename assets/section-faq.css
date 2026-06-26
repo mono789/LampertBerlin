@@ -1,0 +1,85 @@
+.faq-header {
+  margin-bottom: 3rem;
+}
+@media screen and (min-width: 750px) {
+  .faq-header {
+    margin-bottom: 4rem;
+  }
+}
+@media screen and (min-width: 990px) {
+  .faq-header {
+    margin-bottom: 8rem;
+  }
+}
+.faq__title {
+  margin: 0;
+}
+.faq__subtitle:only-child {
+  margin: 0;
+}
+.faq-box {
+  margin: 0 auto;
+  max-width: 90rem;
+}
+.faq-block:last-child {
+  margin-bottom: 2.4rem;
+}
+.faq-block:last-child .faq-block__description p {
+  padding-top: 3.2rem;
+}
+.faq-block:last-child .accordion {
+  border-bottom: 0;
+}
+.faq-block:last-child .accordion summary {
+  padding-bottom: 0;
+}
+.faq-block:first-child .accordion {
+  border-top: 0;
+}
+.faq-block:first-child .accordion summary {
+  padding-top: 0;
+}
+.faq-block + .faq-block .accordion {
+  border-top: none;
+}
+.faq-block__heading {
+  margin: 0;
+  padding-right: 2rem;
+}
+.faq-block .accordion {
+  margin: 0;
+}
+.faq-block .accordion summary {
+  padding: 3.2rem 0;
+  transition: all var(--duration-default) ease;
+}
+.faq-block .accordion summary .icon-filter-two {
+  min-width: 1.2rem;
+}
+.faq-block .accordion summary:hover {
+  opacity: 0.5;
+}
+.faq-block__description {
+  max-width: 77rem;
+}
+.faq-block__description p {
+  margin: 0;
+  padding-bottom: 2.4rem;
+}
+.faq .accordion.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@keyframes appear-down {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.faq details[open] summary ~ * {
+  animation: appear-down var(--duration-long) ease;
+}

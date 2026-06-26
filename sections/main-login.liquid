@@ -1,0 +1,273 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+	{% render 'spaced-section' %}
+{%- endstyle -%}
+
+<div class="article-template color-background-1">
+	<div class="container">
+		<div class="login-wrapper">
+			<div class="customer login register">
+				<div class="login__reset" id="recover">
+					<div class="page-header">
+						<div class="page-header__inner">
+							<h2 class="main-page-title page-title title--page" tabindex="-1">
+								{{ 'customer.recover_password.title' | t }}
+							</h2>
+						</div>
+					</div>
+					<div class="customer-form__placeholder-block">
+						<p>
+							{{ 'customer.recover_password.subtext' | t }}
+						</p>
+
+						{%- form 'recover_customer_password' -%}
+							{% assign recover_success = form.posted_successfully? %}
+							<div class="field">
+								<input
+								  dir="ltr"
+									type="email"
+									value=""
+									name="email"
+									id="RecoverEmail"
+									autocorrect="off"
+									autocapitalize="off"
+									autocomplete="email"
+									{% if form.errors %}
+										aria-invalid="true"
+										aria-describedby="RecoverEmail-email-error"
+										autofocus
+									{% endif %}
+									placeholder=" "
+								>
+								<label for="RecoverEmail">
+									{{- 'customer.login_page.email' | t -}}
+								</label>
+							</div>
+
+							<div class="customer__buttons login__buttons">
+								<button class="button button--primary login__sign-in">
+									{{ 'customer.login_page.submit' | t }}
+									<span>
+										{% render 'icon-button-arrow' %}
+									</span>
+								</button>
+								<a
+									class="button button--secondary login__create-acc"
+									href="#login"
+								>
+									{{ 'customer.login_page.cancel' | t }}
+								</a>
+							</div>
+						{%- endform -%}
+					</div>
+				</div>
+
+				<div class="login__form" id="login__form">
+					<div class="page-header">
+						<div class="page-header__inner">
+							{% if settings.show_breadcrumbs %}
+								<div>
+									<nav
+										class="breadcrumb"
+										role="navigation"
+										aria-label="breadcrumbs"
+									>
+										<a
+											href="{{ routes.root_url }}"
+											title="{{ 'general.breadcrumbs.home' | t }}"
+											class="link-hover-line"
+										>
+											{{ 'general.breadcrumbs.home' | t }}
+										</a>
+
+										<div class="breadcrumb__delimiter">
+											{% render 'icon-breadcrumbs' %}
+										</div>
+										<span>{{ page_title }}</span>
+									</nav>
+								</div>
+							{% endif %}
+
+							<h2 class="title--page" id="login" tabindex="-1">
+								{{ 'customer.login_page.title' | t }}
+							</h2>
+
+							{%- if section.settings.subtitle != blank -%}
+								<div class="login__subtitle">
+									{{ section.settings.subtitle }}
+								</div>
+							{%- endif -%}
+						</div>
+					</div>
+					<div class="customer-form__placeholder-block login__fields">
+						{%- if recover_success == true -%}
+							<h3 class="form__message" tabindex="-1" autofocus>
+								<svg
+									aria-hidden="true"
+									focusable="false"
+									role="presentation"
+									viewBox="0 0 13 13"
+								>
+									<path d="M6.5 12.35C9.73087 12.35 12.35 9.73086 12.35 6.5C12.35 3.26913 9.73087 0.65 6.5 0.65C3.26913 0.65 0.65 3.26913 0.65 6.5C0.65 9.73086 3.26913 12.35 6.5 12.35Z" fill="#428445" stroke="white" stroke-width="0.7"/>
+									<path d="M5.53271 8.66357L9.25213 4.68197" stroke="white"/>
+									<path d="M4.10645 6.7688L6.13766 8.62553" stroke="white"/>
+								</svg>
+								{{ 'customer.recover_password.success' | t }}
+							</h3>
+						{%- endif -%}
+						{%- form 'customer_login', novalidate: 'novalidate' -%}
+							<div class="field login__field">
+								<input
+								  dir="ltr"
+									type="email"
+									name="customer[email]"
+									class="field__input"
+									id="CustomerEmail"
+									autocomplete="email"
+									autocorrect="off"
+									autocapitalize="off"
+									required
+									{% if form.errors contains 'form' %}
+										aria-invalid="true"
+										aria-describedby="LoginForm-email-error"
+									{% endif %}
+									placeholder=" "
+								>
+								<label for="CustomerEmail">
+									{{- 'customer.login_page.email' | t -}}
+								</label>
+							</div>
+							{% unless template.name == 'register' %}
+								{{ form.errors | default_errors }}
+							{% endunless %}
+
+							{%- if form.password_needed -%}
+								<div class="field login__field">
+									<input
+									  dir="ltr"
+										type="password"
+										value=""
+										name="customer[password]"
+										class="field__input"
+										id="CustomerPassword"
+										autocomplete="current-password"
+										{% if form.errors contains 'form' %}
+											aria-invalid="true"
+										{% endif %}
+										required
+										placeholder=" "
+									>
+									<label for="CustomerPassword">
+										{{- 'customer.login_page.password' | t -}}
+									</label>
+								</div>
+								{% unless template.name == 'register' %}
+									{{ form.errors | default_errors }}
+								{% endunless %}
+							{%- endif -%}
+
+							<div class="customer__buttons login__buttons">
+								<button class="button button--primary login__sign-in">
+									{{ 'customer.login_page.sign_in' | t }}
+									<span>
+										{% render 'icon-button-arrow' %}
+									</span>
+								</button>
+								<a
+									class="button button--secondary login__create-acc"
+									href="{{ routes.account_register_url }}"
+								>
+									{{ 'customer.login_page.create_account' | t }}
+								</a>
+							</div>
+
+							<div class="login__forgot-password">
+								<a href="#recover" class="button button--simple">
+									<span class="button-simpl__label">{{- 'customer.login_page.forgot_password' | t -}}</span>
+								</a>
+							</div>
+						{%- endform -%}
+					</div>
+				</div>
+
+				{%- if shop.checkout.guest_login -%}
+					<div>
+						<hr>
+						<h2>{{ 'customer.login_page.guest_title' | t }}</h2>
+
+						{%- form 'guest_login' -%}
+							<button>
+								{{ 'customer.login_page.guest_continue' | t }}
+							</button>
+						{%- endform -%}
+					</div>
+				{%- endif -%}
+			</div>
+			{%- if section.settings.image != blank -%}
+				<div class="login-wrapper__image">
+					<div class="login-wrapper__image-box">
+						{% assign image_height = section.settings.image.width
+							| divided_by: section.settings.image.aspect_ratio
+						%}
+						{{
+							section.settings.image
+							| image_url: width: 3840
+							| image_tag:
+								loading: 'lazy',
+								width: section.settings.image.width,
+								height: image_height,
+								sizes: '100vw, (min-width: 1023px) 50vw',
+								widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+						}}
+					</div>
+				</div>
+			{%- endif -%}
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "t:sections.main-login.name",
+	"tag": "section",
+	"class": "spaced-section login-section",
+	"settings": [
+		{
+			"type": "textarea",
+			"id": "subtitle",
+			"default": "t:sections.main-login.settings.text.default",
+			"label": "t:sections.main-login.settings.text.label"
+		},
+		{
+			"type": "image_picker",
+			"id": "image",
+			"label": "t:sections.all.image.label"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.all.section_margin.header.content"
+		},
+		{
+			"type": "range",
+			"id": "margin_top",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 20,
+			"unit": "px",
+			"label": "t:sections.all.section_margin.margin_top.label"
+		},
+		{
+			"type": "range",
+			"id": "margin_bottom",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 20,
+			"unit": "px",
+			"label": "t:sections.all.section_margin.margin_bottom.label"
+		}
+	]
+}
+{% endschema %}

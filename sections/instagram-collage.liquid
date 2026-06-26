@@ -1,0 +1,306 @@
+{{ 'section-instagram-collage.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+	{% render 'spaced-section' %}
+	{% render 'spaced-section-inner' %}
+	#shopify-section-{{ section.id }} {
+		--per-row : {{ section.settings.column_per_row }}
+	}
+{% endstyle %}
+
+{% liquid
+	if section.settings.per_row == 1
+		assign collection_class = 'collection-grid-one'
+	else
+		assign collection_class = ''
+	endif
+%}
+
+<div class="instagram-collage section-{{ section.id }}-padding {% if section.settings.enable_border_top %}section_border_top{% endif %} {% if section.settings.enable_border_bottom %}section_border_bottom{% endif %}">
+	<div class="instagram-collage__wrapper">
+		{% render 'section-header', button_icon: section.settings.icon_social, heading_tag: section.settings.heading_tag %}
+		{% if section.settings.enable_inner_border %}<div class="section_inner_border"></div>{% endif %}
+		<div class="instagram-collage__images">
+			<div class="container">
+				<div
+					class="instagram-collage__image-block"
+				>
+					{% for block in section.blocks %}
+						{% liquid
+							assign condition = forloop.index | modulo: section.settings.column_per_row
+							if condition == 0
+								assign block_class = 'hide_border'
+							else
+								assign block_class = ''
+							endif
+						%}
+						<div class="instagram-collage__image-box {{ block_class }} {{ collection_class }}">
+							<div class="instagram-collage__image-item">
+								{% if block.settings.image != blank %}
+									{% assign image_height = block.settings.image.width
+										| divided_by: block.settings.image.aspect_ratio
+									%}
+									{% assign column_size = 100
+										| divided_by: section.settings.column_per_row
+										| append: 'vw'
+									%}
+									{% assign sizes = '100vw, (min-width: 767px) 50vw, '
+										| append: column_size
+									%}
+									{{
+										block.settings.image
+										| image_url: width: 3840
+										| image_tag:
+											loading: 'lazy',
+											width: block.settings.image.width,
+											height: image_height,
+											sizes: sizes,
+											widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+									}}
+								{% else %}
+									{% comment %}{{ 'image' | placeholder_svg_tag }}{% endcomment %}
+									{% assign index = forloop.index | modulo: 4 | plus: 1 %} 
+								{{ 'collection-' | append: index | placeholder_svg_tag }}
+								{% endif %}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "t:sections.instagram-collage.name",
+	"tag": "section",
+	"class": "instagram-collage-section spaced-section",
+	"enabled_on": {
+		"templates": ["*"],
+		"groups": ["footer"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "subheading",
+			"default": "t:sections.instagram-collage.settings.subheading.default",
+			"label": "t:sections.all.subheading.label"
+		},
+		{
+			"type": "inline_richtext",
+			"id": "heading",
+			"default": "t:sections.instagram-collage.settings.heading.default",
+			"label": "t:sections.all.heading.label"
+		},
+		{
+      "type": "select",
+      "id": "heading_tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_tag.options__1.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_tag.options__2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:sections.all.heading_tag.options__3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:sections.all.heading_tag.options__4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:sections.all.heading_tag.options__5.label"
+        },
+        {
+          "value": "h6",
+          "label": "t:sections.all.heading_tag.options__6.label"
+        },
+        {
+          "value": "div",
+          "label": "t:sections.all.heading_tag.options__7.label"
+        },
+        {
+          "value": "p",
+          "label": "t:sections.all.heading_tag.options__8.label"
+        }
+      ],
+      "default": "h2",
+      "label": "t:sections.all.heading_tag.label",
+      "info": "t:sections.all.heading_tag.info"
+    },
+		{
+			"type": "header",
+			"content": "t:sections.all.button.header.content"
+		},
+		{
+			"type": "text",
+			"id": "button_label",
+			"default": "t:sections.instagram-collage.settings.button_label.default",
+			"label": "t:sections.all.button.label.label"
+		},
+		{
+			"type": "select",
+			"id": "icon_social",
+			"options": [
+				{
+					"value": "none",
+					"label": "t:sections.all.icons_social.icons.none"
+				},
+				{
+					"value": "instagram",
+					"label": "t:sections.all.icons_social.icons.icon_1"
+				},
+				{
+					"value": "facebook",
+					"label": "t:sections.all.icons_social.icons.icon_2"
+				},
+				{
+					"value": "tiktok",
+					"label": "t:sections.all.icons_social.icons.icon_3"
+				},
+				{
+					"value": "twitter",
+					"label": "t:sections.all.icons_social.icons.icon_4"
+				},
+				{
+					"value": "vimeo",
+					"label": "t:sections.all.icons_social.icons.icon_5"
+				},
+				{
+					"value": "youtube",
+					"label": "t:sections.all.icons_social.icons.icon_6"
+				},
+				{
+					"value": "pinterest",
+					"label": "t:sections.all.icons_social.icons.icon_7"
+				}
+			],
+			"default": "instagram",
+			"label": "t:sections.all.icons_social.header.content"
+		},
+		{
+			"type": "url",
+			"id": "button_link",
+			"label": "t:sections.all.button.link.label"
+		},
+		{
+			"type": "range",
+			"id": "column_per_row",
+			"min": 1,
+			"max": 6,
+			"step": 1,
+			"default": 4,
+			"label": "t:sections.instagram-collage.settings.column_per_row.label",
+			"info": "t:sections.instagram-collage.settings.column_per_row.info"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.all.section_padding.header.content"
+		},
+		{
+			"type": "range",
+			"id": "padding_top",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 20,
+			"unit": "px",
+			"label": "t:sections.all.section_padding.padding_top.label"
+		},
+		{
+			"type": "range",
+			"id": "padding_bottom",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 20,
+			"unit": "px",
+			"label": "t:sections.all.section_padding.padding_bottom.label"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.all.section_margin.header.content"
+		},
+		{
+			"type": "range",
+			"id": "margin_top",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 0,
+			"unit": "px",
+			"label": "t:sections.all.section_margin.margin_top.label"
+		},
+		{
+			"type": "range",
+			"id": "margin_bottom",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 80,
+			"unit": "px",
+			"label": "t:sections.all.section_margin.margin_bottom.label"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.all.border.header.content"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_border_top",
+			"default": false,
+			"label": "t:sections.all.border.border_enable_top.label"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_border_bottom",
+			"default": false,
+			"label": "t:sections.all.border.border_enable_bottom.label"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_inner_border",
+			"default": false,
+			"label": "t:sections.all.border.border_enable_inner.label"
+		}
+	],
+	"blocks": [
+		{
+			"type": "instagram-collage_image",
+			"name": "t:sections.instagram-collage.blocks.instagram-collage_image.name",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "t:sections.all.image.label"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "t:sections.instagram-collage.presets.name",
+			"blocks": [
+				{
+					"type": "instagram-collage_image"
+				},
+				{
+					"type": "instagram-collage_image"
+				},
+				{
+					"type": "instagram-collage_image"
+				},
+				{
+					"type": "instagram-collage_image"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

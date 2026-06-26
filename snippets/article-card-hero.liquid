@@ -1,0 +1,112 @@
+{% comment %}
+		Renders an article card for a given blog with settings to either show the image or not.
+
+		Accepts:
+		- blog: {Object} Blog object
+		- article: {Object} Article object
+		- show_image: {String} The setting either show the article image or not. If it's not included it will show the image by default
+		- show_date: {String} The setting either show the article date or not. If it's not included it will not show the image by default
+		- show_author: {String} The setting either show the article author or not. If it's not included it will not show the author by default
+		- image_size :
+		Usage:
+	{% render 'article-card-hero' blog: blog, article: article, show_image: section.settings.show_image %}
+{% endcomment %}
+{% liquid
+	case image_size
+		when 'adapt'
+			assign card_size = 'adapt'
+		when 'small'
+			assign card_size = '30vh'
+		when 'medium'
+			assign card_size = '60vh'
+		when 'large'
+			assign card_size = 'calc(100vh - var(--header-height))'
+		else
+			assign card_size = 'calc(100vh - var(--header-height))'
+	endcase
+
+	assign image_height = article.image.width | divided_by: article.image.aspect_ratio
+	assign adapt_height = 1 | divided_by: article.image.aspect_ratio | times: 100 | append: '%'
+	if image_size == 'adapt'
+		assign card_size = adapt_height
+	endif
+%}
+<article class="article-hero color-background-4" id="article-{{ article.id }}">
+	{% style %}
+		#article-{{ article.id }}{
+			--card-height : {{ card_size }};
+		}
+	{% endstyle %}
+	{% if show_image and article.image != blank %}
+		<div class="article-hero__img">
+			{{
+				article.image
+				| image_url: width: 3840
+				| image_tag:
+					loading: 'lazy',
+					width: article.image.width,
+					height: image_height,
+					sizes: '100vw',
+					widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+			}}
+		</div>
+	{% endif %}
+	<div class="article-hero__text">
+		<div class="article-hero__text-wrapper">
+			{% if show_tags != false
+				or show_date != false
+				or show_author != false
+				or show_excerpt != false
+			%}
+				<div class="article__info subtitle">
+					{% if article.tags != blank and show_tags %}
+						<ul class="article__tags">
+							{% for tag in article.tags %}
+								<li>
+									<a
+										href="{{ blog.url }}/tagged/{{ tag | handle }}"
+										class="full-unstyled-link"
+									>
+										<span title="{{ tag }}">{{ tag }}</span>
+									</a>
+								</li>
+								{% if forloop.last == false %}
+									<li class="article__tags__delimiter"></li>
+								{% endif %}
+							{% endfor %}
+						</ul>
+					{% endif %}
+					{% if show_date %}
+						<div class="article__date">
+							{{- article.published_at | time_tag: format: 'article_published' -}}
+						</div>
+					{% endif %}
+					{% if show_author %}
+						<div class="article__author">
+							by <span>{{- article.author -}}</span>
+						</div>
+					{% endif %}
+				</div>
+			{% endif %}
+			<h2 class="article-hero__title">
+				<a href="{{ article.url }}" class="full-unstyled-link">
+					{{ article.title | escape }}
+				</a>
+			</h2>
+			{%- if show_excerpt and article.excerpt_or_content.size > 0 -%}
+				<div class="article-hero__excerpt richtext__content">
+					{{ article.excerpt_or_content | strip_html | truncate: 70 }}
+				</div>
+			{%- endif -%}
+			<a
+				href="{{ article.url }}"
+				class="button button--primary button--primary-size"
+			>
+				{{- 'general.blog.read_now' | t -}}
+				<span>
+					{% render 'icon-button-arrow' %}
+				</span>
+			</a>
+		</div>
+	</div>
+</article>

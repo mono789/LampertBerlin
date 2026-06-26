@@ -1,0 +1,9 @@
+<a
+	href="{{ link.url }}"
+	{% if link.type == 'http_link' and settings.open_new_tab %}
+		target="_blank"
+	{% endif %}
+	class="unstyled-link"
+>
+	{{- link.title | escape -}}
+</a>

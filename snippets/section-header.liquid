@@ -1,0 +1,52 @@
+{% comment %}
+  {% render 'section-header' %}
+  {% render 'section-header' , blog_button : true %} - create button read all
+  {% render 'section-header' , button_icon : true %} - create button icon
+  {% render 'section-header' , heading_tag: section.settings.heading_tag (optional) %}
+{% endcomment %}
+
+{%- if section.settings.heading != blank
+  or section.settings.button_label != blank
+  or section.settings.subheading != blank
+  or enable_slider != false
+-%}
+  <div class="section-header__line">
+    <div class="container">
+      <div class="section-header__item">
+        {%- if section.settings.subheading != blank -%}
+          <div class="subtitle">
+            {{ section.settings.subheading | escape }}
+          </div>
+        {% endif %}
+        <div class="section-header__title__block">
+          {%- if section.settings.heading != blank -%}
+            <{{ heading_tag | default: 'h2' }} class="section-header__title title--section h2">
+              {{ section.settings.heading }}
+            </{{ heading_tag | default: 'h2' }}>
+          {% endif %}
+          {% if enable_slider %}
+            <div class="swiper-button-group{% if section.settings.button_label != blank %} button-group-right-gap{% endif %}">
+              <div class="swiper-button swiper-button-prev recommendations-prev">
+                <span>{% render 'icon-arrow' %}</span>
+              </div>
+              <div class="swiper-button swiper-button-next recommendations-next">
+                <span>{% render 'icon-arrow' %}</span>
+              </div>
+            </div>
+          {% endif %}
+          {% liquid
+            if blog_button == true
+              render 'button', layout: section, simple: true, blog_link: section.settings.blog.url
+            elsif product_button == true
+              render 'button', layout: section, simple: true, product_link: section.settings.product.url
+            elsif button_icon != blank
+              render 'button', layout: section, simple: true, icon: button_icon
+            else
+              render 'button', layout: section, simple: true
+            endif
+          %}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

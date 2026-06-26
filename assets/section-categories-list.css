@@ -1,0 +1,86 @@
+.categories-list {
+  position: relative;
+  z-index: 1;
+  min-height: 300px;
+  display: flex;
+}
+.categories-list.have-overlay::before {
+  background: var(--category-list-color-overlay);
+}
+@media (min-width: 990px) {
+  .categories-list {
+    min-height: 640px;
+  }
+}
+.categories-list .categories-list__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+.categories-list .category-list__bg {
+  z-index: -3;
+}
+.categories-list .category-list__bg,
+.categories-list .category-list__img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transition: all var(--duration-long) ease;
+}
+.categories-list .category-list__bg img,
+.categories-list .category-list__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.categories-list .category-list__subtitle {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.categories-list .category-list__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 875px;
+  margin: 0 auto;
+  padding: 0;
+}
+.categories-list .category-list__list li {
+  list-style: none;
+  padding: 0.6rem 1.2rem;
+}
+.categories-list .category-list__list li.opacity .category-list__title {
+  color: var(--category-list-color);
+}
+.categories-list .category-list__list li .category-list__title {
+  transition: all var(--duration-long) ease;
+  margin: 0;
+  text-align: center;
+}
+@media (min-width: 990px) {
+  .categories-list .category-list__list li .category-list__title {
+    text-align: left;
+  }
+}
+.categories-list .category-list__list li .category-list__title a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+.categories-list .category-list__list li .category-list__img {
+  z-index: -2;
+  opacity: 0;
+  pointer-events: none;
+}
+.categories-list .category-list__list li.active .category-list__img, .categories-list .category-list__list li:hover .category-list__img {
+  opacity: 1;
+}
+@media screen and (min-width: 750px) {
+  .categories-list .category-list__list li {
+    padding: 1.2rem 2.4rem;
+  }
+}

@@ -1,0 +1,133 @@
+{% comment %}
+		Renders an article card for a given blog with settings to either show the image or not.
+
+		Accepts:
+		- blog: {Object} Blog object
+		- article: {Object} Article object
+		- show_image: {String} The setting either show the article image or not. If it's not included it will show the image by default
+		- show_date: {String} The setting either show the article date or not. If it's not included it will not show the image by default
+		- show_author: {String} The setting either show the article author or not. If it's not included it will not show the author by default
+
+		Usage:
+	{% render 'article-card' blog: blog, article: article, show_image: section.settings.show_image %}
+{% endcomment %}
+{% liquid
+	case image_ratio
+		when 'landscape'
+			assign ratio_style = 'padding-bottom: 70%'
+		when 'square'
+			assign ratio_style = 'padding-bottom: 100%'
+		when 'portrait'
+			assign ratio_style = 'padding-bottom: 130%'
+		else
+			assign ratio_style = 'padding-bottom: 100%'
+	endcase
+	if image_fit == blank
+		assign image_fit = 'cover'
+	endif
+%}
+{% if article != blank %}
+	<article class="article__wrapper article__border article">
+		<div class="article__block">
+			<a
+				href="{{ article.url }}"
+				class="article_img have-overlay color-background-4 color-border-1"
+				style="{{ ratio_style }}"
+			>
+				{% if article.image != blank %}
+					{% assign image_height = article.image.width
+						| divided_by: article.image.aspect_ratio
+					%}
+					{%- capture fit_style -%}
+							object-fit: {{ image_fit }};
+				{%- endcapture -%}
+					{{
+						article.image
+						| image_url: width: 3840
+						| image_tag:
+							loading: 'lazy',
+							width: article.image.width,
+							height: image_height,
+							sizes: '100vw',
+							widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+							style: fit_style
+					}}
+				{% else %}
+					{{ 'lifestyle-1' | placeholder_svg_tag }}
+				{% endif %}
+			</a>
+			<div class="article__text">
+				{% if show_tags != false
+					or show_date != false
+					or show_author != false
+					or show_excerpt != false
+				%}
+					<div class="article__info subtitle">
+						{% if article.tags != blank and show_tags %}
+							<ul class="article__tags">
+								{% for tag in article.tags %}
+									<li>
+										<a
+											href="{{ blog.url }}/tagged/{{ tag | handle }}"
+											class="full-unstyled-link"
+										>
+											<span title="{{ tag }}">{{ tag }}</span>
+										</a>
+									</li>
+									{% if forloop.last == false %}
+										<li class="article__tags__delimiter"></li>
+									{% endif %}
+								{% endfor %}
+							</ul>
+						{% endif %}
+						{% if show_date %}
+							<div class="article__date">
+								{{- article.published_at | time_tag: format: 'article_published' -}}
+							</div>
+						{% endif %}
+						{% if show_author %}
+							<div class="article__author">
+								by <span>{{- article.author -}}</span>
+							</div>
+						{% endif %}
+					</div>
+				{% endif %}
+				<h2 class="article__title h4">
+					<a href="{{ article.url }}" class="full-unstyled-link">
+						{{- article.title | escape -}}
+					</a>
+				</h2>
+				{% if article.excerpt_or_content.size > 0 and show_excerpt %}
+					<div class="article__desc richtext__content">
+						{{ article.excerpt_or_content | strip_html | truncate: 70 }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</article>
+{% else %}
+	<article class="article__wrapper article__border article">
+		<div class="article__block">
+			<div class="article_img have-overlay" style="{{ ratio_style }}">
+				{% assign article_index = index | modulo: 4 | plus: 1 %}
+				{{ 'collection-' | append: article_index | placeholder_svg_tag }}
+				{% comment %}{{ 'lifestyle-1' | placeholder_svg_tag }}{% endcomment %}
+			</div>
+			<div class="article__text">
+				<div class="article__info subtitle">
+					<div class="article__date">
+						{{ 'sections.featured_blog.onboarding_date' | t }}
+					</div>
+				</div>
+				<h2 class="article__title h4">
+					{{- 'sections.featured_blog.onboarding_title' | t -}}
+				</h2>
+				{% comment %}
+					<div class="article__desc richtext__content">
+						{{- 'sections.featured_blog.onboarding_content' | t -}}
+					</div>
+				{% endcomment %}
+			</div>
+		</div>
+	</article>
+{% endif %}

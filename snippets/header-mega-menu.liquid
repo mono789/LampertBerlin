@@ -1,0 +1,121 @@
+{% comment %}
+	Renders an header mega menu.
+
+	Accepts:
+	- links: {Array} Menu links
+	- block: {Object} Menu Block Object
+	- collection: {Object} Collection Object
+	- collections: {Array} Collections Array
+	- product: {Object} Product Object
+	Usage:
+	if menu type is 'mega_menu_collection' :
+		{% render 'header-submenu' links: link.links, %}
+	if menu type is 'mega_menu_only_collection' :
+		{% render 'header-submenu' links: link.links, %}
+	if menu type is 'mega_menu_product' :
+		{% render 'header-submenu' links: link.links, %}
+{% endcomment %}
+<a href="##" class="unstyled-link header-menu-trigger header-mega-menu-trigger">
+	{{- link.title | escape }}
+	{% render 'icon-filter-two', no_focus: true -%}
+</a>
+<div class="header-mega-menu color-background-1">
+	<div class="container">
+		{% if block.type == 'mega_menu_collection'
+			or block.type == 'mega_menu_product'
+		%}
+			<div class="header-mega-menu__wrapper">
+				<ul class="header-mega-menu__no-submenu__list list-unstyled">
+					{%- for childlink in links -%}
+						{% liquid
+							if childlink.links != blank
+								continue
+							endif
+						%}
+						<li>
+							<a
+								href="{{ childlink.url }}"
+								{% if childlink.type == 'http_link' and settings.open_new_tab %}
+									target="_blank"
+								{% endif %}
+								class="unstyled-link h4 hover-opacity"
+							>
+								{{- childlink.title | escape -}}
+							</a>
+						</li>
+					{%- endfor -%}
+				</ul>
+				<ul class="header-mega-menu__have-submenu__list list-unstyled">
+					{%- for childlink in links -%}
+						{% liquid
+							if childlink.links == blank
+								continue
+							endif
+						%}
+						<li>
+							<a href="##" class="unstyled-link header-menu-trigger h4">
+								{{- childlink.title | escape -}}
+							</a>
+							<ul class="header-mega-menu__have-submenu__list-submenu list-unstyled">
+								{%- for grandchildlink in childlink.links -%}
+									<li class="{% if grandchildlink.current %}current-link{% endif %}">
+										<a
+											href="{{ grandchildlink.url }}"
+											class="unstyled-link hover-opacity"
+										>
+											{{- grandchildlink.title | escape -}}
+										</a>
+									</li>
+								{%- endfor -%}
+								<li>
+									<a
+										href="{{ childlink.url }}"
+										class="view-all-link unstyled-link hover-opacity"
+									>
+										{{- 'sections.header.mega-menu.submenu-view-all' | t -}}
+									</a>
+								</li>
+							</ul>
+						</li>
+					{%- endfor -%}
+				</ul>
+				{% if block.settings.collection != blank
+					or block.settings.product != blank
+				%}
+					<div
+						class="header-mega-menu__card color-background-4 quickview{%- if settings.quickview_hover -%}--hover{% endif %} {% if block.type == 'mega_menu_product' %} collection-product-card{% endif %}"
+						id="menu__card-{{ block.id }}"
+					>
+						{% liquid
+							if block.type == 'mega_menu_collection'
+								render 'collection-card', block_collection: block.settings.collection, media_size: 'square', url: block.settings.collection.url, collection_title: block.settings.collection.title, collection_image: block.settings.collection.image, block_image: block.settings.collection_image, menu_block_id: block.id, index: 1
+							endif
+							if block.type == 'mega_menu_product'
+								render 'product-card', product_card_product: block.settings.product, media_size: 'portrait', media_fit: block.settings.image_fit, show_secondary_image: block.settings.show_secondary_image, show_vendor: block.settings.show_vendor, show_sku: block.settings.show_sku show_desc: block.settings.show_desc, section_id: section.id
+							endif
+						%}
+					</div>
+				{% endif %}
+			</div>
+		{% elsif block.type == 'mega_menu_only_collection' %}
+			<ul
+				class="header-mega-menu__collection-list list-unstyled"
+				id="menu__card-{{ block.id }}"
+			>
+				{% for collection in block.settings.collection_list %}
+					<li class="color-background-4 color-border-1">
+						{% render 'collection-card',
+							block_collection: collection,
+							media_size: 'landscape',
+							url: collection.url,
+							collection_title: collection.title,
+							collection_image: collection.image,
+							menu_block_id: block.id,
+							index: forloop.index
+						%}
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+</div>

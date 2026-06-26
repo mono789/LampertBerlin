@@ -1,0 +1,247 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'input.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+	{% render 'spaced-section' %}
+{%- endstyle -%}
+
+<div class="article-template">
+	<div class="container">
+		<div class="login-wrapper">
+			<div class="customer login register">
+				<div class="login__form">
+					<div class="page-header">
+						<div class="page-header__inner">
+							{% if settings.show_breadcrumbs %}
+								<nav
+									class="breadcrumb"
+									role="navigation"
+									aria-label="breadcrumbs"
+								>
+									<a
+										href="{{ routes.root_url }}"
+										title="{{ 'general.breadcrumbs.home' | t }}"
+										class="link-hover-line"
+									>
+										{{ 'general.breadcrumbs.home' | t }}
+									</a>
+									<div class="breadcrumb__delimiter">
+										{% render 'icon-breadcrumbs' %}
+									</div>
+									<span>{{ 'customer.register.breadcrumb' | t }}</span>
+								</nav>
+							{% endif %}
+
+							<h2 class="title--page">{{ 'customer.register.title' | t }}</h2>
+
+							{%- if section.settings.subtitle != blank -%}
+								<div class="login__subtitle">
+									{{ section.settings.subtitle }}
+								</div>
+							{%- endif -%}
+						</div>
+					</div>
+					{%- form 'create_customer', novalidate: 'novalidate' -%}
+						<div class="customer-form__placeholder-block">
+							<div class="field">
+								<input
+								  dir="ltr"
+									type="text"
+									name="customer[first_name]"
+									id="RegisterForm-FirstName"
+									{% if form.first_name %}
+										value="{{ form.first_name }}"
+									{% endif %}
+									{% if form.errors contains 'first_name' %}
+										aria-invalid="true"
+										aria-describedby="RegisterForm-first_name-error"
+									{% endif %}
+									autocomplete="given-name"
+									placeholder=" "
+								>
+								<label for="RegisterForm-FirstName">
+									{{- 'customer.register.first_name' | t -}}
+								</label>
+							</div>
+							{%- if form.errors contains 'first_name' -%}
+								<span id="RegisterForm-first_name-error" class="form__message">
+									{{ form.errors.translated_fields.first_name | capitalize }}
+									{{ form.errors.messages.first_name }}.
+								</span>
+							{%- endif -%}
+							<div class="field">
+								<input
+								  dir="ltr"
+									type="text"
+									name="customer[last_name]"
+									id="RegisterForm-LastName"
+									{% if form.last_name %}
+										value="{{ form.last_name }}"
+									{% endif %}
+									{% if form.errors contains 'last_name' %}
+										aria-invalid="true"
+										aria-describedby="RegisterForm-last_name-error"
+									{% endif %}
+									autocomplete="family-name"
+									aria-required="true"
+									placeholder=" "
+								>
+								<label for="RegisterForm-LastName">
+									{{- 'customer.register.last_name' | t -}}
+								</label>
+							</div>
+							{%- if form.errors contains 'last_name' -%}
+								<span id="RegisterForm-email-error" class="form__message">
+									{{ form.errors.translated_fields.last_name | capitalize }}
+									{{ form.errors.messages.last_name }}.
+								</span>
+							{%- endif -%}
+							<div class="field">
+								<input
+								  dir="ltr"
+									type="email"
+									name="customer[email]"
+									id="RegisterForm-email"
+									{% if form.email %}
+										value="{{ form.email }}"
+									{% endif %}
+									spellcheck="false"
+									autocapitalize="off"
+									autocomplete="email"
+									aria-required="true"
+									{% if form.errors contains 'email' %}
+										aria-invalid="true"
+										aria-describedby="RegisterForm-email-error"
+									{% endif %}
+									placeholder=" "
+									required
+								>
+								<label for="RegisterForm-email">
+									{{- 'customer.register.email' | t -}}
+								</label>
+							</div>
+							{%- if form.errors contains 'email' -%}
+								<span id="RegisterForm-email-error" class="form__message">
+									{{ form.errors.translated_fields.email | capitalize }}
+									{{ form.errors.messages.email }}.
+								</span>
+							{%- endif -%}
+							<div class="field">
+								<input
+								  dir="ltr"
+									type="password"
+									name="customer[password]"
+									id="RegisterForm-password"
+									aria-required="true"
+									{% if form.errors contains 'password' %}
+										aria-invalid="true"
+										aria-describedby="RegisterForm-password-error"
+									{% endif %}
+									placeholder=" "
+									required
+								>
+								<label for="RegisterForm-password">
+									{{- 'customer.register.password' | t -}}
+								</label>
+							</div>
+							{%- if form.errors contains 'password' -%}
+								<span id="RegisterForm-password-error" class="form__message">
+									{{ form.errors.translated_fields.password | capitalize }}
+									{{ form.errors.messages.password }}.
+								</span>
+							{%- endif -%}
+
+							{%- if form.errors contains 'form' -%}
+								<span id="RegisterForm-email-error" class="form__message">
+									{{ 'customer.login_page.customer_exist' | t }}
+								</span>
+							{%- endif -%}
+						</div>
+						<div class="customer__buttons">
+							<button class="button button--primary">
+								{{ 'customer.register.submit' | t }}
+								<span>
+									{% render 'icon-button-arrow' %}
+								</span>
+							</button>
+
+							<div class="login__page-link">
+								{{ 'customer.register.have_account' | t }}
+								<a
+									href="{{ routes.account_login_url }}"
+									class="button button--simple"
+								>
+									<span class="button-simpl__label">{{- 'customer.login_page.title' | t -}}</span>
+								</a>
+							</div>
+						</div>
+					{%- endform -%}
+				</div>
+			</div>
+			{%- if section.settings.image != blank -%}
+				<div class="login-wrapper__image">
+					<div class="login-wrapper__image-box">
+						{% assign image_height = section.settings.image.width
+							| divided_by: section.settings.image.aspect_ratio
+						%}
+						{{
+							section.settings.image
+							| image_url: width: 3840
+							| image_tag:
+								loading: 'lazy',
+								width: section.settings.image.width,
+								height: image_height,
+								sizes: '100vw, (min-width: 1023px) 50vw',
+								widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+						}}
+					</div>
+				</div>
+			{%- endif -%}
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "t:sections.main-register.name",
+	"tag": "section",
+	"class": "spaced-section login-section",
+	"settings": [
+		{
+			"type": "textarea",
+			"id": "subtitle",
+			"default": "t:sections.main-register.settings.text.default",
+			"label": "t:sections.main-register.settings.text.label"
+		},
+		{
+			"type": "image_picker",
+			"id": "image",
+			"label": "t:sections.all.image.label"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.all.section_margin.header.content"
+		},
+		{
+			"type": "range",
+			"id": "margin_top",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 20,
+			"unit": "px",
+			"label": "t:sections.all.section_margin.margin_top.label"
+		},
+		{
+			"type": "range",
+			"id": "margin_bottom",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 20,
+			"unit": "px",
+			"label": "t:sections.all.section_margin.margin_bottom.label"
+		}
+	]
+}
+{% endschema %}

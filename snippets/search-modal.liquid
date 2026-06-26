@@ -1,0 +1,99 @@
+<div class="search-modal color-background-1" id="search-modal">
+	<div class="search-modal__wrapper">
+		{% if settings.search_modal_heading != blank %}
+			<h2 class="search-modal__title">{{ settings.search_modal_heading }}</h2>
+		{% endif %}
+		<div class="search-modal__search-form">
+			{%- if settings.predictive_search_enabled -%}
+				<predictive-search data-loading-text="{{ 'accessibility.loading' | t }}">
+			{%- endif -%}
+				<form action="{{ routes.search_url }}" method="get" role="search" class="search">
+					<div class="search__form-inner">
+						<div class="field">
+							<div class="search__input-wrapper">
+								<input
+								  dir="ltr"
+									class="search__input field__input"
+									id="Search-In-Template"
+									type="search"
+									name="q"
+									value="{{ search.terms | escape }}"
+									placeholder=" "
+									{%- if settings.predictive_search_enabled -%}
+										role="combobox"
+										aria-expanded="false"
+										aria-owns="predictive-search-results"
+										aria-controls="predictive-search-results"
+										aria-haspopup="listbox"
+										aria-autocomplete="list"
+										autocorrect="off"
+										autocomplete="off"
+										autocapitalize="off"
+										spellcheck="false"
+									{%- endif -%}
+								>
+								<label class="field__label" for="Search-In-Template">{{ 'general.search.search' | t }}</label>
+								<button type="reset" class="reser-search">{% render 'icon-close' %}</button>
+								<input name="options[prefix]" type="hidden" value="last">
+							</div>
+							<button class="button button--primary" aria-label="{{ 'general.search.search' | t }}">
+								{{ 'general.search.search' | t }}
+								<span>
+									{% render 'icon-button-arrow' %}
+								</span>
+							</button>
+						</div>
+						{%- if settings.predictive_search_enabled -%}
+							<div class="color-background-1 predictive-search predictive-search--search-template" tabindex="-1" data-predictive-search>
+								<div class="predictive-search__loading-state">
+									<svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+										<circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+									</svg>
+								</div>
+							</div>
+							<span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+						{%- endif -%}
+					</div>
+				</form>
+			{%- if settings.predictive_search_enabled -%}
+				</predictive-search>
+			{%- endif -%}
+		</div>
+		{% if settings.search_modal_collection_list != blank %}
+			<div class="search-modal__collections">
+				{% if settings.search_modal_collections_heading != blank %}
+					<div class="search-modal__subtitle subtitle">{{ settings.search_modal_collections_heading }}</div>
+				{% endif %}
+				<ul class="search-modal__collections-list list-unstyled">
+					{% for collection in settings.search_modal_collection_list %}
+						<li data-hover-opacity="2">
+								<a href="{{ collection.url }}" class="h3 unstyled-link">{{ collection.title }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+		{% if settings.search_modal_collection != blank %}
+			<div class="search-modal__colection color-background-4" id="menu__card-search-modal__colection-card">
+				{% render 'collection-card',
+					block_collection: settings.search_modal_collection,
+					media_size: settings.search_modal_image_ratio,
+					url: settings.search_modal_collection.url,
+					collection_title: settings.search_modal_collection.title,
+					collection_image: settings.search_modal_collection.image,
+					block_image: settings.search_modal_collection_image,
+					menu_block_id : "search-modal__colection-card",
+					index: 1
+				%}
+			</div>
+		{% endif %}
+		<button
+			type="button"
+			class="search-modal__close modal__close-button link focus-inset modal-close-button"
+			aria-label="{{ 'accessibility.close' | t }}"
+		>
+			{% render 'icon-close' %}
+		</button>
+	</div>
+</div>
+<div class="search-modal__mask color-inverse"></div>

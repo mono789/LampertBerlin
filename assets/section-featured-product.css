@@ -1,0 +1,35 @@
+.featured-product .product__outer--desktop-order .product__media-wrapper {
+  padding-right: 0;
+}
+.featured-product .product__outer--desktop-order .product__media-wrapper:after {
+  right: 0;
+}
+@media screen and (min-width: 1100px) {
+  .featured-product .product__outer--desktop-order .product__media-wrapper {
+    padding-right: 1.6rem;
+  }
+}
+.featured-product .product__outer--desktop-order-left .product__media-wrapper {
+  padding-left: 0;
+}
+.featured-product .product__outer--desktop-order-left .product__media-wrapper:after {
+  left: 0;
+}
+@media screen and (min-width: 1100px) {
+  .featured-product .product__outer--desktop-order-left .product__media-wrapper {
+    padding-left: 1.6rem;
+  }
+}
+.featured-product .product__outer {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+.featured-product .product__outer.product__outer--desktop-order-left {
+  justify-content: space-between;
+}
+.featured-product .product__media-sublist {
+  display: none;
+}
+.featured-product .quantity-disabled {
+  pointer-events: none;
+}

@@ -1,0 +1,218 @@
+.countdown {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.countdown::before {
+  background: var(--countdown-overlay);
+}
+.countdown__wrapper {
+  max-width: 1000px;
+  padding: 1.5rem;
+  margin: 0 auto;
+}
+.countdown.countdown-content-left .countdown__block:first-child .countdown__block__num, .countdown.countdown-content-left .countdown__block:last-child .countdown__block__num, .countdown.countdown-content-right .countdown__block:first-child .countdown__block__num, .countdown.countdown-content-right .countdown__block:last-child .countdown__block__num {
+  min-width: unset;
+}
+.countdown.countdown-content-left .countdown__block:first-child .countdown__block__num, .countdown.countdown-content-right .countdown__block:first-child .countdown__block__num {
+  padding-left: 0;
+}
+.countdown.countdown-content-left .countdown__block:last-child .countdown__block__num, .countdown.countdown-content-right .countdown__block:last-child .countdown__block__num {
+  padding-right: 0;
+}
+.countdown.countdown-content-left .countdown__wrapper {
+  margin-left: 0;
+}
+.countdown.countdown-content-right .countdown__wrapper {
+  margin-right: 0;
+}
+.countdown__header {
+  margin: 0 0 2rem;
+}
+@media screen and (min-width: 750px) {
+  .countdown__header {
+    margin: 0 0 4rem;
+  }
+}
+.countdown__desc {
+  margin-top: 1.6rem;
+}
+@media screen and (min-width: 750px) {
+  .countdown__desc {
+    margin-top: 3.2rem;
+  }
+}
+.countdown__img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: -2;
+}
+.countdown__img img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.countdown__body {
+  margin-bottom: 2.4rem;
+}
+@media screen and (min-width: 750px) {
+  .countdown__body {
+    margin: 0 0 4.8rem;
+  }
+}
+.countdown__body:only-child {
+  margin-bottom: 0;
+}
+.countdown__main {
+  display: inline-flex;
+  justify-content: center;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+}
+.countdown__main .countdown__block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.countdown__main .countdown__block .countdown__block__num {
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 0 1.2rem;
+  text-transform: capitalize;
+  text-align: center;
+}
+.countdown__main .countdown__block .countdown__block__num > div {
+  margin: 0;
+}
+.countdown__main .countdown__block .countdown__block__num p {
+  font-size: 10px;
+  font-weight: 500;
+}
+@media screen and (min-width: 576px) {
+  .countdown__main .countdown__block .countdown__block__num p {
+    font-size: calc(var(--font-body-size) * 0.875);
+  }
+}
+@media screen and (min-width: 750px) {
+  .countdown__main .countdown__block .countdown__block__num {
+    padding: 0 4rem;
+  }
+}
+@media screen and (min-width: 1100px) {
+  .countdown__main .countdown__block .countdown__block__num {
+    min-width: 185px;
+    padding: 0 5rem;
+  }
+}
+@media screen and (min-width: 1360px) {
+  .countdown__main .countdown__block .countdown__block__num {
+    padding: 0 6.4rem;
+    min-width: 215px;
+  }
+}
+.countdown__main .countdown__block:last-child .countdown__block__num {
+  border-right: none;
+}
+.countdown__header-title {
+  margin: 0;
+}
+.countdown__heading {
+  display: none;
+  margin-bottom: 3rem;
+}
+@media screen and (min-width: 990px) {
+  .countdown__heading {
+    margin-bottom: 5rem;
+  }
+}
+.countdown__heading h3 {
+  margin: 0;
+}
+
+@media screen and (min-width: 1100px) {
+  .style-bottom .countdown__main {
+    margin-top: 1rem;
+  }
+}
+.style-bottom .countdown__img {
+  position: relative;
+  max-height: 600px;
+}
+.style-bottom .countdown__img img {
+  max-height: inherit;
+}
+.style-bottom .countdown__wrapper {
+  max-width: 100%;
+  width: 100%;
+  padding: 4rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.style-bottom .countdown__wrapper.show-text {
+  justify-content: center;
+}
+.style-bottom .countdown__wrapper.show-text .countdown-down__wrapper,
+.style-bottom .countdown__wrapper.show-text .countdown__header-title,
+.style-bottom .countdown__wrapper.show-text .countdown__button-wrapper,
+.style-bottom .countdown__wrapper.show-text .countdown__desc {
+  text-align: center;
+}
+.style-bottom .countdown__wrapper.show-text .countdown-down__wrapper {
+  margin: 0;
+}
+@media screen and (min-width: 1100px) {
+  .style-bottom .countdown__wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  .style-bottom .countdown__wrapper.countdown__wrapper-center {
+    align-items: center;
+  }
+}
+@media screen and (min-width: 1360px) {
+  .style-bottom .countdown__wrapper {
+    padding: 6.5rem 6rem;
+  }
+}
+.style-bottom .countdown__header,
+.style-bottom .countdown__button-wrapper {
+  text-align: center;
+}
+@media screen and (min-width: 1100px) {
+  .style-bottom .countdown__header,
+  .style-bottom .countdown__button-wrapper {
+    text-align: left;
+  }
+}
+.style-bottom .countdown-down__wrapper {
+  margin: 0 0 2rem;
+  text-align: left;
+}
+@media screen and (min-width: 1100px) {
+  .style-bottom .countdown-down__wrapper {
+    margin: 0 4rem 0 0;
+  }
+}
+.style-bottom .countdown__body {
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 1920px) {
+  .countdown > .container {
+    padding: 0;
+  }
+}
+@media screen and (min-width: 1920px) {
+  .countdown .countdown__wrapper {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

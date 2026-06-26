@@ -1,0 +1,52 @@
+{% comment %}
+		Renders an header submenu.
+
+		Accepts:
+		- links: {Array} Menu links
+
+		Usage:
+	{% render 'header-submenu' links: link.links %}
+{% endcomment %}
+<a href="##" class="unstyled-link header-menu-trigger">
+	{{- link.title | escape }}
+	{% render 'icon-filter-two', no_focus: true -%}
+</a>
+<ul class="header__submenu list-unstyled">
+	{%- for childlink in links -%}
+		<li class="{% if childlink.current %}current-link{% endif %} {% if childlink.links != blank %}have-submenu{% endif %}">
+			{%- if childlink.links != blank -%}
+				<a href="##" class="unstyled-link header-menu-trigger">
+					{{- childlink.title | escape }}
+					{% render 'icon-filter-two', no_focus: true %}
+				</a>
+				<ul class="header__submenu header__submenu-child list-unstyled">
+					{%- for grandchildlink in childlink.links -%}
+						<li class="{% if grandchildlink.current %}current-link{% endif %}">
+							<a
+								href="{{ grandchildlink.url }}"
+								{% if grandchildlink.type == 'http_link'
+									and settings.open_new_tab
+								%}
+									target="_blank"
+								{% endif %}
+								class="unstyled-link"
+							>
+								{{- grandchildlink.title | escape -}}
+							</a>
+						</li>
+					{%- endfor -%}
+				</ul>
+			{%- else -%}
+				<a
+					href="{{ childlink.url }}"
+					{% if childlink.type == 'http_link' and settings.open_new_tab %}
+						target="_blank"
+					{% endif %}
+					class="unstyled-link"
+				>
+					{{- childlink.title | escape -}}
+				</a>
+			{%- endif -%}
+		</li>
+	{%- endfor -%}
+</ul>

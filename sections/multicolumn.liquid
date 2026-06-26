@@ -1,0 +1,564 @@
+{{ 'section-multicolumn.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'multicolumn.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  {% render 'spaced-section' %}
+  {% render 'spaced-section-inner' %}
+{%- endstyle -%}
+
+<div class="{{ section.settings.color_scheme }} multicolumn section-{{ section.id }}-padding {% if section.settings.enable_border_top %}section_border_top{% endif %} {% if section.settings.enable_border_bottom %}section_border_bottom{% endif %}">
+  {% if section.settings.heading != blank or section.settings.subheading != blank %}
+    {% render 'section-header', heading_tag: section.settings.heading_tag %}
+  {% endif %}
+  <div class="container">
+    <div class="multicolumn__wrapper">
+      {%- if section.settings.subheader != blank -%}
+        <div class="multicolumn__wrapper-subtitle subtitle">
+          {{ section.settings.subheader }}
+        </div>
+      {%- endif -%}
+      <div class="multicolumn-list {% if section.settings.swipe_on_mobile and section.blocks.size > 1 %}swiper swiper--multicolumn{% endif %}">
+        <div class="multicolumn-list__wrapper multicolumn-list__wrapper--{{ section.settings.multicolumn_to_show }} {% if section.settings.swipe_on_mobile and section.blocks.size > 1 %}swiper-wrapper{% endif %}">
+          {%- for block in section.blocks -%}
+            <div
+              class="
+                multicolumn-list__item {% if section.settings.swipe_on_mobile %}swiper-slide{% endif %}
+                {% if section.settings.horizontal_alignment == 'left' %}horizontal-alignment-left{% endif %}
+              "
+            >
+              <div class="multicolumn-card multicolumn-card--image {% if block.settings.button_link != blank %}multicolumn-card--link{% endif %}">
+                {% liquid
+                  case section.settings.img_size
+                    when 'small'
+                      assign img-size = 'small'
+                    when 'medium'
+                      assign img-size = 'medium'
+                    when 'large'
+                      assign img-size = 'large'
+                    when 'icon'
+                      assign img-size = 'icon'
+                  endcase
+                %}
+
+                {% liquid
+                  case section.settings.img_ratio
+                    when 'landscape'
+                      assign img-ratio = 'landscape'
+                    when 'portrait'
+                      assign img-ratio = 'portrait'
+                    when 'square'
+                      assign img-ratio = 'square'
+                    when 'adapt'
+                      assign img-ratio = 'adapt'
+                  endcase
+                %}
+
+                {%- if block.settings.image != blank -%}
+                  <div class="multicolumn-card__image-wrapper">
+                    <div class="multicolumn-card__image-block multicolumn-card__image-size-{{ img-size }}">
+                      <div
+                        class="multicolumn-card__image-item multicolumn-card__image-ratio-{{ img-ratio }}"
+                        {%- if img-ratio == 'adapt' and block.settings.image != blank -%}
+                          style="padding-bottom: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%"
+                        {%- endif -%}
+                      >
+                        {%- if block.settings.image != blank -%}
+                          {% assign image_height = block.settings.image.width
+                            | divided_by: block.settings.image.aspect_ratio
+                          %}
+                          {%- capture style -%}
+														object-fit: {{ section.settings.object_fit }}; object-position: {{ block.settings.image.presentation.focal_point }};
+													{%- endcapture -%}
+                          {% assign column_size = 100
+                            | divided_by: section.settings.multicolumn_to_show
+                            | append: 'vw'
+                          %}
+                          {% assign sizes = '100vw, (min-width: 767px) 50vw, ' | append: column_size %}
+                          {{
+                            block.settings.image
+                            | image_url: width: 3840
+                            | image_tag:
+                              loading: 'lazy',
+                              width: block.settings.image.width,
+                              height: image_height,
+                              sizes: sizes,
+                              widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                              style: style,
+                              class: 'header__heading-logo header__logo-light'
+                          }}
+                          {%- if block.settings.image_2 != blank -%}
+                            {% assign image_height = block.settings.image_2.width
+                              | divided_by: block.settings.image_2.aspect_ratio
+                            %}
+                            {%- capture style -%}
+															object-fit: {{ section.settings.object_fit }}; object-position: {{ block.settings.image_2.presentation.focal_point }};
+														{%- endcapture -%}
+                            {{
+                              block.settings.image_2
+                              | image_url: width: 3840
+                              | image_tag:
+                                loading: 'lazy',
+                                width: block.settings.image_2.width,
+                                height: image_height,
+                                sizes: sizes,
+                                widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+                                style: style,
+                                class: 'header__heading-logo header__heading-logo--overlay'
+                            }}
+                          {%- endif -%}
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </div>
+                {%- endif -%}
+                <div class="multicolumn-card__info">
+                  {%- if block.settings.heading != blank -%}
+                    {% liquid
+                      case section.settings.heading_size
+                        when 'large'
+                          assign text_size = 'h2'
+                        when 'medium'
+                          assign text_size = 'h3'
+                        when 'small'
+                          assign text_size = 'h4'
+                        else
+                          assign text_size = ''
+                      endcase
+                    %}
+                    <{{ block.settings.heading_tag }} class="multicolumn-card__info-title {{ text_size }}">
+                      {{ block.settings.heading }}
+                    </{{ block.settings.heading_tag }}>
+                  {%- endif -%}
+                  {%- if block.settings.text != blank -%}
+                    <div class="multicolumn-card__info-text">
+                      {{ block.settings.text }}
+                    </div>
+                  {%- endif -%}
+
+                  {% render 'button', layout: block, simple: true %}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- if section.settings.swipe_on_mobile -%}
+          <div class="swiper-buttons__wrapper">
+            <div class="container">
+              <div class="swiper-buttons__box">
+                <div class="swiper-button swiper-button-prev">
+                  <span>{% render 'icon-arrow' %}</span>
+                </div>
+                <div class="swiper-button swiper-button-next">
+                  <span>{% render 'icon-arrow' %}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.multicolumn.name",
+  "class": "spaced-section multicolumn-section",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["*"],
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "default": "color-background-1",
+      "label": "t:sections.all.color_scheme.label",
+      "options": [
+        {
+          "value": "color-background-1",
+          "label": "t:sections.all.color_scheme.options__1.label"
+        },
+        {
+          "value": "color-background-2",
+          "label": "t:sections.all.color_scheme.options__2.label"
+        },
+        {
+          "value": "color-background-3",
+          "label": "t:sections.all.color_scheme.options__3.label"
+        },
+        {
+          "value": "color-background-4",
+          "label": "t:sections.all.color_scheme.options__4.label"
+        },
+        {
+          "value": "color-background-5",
+          "label": "t:sections.all.color_scheme.options__5.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.all.subheading.label"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:sections.all.heading.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_tag.options__1.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_tag.options__2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:sections.all.heading_tag.options__3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:sections.all.heading_tag.options__4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:sections.all.heading_tag.options__5.label"
+        },
+        {
+          "value": "h6",
+          "label": "t:sections.all.heading_tag.options__6.label"
+        },
+        {
+          "value": "div",
+          "label": "t:sections.all.heading_tag.options__7.label"
+        },
+        {
+          "value": "p",
+          "label": "t:sections.all.heading_tag.options__8.label"
+        }
+      ],
+      "default": "h2",
+      "label": "t:sections.all.heading_tag.label",
+      "info": "t:sections.all.heading_tag.info"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "default": "center",
+      "label": "t:sections.multicolumn.settings.horizontal_alignment.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.multicolumn.settings.horizontal_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.multicolumn.settings.horizontal_alignment.options__2.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.button.header.content"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.all.button.label.label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.all.button.link.label"
+    },
+    {
+      "type": "range",
+      "id": "multicolumn_to_show",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "t:sections.multicolumn.settings.multicolumn_to_show.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.heading.header.content"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "t:sections.all.heading.size.label",
+      "default": "small",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.all.heading.size.options__1.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.heading.size.options__2.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.heading.size.options__3.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "subheader",
+
+      "label": "t:sections.all.subheading.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.image.header.content"
+    },
+    {
+      "type": "select",
+      "id": "img_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.all.image.size.options__2.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.image.size.options__3.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.image.size.options__6.label"
+        },
+        {
+          "value": "icon",
+          "label": "t:sections.all.image.size.options__5.label"
+        }
+      ],
+      "default": "icon",
+      "label": "t:sections.all.image.size.label"
+    },
+    {
+      "type": "select",
+      "id": "img_ratio",
+      "options": [
+        {
+          "value": "landscape",
+          "label": "t:sections.all.image.ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.all.image.ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.all.image.ratio.options__3.label"
+        },
+        {
+          "value": "adapt",
+          "label": "t:sections.all.image.ratio.options__4.label"
+        }
+      ],
+      "default": "square",
+      "label": "t:sections.all.image.ratio.label"
+    },
+    {
+      "type": "select",
+      "id": "object_fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "t:sections.all.image.fit.options__1.label"
+        },
+        {
+          "value": "cover",
+          "label": "t:sections.all.image.fit.options__2.label"
+        }
+      ],
+      "default": "cover",
+      "label": "t:sections.all.image.fit.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": true,
+      "label": "t:sections.multicolumn.settings.swipe_on_mobile.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.header.content"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 0,
+      "unit": "px",
+      "label": "t:sections.all.section_padding.padding_top.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 0,
+      "unit": "px",
+      "label": "t:sections.all.section_padding.padding_bottom.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_margin.header.content"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 20,
+      "unit": "px",
+      "label": "t:sections.all.section_margin.margin_top.label"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 20,
+      "unit": "px",
+      "label": "t:sections.all.section_margin.margin_bottom.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.border.header.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_border_top",
+      "default": false,
+      "label": "t:sections.all.border.border_enable_top.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_border_bottom",
+      "default": false,
+      "label": "t:sections.all.border.border_enable_bottom.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "t:sections.multicolumn.blocks.column.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.all.image.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "t:sections.all.image_2.label",
+          "info": "t:sections.all.image_2.info"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "t:sections.multicolumn.blocks.column.settings.heading.default",
+          "label": "t:sections.all.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "options": [
+            {
+              "value": "h1",
+              "label": "t:sections.all.heading_tag.options__1.label"
+            },
+            {
+              "value": "h2",
+              "label": "t:sections.all.heading_tag.options__2.label"
+            },
+            {
+              "value": "h3",
+              "label": "t:sections.all.heading_tag.options__3.label"
+            },
+            {
+              "value": "h4",
+              "label": "t:sections.all.heading_tag.options__4.label"
+            },
+            {
+              "value": "h5",
+              "label": "t:sections.all.heading_tag.options__5.label"
+            },
+            {
+              "value": "h6",
+              "label": "t:sections.all.heading_tag.options__6.label"
+            },
+            {
+              "value": "div",
+              "label": "t:sections.all.heading_tag.options__7.label"
+            },
+            {
+              "value": "p",
+              "label": "t:sections.all.heading_tag.options__8.label"
+            }
+          ],
+          "default": "h4",
+          "label": "t:sections.all.heading_tag.label",
+          "info": "t:sections.all.heading_tag.info"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "default": "t:sections.multicolumn.blocks.column.settings.text.default",
+          "label": "t:sections.all.description.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.all.button.header.content"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "t:sections.all.button.label.label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.all.button.link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.multicolumn.name",
+      "blocks": [
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

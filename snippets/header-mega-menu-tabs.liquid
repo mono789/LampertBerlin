@@ -1,0 +1,46 @@
+<a href="##" class="unstyled-link header-menu-trigger header-mega-menu-trigger">
+	{{- link.title | escape }}
+	{% render 'icon-filter-two', no_focus: true -%}
+</a>
+<div class="header-mega-menu color-background-1">
+	<div class="mega-menu mega-menu--tabs container">
+		<div class="mega-menu__tabs">
+			{% for i in (1..5) %}
+				{%- assign enable_tab_setting = 'enable_tab_' | append: i -%}
+				{%- assign heading_setting = 'heading_' | append: i -%}
+				{%- assign menu_setting = 'menu_' | append: i -%}
+
+				{% if block.settings[enable_tab_setting] %}
+					<div class="mega-menu__tab">
+						<div class="mega-menu__tab-wrapper {% if forloop.index == 1 %}mega-menu__tab-wrapper--active{% endif %}">
+							<div class="mega-menu__tab-info">
+								<div class="mega-menu__tab-inner">
+									{%- if block.settings[heading_setting] != blank -%}
+										<div class="mega-menu__tab-heading h3">
+											{{ block.settings[heading_setting] }}
+										</div>
+									{%- endif -%}
+								</div>
+							</div>
+							{%- if block.settings[menu_setting] != blank -%}
+								<ul class="mega-menu__tab-list list-unstyled" role="list">
+									{%- for link in block.settings[menu_setting].links -%}
+										<li class="mega-menu__tab-list-item">
+											<a
+												href="{{ link.url }}"
+												class="mega-menu__tab-list-link focus-inset unstyled-link"
+												aria-label="{{ link.title | escape }}"
+											>
+												{{- link.title | escape -}}
+											</a>
+										</li>
+									{% endfor %}
+								</ul>
+							{%- endif -%}
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+</div>

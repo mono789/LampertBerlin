@@ -1,0 +1,399 @@
+{{ 'customer.css' | asset_url | stylesheet_tag }}
+
+{% style %}
+	{% render 'spaced-section' %}
+	{% render 'spaced-section-inner' %}
+{% endstyle %}
+
+<div class="customer order section-{{ section.id }}-padding {% if section.settings.enable_border_top %}section_border_top{% endif %} {% if section.settings.enable_border_bottom %}section_border_bottom{% endif %}">
+	<div class="container">
+		<div class="account-item__title-box account-item__title-box-border order__title">
+			<h2 class="customer--margin-unset">
+				{{ 'customer.order.title' | t: name: order.name }}
+			</h2>
+			<a
+				class="button button--simple title-link"
+				href="{{ routes.account_url }}"
+			>
+				<span class="button-simpl__label">{{- 'customer.account.return' | t -}}</span>
+			</a>
+		</div>
+
+		<div class="account-row row">
+			<div class="account-left col-lg-8">
+				<div role="table" class="order-table order-table--details">
+					<div class="visually-hidden">
+						{{ 'customer.order.title' | t: name: order.name }}
+					</div>
+					<div class="row thead">
+						<div id="ColumnProduct" class="small-text">
+							{{ 'customer.order.product' | t }}
+						</div>
+						<div id="ColumnSku" class="small-text">
+							{{ 'customer.order.sku' | t }}
+						</div>
+						<div id="ColumnPrice" class="small-text">
+							{{ 'customer.order.price' | t }}
+						</div>
+						<div id="ColumnQuantity" class="small-text">
+							{{ 'customer.order.quantity' | t }}
+						</div>
+						<div id="ColumnTotal" class="small-text">
+							{{ 'customer.order.total' | t }}
+						</div>
+					</div>
+
+					{%- for line_item in order.line_items -%}
+						<div class="row tbody">
+							<div
+								id="Row{{ line_item.key }}"
+								data-label="{{ 'customer.order.product' | t }}"
+							>
+								<div class="product-name">
+									{%- if line_item.product.url != blank -%}
+										<a href="{{ line_item.product.url }}" class="h5">
+											{{- line_item.product.title -}}
+										</a>
+									{%- else -%}
+										<p>{{ line_item.product.title }}</p>
+									{%- endif -%}
+
+									{%- assign property_size = line_item.properties | size -%}
+									<div class="properties-block">
+										{%- unless line_item.product.has_only_default_variant -%}
+											<span class="small-text properties">
+												{{ line_item.variant.title }}
+											</span>
+										{%- endunless -%}
+										{%- unless line_item.selling_plan_allocation == null -%}
+											<span>
+												{{ line_item.selling_plan_allocation.selling_plan.name }}
+											</span>
+										{%- endunless -%}
+									</div>
+								</div>
+							</div>
+							<div data-label="{{ 'customer.order.sku' | t }}">
+								{%- if line_item.sku != blank -%}
+									{{ line_item.sku }}
+								{%- else -%}
+									–
+								{%- endif -%}
+							</div>
+							<div data-label="{{ 'customer.order.price' | t }}">
+								{%- if line_item.original_price != line_item.final_price
+									or line_item.unit_price_measurement
+								-%}
+									<div>
+										{%- if line_item.original_price != line_item.final_price -%}
+											<div>
+												<span class="visually-hidden">
+													{{- 'products.product.price.regular_price' | t -}}
+												</span>
+											</div>
+											<div>
+												<s>{{ line_item.original_price | money }}</s>
+											</div>
+											<div>
+												<span class="visually-hidden">
+													{{- 'products.product.price.sale_price' | t -}}
+												</span>
+											</div>
+											<div>
+												<span>{{ line_item.final_price | money }}</span>
+											</div>
+										{%- else -%}
+											<div>
+												<span class="visually-hidden">
+													{{- 'products.product.price.regular_price' | t -}}
+												</span>
+											</div>
+											<div>
+												{{ line_item.original_price | money }}
+											</div>
+										{%- endif -%}
+										{%- if line_item.unit_price_measurement -%}
+											<div>
+												<span class="visually-hidden">
+													{{- 'products.product.price.unit_price' | t -}}
+												</span>
+											</div>
+											<div>
+												<span>
+													{%- capture unit_price_separator -%}
+														<span aria-hidden = "true">/</span>
+														<span class = "visually-hidden">{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span>
+													{%- endcapture -%}
+													{%- capture unit_price_base_unit -%}
+														{%- if line_item.unit_price_measurement.reference_value != 1 -%}
+															{{- line_item.unit_price_measurement.reference_value -}}
+														{%- endif -%}
+														{{ line_item.unit_price_measurement.reference_unit }}
+													{%- endcapture -%}
+													<span data-unit-price>
+														{{- line_item.unit_price | money -}}
+													</span>
+													{{- unit_price_separator -}}
+													{{- unit_price_base_unit -}}
+												</span>
+											</div>
+										{%- endif -%}
+									</div>
+								{%- else -%}
+									<span>{{ line_item.final_price | money }}</span>
+								{%- endif -%}
+							</div>
+							<div data-label="{{ 'customer.order.quantity' | t }}">
+								{{ line_item.quantity }}
+							</div>
+							<div data-label="{{ 'customer.order.total' | t }}" class="total-price__fw">
+								{%- if line_item.original_line_price
+										!= line_item.final_line_price
+								-%}
+									<div>
+										<div>
+											<span class="visually-hidden">
+												{{- 'products.product.price.regular_price' | t -}}
+											</span>
+										</div>
+										<div>
+											<s>{{ line_item.original_line_price | money }}</s>
+										</div>
+										<div>
+											<span class="visually-hidden">
+												{{- 'products.product.price.sale_price' | t -}}
+											</span>
+										</div>
+										<div>
+											<span>{{ line_item.final_line_price | money }}</span>
+										</div>
+									</div>
+								{%- else -%}
+									{{ line_item.original_line_price | money }}
+								{%- endif -%}
+							</div>
+						</div>
+					{%- endfor -%}
+
+					<div class="row tfoot">
+						<div>
+							<span class="small-text customer--small-text">
+								{{- 'customer.order.subtotal' | t -}}
+							</span>
+							<span class="total-price__fw customer--small-text">
+								{{- order.line_items_subtotal_price | money -}}
+							</span>
+						</div>
+						{%- for shipping_method in order.shipping_methods -%}
+							<div>
+								<span id="RowShipping" class="small-text customer--small-text">
+									{{- 'customer.order.shipping' | t }} (
+									{{- shipping_method.title -}}
+									)
+								</span>
+								<span
+									data-label="{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})"
+									class="total-price__fw customer--small-text"
+								>
+									{{ shipping_method.price | money }}
+								</span>
+							</div>
+						{%- endfor -%}
+						{%- for tax_line in order.tax_lines -%}
+							<div>
+								<span id="RowTax" class="small-text customer--small-text">
+									{{- 'customer.order.tax' | t }} ({{ tax_line.title }}
+									{{ tax_line.rate | times: 100 }}%)
+								</span>
+								<span
+									data-label="{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)"
+									class="total-price__fw customer--small-text"
+								>
+									{{ tax_line.price | money }}
+								</span>
+							</div>
+						{%- endfor -%}
+						<div class="total-price">
+							<span id="RowTotal" class="small-text customer--small-text">
+								{{- 'customer.order.total' | t -}}
+							</span>
+							<span
+								data-label="{{ 'customer.order.total' | t }}"
+								class="total-price__fw customer--small-text"
+							>
+								{{- order.total_price | money_with_currency -}}
+							</span>
+						</div>
+						<div class="order__value-unstayled">
+							<span class="small-text customer--small-text">
+								{{- 'customer.order.payment_status' | t -}}
+							</span>
+							<span>
+								{{ order.financial_status_label }}
+							</span>
+						</div>
+
+						<div class="order__value-unstayled">
+							<span class="small-text customer--small-text">
+								{{- 'customer.order.fulfillment_status' | t -}}
+							</span>
+							<span>
+								{{ order.fulfillment_status_label }}
+							</span>
+						</div>
+						<div class="order-address__item order__value-unstayled">
+							<span class="small-text customer--small-text">
+								{{- 'customer.order.shipping_address' | t -}}
+							</span>
+							<ul class="customer-address__list addresses-address__list">
+								{%- if order.shipping_address.name != blank -%}
+									<li class="customer-address__item addresses-address__list-item">
+										<span class="addresses-address__value">
+											{{- order.shipping_address.name -}}
+										</span>
+									</li>
+								{%- endif -%}
+
+								{%- if order.shipping_address.address1 != blank -%}
+									<li class="customer-address__item addresses-address__list-item">
+										<span class="addresses-address__value">
+											{{- order.shipping_address.address1 -}}
+										</span>
+									</li>
+								{%- endif -%}
+
+								{%- if order.shipping_address.address2 != blank -%}
+									<li class="customer-address__item addresses-address__list-item">
+										<span class="addresses-address__value">
+											{{- order.shipping_address.address2 -}}
+										</span>
+									</li>
+								{%- endif -%}
+
+								{%- if order.shipping_address.city != blank -%}
+									<li class="customer-address__item addresses-address__list-item">
+										<span class="addresses-address__value">
+											{{- order.shipping_address.city -}}
+										</span>
+									</li>
+								{%- endif -%}
+
+								{%- if order.shipping_address.company != blank -%}
+									<li class="customer-address__item addresses-address__list-item">
+										<span class="addresses-address__value">
+											{{- order.shipping_address.company -}}
+										</span>
+									</li>
+								{%- endif -%}
+
+								{%- if order.shipping_address.country != blank -%}
+									<li class="customer-address__item addresses-address__list-item">
+										<span class="addresses-address__value">
+											{{- order.shipping_address.country -}}
+										</span>
+									</li>
+								{%- endif -%}
+
+								{%- if order.shipping_address.phone != blank -%}
+									<li class="customer-address__item addresses-address__list-item">
+										<span class="addresses-address__value">
+											{{- order.shipping_address.phone -}}
+										</span>
+									</li>
+								{%- endif -%}
+
+								{%- if order.shipping_address.province != blank -%}
+									<li class="customer-address__item addresses-address__list-item">
+										<span class="addresses-address__value">
+											{{- order.shipping_address.province -}}
+										</span>
+									</li>
+								{%- endif -%}
+
+								{%- if order.shipping_address.zip != blank -%}
+									<li class="customer-address__item addresses-address__list-item">
+										<span class="addresses-address__value">
+											{{- order.shipping_address.zip -}}
+										</span>
+									</li>
+								{%- endif -%}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "t:sections.main-order.name",
+	"settings": [
+		{
+			"type": "header",
+			"content": "t:sections.all.section_margin.header.content"
+		},
+		{
+			"type": "range",
+			"id": "margin_top",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 40,
+			"unit": "px",
+			"label": "t:sections.all.section_margin.margin_top.label"
+		},
+		{
+			"type": "range",
+			"id": "margin_bottom",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 80,
+			"unit": "px",
+			"label": "t:sections.all.section_margin.margin_bottom.label"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.all.section_padding.header.content"
+		},
+		{
+			"type": "range",
+			"id": "padding_top",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 0,
+			"unit": "px",
+			"label": "t:sections.all.section_padding.padding_top.label"
+		},
+		{
+			"type": "range",
+			"id": "padding_bottom",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 0,
+			"unit": "px",
+			"label": "t:sections.all.section_padding.padding_bottom.label"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.all.border.header.content"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_border_top",
+			"default": false,
+			"label": "t:sections.all.border.border_enable_top.label"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_border_bottom",
+			"default": false,
+			"label": "t:sections.all.border.border_enable_bottom.label"
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,66 @@
+{% liquid
+	assign image_fit = section.settings.image_fit
+
+	if section.settings.image_ratio != 'adapt'
+		assign have_ratio = 'media-ratio'
+	else
+		assign have_ratio = ''
+	endif
+
+	if section.settings.variant_media_display == 'hide_unselected_variant_media'
+		assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src'
+	endif
+	
+	assign show_only_variant_media = false
+	if section.settings.variant_media_display == 'show_only_variant_media' and product.selected_or_first_available_variant.featured_media != null
+		assign show_only_variant_media = true
+	endif
+%}
+
+<div class="product__media-list__container--great-five {{ class }}" data-section="product-media-{{ section.id }}">
+	{% liquid
+		assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src'
+	%}
+
+	{% if product.selected_or_first_available_variant.featured_media != null %}
+		{% assign featured_media = product.selected_or_first_available_variant.featured_media %}
+		<div
+			class="product__media-item {% if image_fit == 'contain' %} product__media-item--contain{% endif %}"
+			data-media-id="{{ section.id }}-{{ featured_media.id }}"
+		>
+			{% render 'product-thumbnail',
+				product_card_product: product,
+				media: featured_media,
+				position: 'featured',
+				modal_id: section.id,
+				lazy_load: false,
+				have_ratio: have_ratio
+			%}
+		</div>
+	{% endif %}
+	{% for media in product.media %}
+		{% if show_only_variant_media %}
+			{% break %}
+		{% endif %}
+		
+		{% if section.settings.variant_media_display == 'hide_unselected_variant_media' and variant_images contains media.src %}
+			{% continue %}
+		{% endif %}
+		{% unless media.id
+				== product.selected_or_first_available_variant.featured_media.id
+		%}
+			<div
+				class="product__media-item {% if media.media_type != 'image' %} product__media-item--full{% endif %} {% if variant_images contains media.src %} product__media-item--variant{% endif %} {% if image_fit == 'contain' %} product__media-item--contain{% endif %}"
+				data-media-id="{{ section.id }}-{{ media.id }}"
+			>
+				{% render 'product-thumbnail',
+					media: media,
+					position: forloop.index,
+					modal_id: section.id,
+					lazy_load: false,
+					have_ratio: have_ratio
+				%}
+			</div>
+		{% endunless %}
+	{% endfor %}
+</div>

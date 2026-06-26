@@ -1,0 +1,209 @@
+{{ 'section-brands.css' | asset_url | stylesheet_tag }}
+{% style %}
+  {% render 'spaced-section' %}
+  {% render 'spaced-section-inner' %}
+  #shopify-section-{{ section.id }} {
+  	--per-row : {{ section.settings.per_row }}
+  }
+{% endstyle %}
+<div class="brands section-{{ section.id }}-padding {{ section.settings.color_scheme }}">
+  <div class="container">
+    <{{ section.settings.heading_tag }} class="brands__title h2">
+      {{- section.settings.heading -}}
+    </{{ section.settings.heading_tag }}>
+    {% if shop.vendors.size > 0 %}
+      <ul class="brands__main-list list-unstyled">
+        {% for vendor in shop.vendors %}
+          {% liquid
+            if forloop.first
+              assign check_first_letter = vendor_arr[0] | upcase
+            endif
+
+            assign vendor_arr = vendor | split: ''
+            assign main_first_letter = vendor_arr[0] | upcase
+
+            if check_first_letter == main_first_letter
+              continue
+            endif
+          %}
+          <li>
+            <div class="brands__letter h3">{{ main_first_letter }}</div>
+            <ul class="brands__list list-unstyled">
+              {% for vendor in shop.vendors %}
+                {% liquid
+                  assign vendor_arr = vendor | split: ''
+                  assign first_letter = vendor_arr[0] | upcase
+
+                  if first_letter != main_first_letter
+                    continue
+                  endif
+                %}
+                <li>
+                  {{- vendor | link_to_vendor: class: 'vendor-link unstyled-link' }}
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% assign check_first_letter = main_first_letter %}
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="h3">{{ 'sections.vendor.empty' | t }}</p>
+    {% endif %}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "t:sections.brands.name",
+  "class": "section-brans",
+  "enabled_on": {
+    "templates": ["*"],
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "range",
+      "id": "per_row",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 6,
+      "label": "t:sections.all.column_per_row.label",
+      "info": "t:sections.all.column_per_row.info"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "default": "color-background-1",
+      "label": "t:sections.all.color_scheme.label",
+      "options": [
+        {
+          "value": "color-background-1",
+          "label": "t:sections.all.color_scheme.options__1.label"
+        },
+        {
+          "value": "color-background-2",
+          "label": "t:sections.all.color_scheme.options__2.label"
+        },
+        {
+          "value": "color-background-3",
+          "label": "t:sections.all.color_scheme.options__3.label"
+        },
+        {
+          "value": "color-background-4",
+          "label": "t:sections.all.color_scheme.options__4.label"
+        },
+        {
+          "value": "color-background-5",
+          "label": "t:sections.all.color_scheme.options__5.label"
+        },
+        {
+          "value": "color-inverse",
+          "label": "t:sections.all.color_scheme.options__7.label"
+        }
+      ]
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:sections.all.heading.label",
+      "default": "t:sections.brands.settings.heading.default"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_tag.options__1.label"
+        },
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_tag.options__2.label"
+        },
+        {
+          "value": "h3",
+          "label": "t:sections.all.heading_tag.options__3.label"
+        },
+        {
+          "value": "h4",
+          "label": "t:sections.all.heading_tag.options__4.label"
+        },
+        {
+          "value": "h5",
+          "label": "t:sections.all.heading_tag.options__5.label"
+        },
+        {
+          "value": "h6",
+          "label": "t:sections.all.heading_tag.options__6.label"
+        },
+        {
+          "value": "div",
+          "label": "t:sections.all.heading_tag.options__7.label"
+        },
+        {
+          "value": "p",
+          "label": "t:sections.all.heading_tag.options__8.label"
+        }
+      ],
+      "default": "h2",
+      "label": "t:sections.all.heading_tag.label",
+      "info": "t:sections.all.heading_tag.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.header.content"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 30,
+      "unit": "px",
+      "label": "t:sections.all.section_padding.padding_top.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 80,
+      "unit": "px",
+      "label": "t:sections.all.section_padding.padding_bottom.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_margin.header.content"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 0,
+      "unit": "px",
+      "label": "t:sections.all.section_margin.margin_top.label"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 0,
+      "unit": "px",
+      "label": "t:sections.all.section_margin.margin_bottom.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.brands.name",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

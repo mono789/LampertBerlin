@@ -1,0 +1,220 @@
+{% liquid
+  assign show_thumbnail = section.settings.show_thumbnail
+
+  assign image_fit = section.settings.image_fit
+
+  if section.settings.image_ratio != 'adapt'
+    assign have_ratio = 'media-ratio'
+  else
+    assign have_ratio = ''
+  endif
+
+  if section.settings.variant_media_display == 'hide_unselected_variant_media'
+    assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src'
+  endif
+
+  assign show_only_variant_media = false
+  if section.settings.variant_media_display == 'show_only_variant_media' and product.selected_or_first_available_variant.featured_media != null
+    assign show_only_variant_media = true
+  endif
+%}
+
+<div
+  class="product__media-list-wrapper product__media-list-wrapper--{{ section.settings.thumbs_direction }} {{ class }}"
+  data-section="product-media-{{ section.id }}"
+>
+  <div
+    class="product__media-sublist js-media-sublist no-js-hidden swiper {% if show_thumbnail %} show_thumbnail_on_mobile {% endif %}"
+    data-thumbs-direction="{{ section.settings.thumbs_direction }}"
+  >
+    <div class="swiper-wrapper">
+      {% if product.selected_or_first_available_variant.featured_media != null
+      %}
+        {% assign featured_media = product.selected_or_first_available_variant.featured_media %}
+        <div
+          class="product__media-subitem swiper-slide {% if image_fit == 'contain' %} product__media-item--contain{% endif %}"
+          data-media-sub-id="{{ section.id }}-{{ featured_media.id }}"
+        >
+          <div class="product__media {{ have_ratio }}">
+            {% assign image_height = featured_media.preview_image.width
+              | divided_by: featured_media.preview_image.aspect_ratio
+            %}
+            {{
+              featured_media.preview_image
+              | image_url: width: 3840
+              | image_tag:
+                loading: 'lazy',
+                width: featured_media.preview_image.width,
+                height: image_height,
+                sizes: '100vw',
+                widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+            }}
+          </div>
+        </div>
+      {% endif %}
+      {% for media in product.media %}
+        {% if show_only_variant_media %}
+          {% break %}
+        {% endif %}
+
+        {% if section.settings.variant_media_display
+            == 'hide_unselected_variant_media'
+          and variant_images contains media.src
+        %}
+          {% continue %}
+        {% endif %}
+        {% unless media.id
+            == product.selected_or_first_available_variant.featured_media.id
+        %}
+          <div
+            class="product__media-subitem swiper-slide {% if variant_images contains media.src %} product__media-item--variant{% endif %} {% if image_fit == 'contain' %} product__media-item--contain{% endif %}"
+            data-media-sub-id="{{ section.id }}-{{ media.id }}"
+          >
+            <div class="product__media {{ have_ratio }}">
+              {% assign image_height = media.preview_image.width
+                | divided_by: media.preview_image.aspect_ratio
+              %}
+
+              {{
+                media.preview_image
+                | image_url: width: 3840
+                | image_tag:
+                  loading: 'lazy',
+                  width: media.preview_image.width,
+                  height: image_height,
+                  sizes: '100vw',
+                  widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+              }}
+            </div>
+          </div>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+  <ul class="product__media-sublist no-js">
+    {% if product.selected_or_first_available_variant.featured_media != null %}
+      {% assign featured_media = product.selected_or_first_available_variant.featured_media %}
+      <li
+        class="product__media-subitem slider__slide {% if image_fit == 'contain' %} product__media-item--contain{% endif %}"
+        data-media-sub-id="{{ section.id }}-{{ featured_media.id }}"
+      >
+        <div class="product__media {{ have_ratio }}">
+          {% assign image_height = featured_media.preview_image.width
+            | divided_by: featured_media.preview_image.aspect_ratio
+          %}
+          {{
+            featured_media.preview_image
+            | image_url: width: 3840
+            | image_tag:
+              loading: 'lazy',
+              width: featured_media.preview_image.width,
+              height: image_height,
+              sizes: '100vw',
+              widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+          }}
+        </div>
+      </li>
+    {% endif %}
+    {% for media in product.media %}
+      {% if show_only_variant_media %}
+        {% break %}
+      {% endif %}
+
+      {% if section.settings.variant_media_display
+          == 'hide_unselected_variant_media'
+        and variant_images contains media.src
+      %}
+        {% continue %}
+      {% endif %}
+      {% unless media.id
+          == product.selected_or_first_available_variant.featured_media.id
+      %}
+        <li
+          class="product__media-subitem slider__slide {% if variant_images contains media.src %} product__media-item--variant{% endif %} {% if image_fit == 'contain' %} product__media-item--contain{% endif %}"
+          data-media-sub-id="{{ section.id }}-{{ media.id }}"
+        >
+          <div class="product__media {{ have_ratio }}">
+            {% assign image_height = media.preview_image.width
+              | divided_by: media.preview_image.aspect_ratio
+            %}
+            {{
+              media.preview_image
+              | image_url: width: 3840
+              | image_tag:
+                loading: 'lazy',
+                width: media.preview_image.width,
+                height: image_height,
+                sizes: '100vw',
+                widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+            }}
+          </div>
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+  <div class="product__media-list js-media-list no-js-hidden swiper">
+    <div class="swiper-wrapper">
+      {% liquid
+        assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src'
+      %}
+      {% if product.selected_or_first_available_variant.featured_media != null
+      %}
+        {% assign featured_media = product.selected_or_first_available_variant.featured_media %}
+        <div
+          class="product__media-item swiper-slide {% if image_fit == 'contain' %} product__media-item--contain{% endif %}"
+          data-media-id="{{ section.id }}-{{ featured_media.id }}"
+        >
+          {% render 'product-thumbnail',
+            product_card_product: product,
+            media: featured_media,
+            position: 'featured',
+            modal_id: section.id,
+            lazy_load: false,
+            have_ratio: have_ratio
+          %}
+        </div>
+      {% endif %}
+      {% for media in product.media %}
+        {% if show_only_variant_media %}
+          {% break %}
+        {% endif %}
+
+        {% if section.settings.variant_media_display
+            == 'hide_unselected_variant_media'
+          and variant_images contains media.src
+        %}
+          {% continue %}
+        {% endif %}
+        {% unless media.id
+            == product.selected_or_first_available_variant.featured_media.id
+        %}
+          <div
+            class="product__media-item swiper-slide{% if media.media_type != 'image' %} product__media-item--full{% endif %} {% if variant_images contains media.src %} product__media-item--variant{% endif %} {% if image_fitimage_fit == 'contain' %} product__media-item--contain{% endif %}"
+            data-media-id="{{ section.id }}-{{ media.id }}"
+          >
+            {% render 'product-thumbnail',
+              media: media,
+              position: forloop.index,
+              modal_id: section.id,
+              lazy_load: false,
+              have_ratio: have_ratio
+            %}
+          </div>
+        {% endunless %}
+      {% endfor %}
+    </div>
+    {% if product.media.size > 1 %}
+      <div class="swiper-btn swiper-btn--prev">
+        {% render 'icon-caret-left' %}
+      </div>
+      <div class="swiper-btn swiper-btn--next">
+        {% render 'icon-caret-right' %}
+      </div>
+    {% endif %}
+    {% if product.media.size > 1 %}
+      <div
+        class="product__pagination swiper-pagination {% if show_thumbnail %} show_pagination_on_mobile {% endif %}"
+      ></div>
+    {% endif %}
+  </div>
+</div>

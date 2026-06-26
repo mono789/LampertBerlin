@@ -1,0 +1,267 @@
+{{ 'component-article-card-hero.css' | asset_url | stylesheet_tag }}
+{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'load-more.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+	{% render 'spaced-section' %}
+	#shopify-section-{{ section.id }}{
+		--per-row : {{ section.settings.per_row }}
+	}
+{%- endstyle -%}
+{% assign posts_per_page = section.settings.posts_per_page | plus: 1 %}
+{%- paginate blog.articles by posts_per_page -%}
+	<div class="main-blog">
+		<div class="container">
+			<div class="main-blog__header">
+				<h1 class="main-blog__title main-page-title page-title title--page h2">
+					{{ blog.title | escape }}
+				</h1>
+				{% if blog.all_tags.size > 0 %}
+				<ul class="main-blog__all-tags list-unstyled">
+					<li class="{% if current_tags == null %}active{% endif %}">
+						<a href="{{ blog.url }}" class="full-unstyled-link h4">
+							<span title="{{- 'general.blog.all' | t -}}">
+								{{- 'general.blog.all' | t -}}
+							</span>
+						</a>
+					</li>
+					{% for tag in blog.all_tags %}
+						<li class="{% if current_tags[0] == tag %}active{% endif %}">
+							<a
+								href="{{ blog.url }}/tagged/{{ tag | handle }}"
+								class="full-unstyled-link h4"
+							>
+								<span title="{{ tag }}">{{ tag | upcase }}</span>
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+			</div>
+		</div>
+		<div class="blog-articles">
+			<div class="blog-articles__hero">
+				{% assign article_first = blog.articles[0] %}
+				{%- render 'article-card-hero',
+					article: article_first,
+					image_size: section.settings.image_size,
+					show_image: section.settings.show_image,
+					show_tags: section.settings.show_tags,
+					show_date: section.settings.show_date,
+					show_author: section.settings.show_author,
+					show_excerpt: section.settings.show_excerpt
+				-%}
+			</div>
+			<div class="container">
+				<ul class="blog-articles__list list-unstyled load-more-grid">
+					{%- for article in blog.articles -%}
+						{% liquid
+							if forloop.index == 1
+								continue
+							endif
+							assign condition = forloop.index | minus: 1 | modulo: section.settings.per_row
+							if condition == 0
+								assign block_class = 'hide_border'
+							else
+								assign block_class = ''
+							endif
+						%}
+						<li class="blog-articles__list-article {{ block_class }}">
+							{%- render 'article-card',
+								article: article,
+								show_image: section.settings.show_image,
+								show_tags: section.settings.show_tags,
+								show_date: section.settings.show_date,
+								show_author: section.settings.show_author,
+								show_excerpt: section.settings.show_excerpt,
+								image_ratio: section.settings.image_ratio,
+								image_fit: section.settings.image_fit
+							-%}
+						</li>
+					{% endfor %}
+				</ul>
+				{%- if paginate.pages > 1 -%}
+					{%- if settings.pagination_type == 'load_more' -%}
+						{% render 'load-more',
+							next_url: paginate.next.url,
+							count_pages: paginate.pages,
+							current_page: paginate.current_page
+						%}
+						<div class="js-hidden">
+							{% render 'pagination', paginate: paginate %}
+						</div>
+					{%- elsif settings.pagination_type == 'infinite_scroll' -%}
+						{% render 'infinite-scroll',
+							next_url: paginate.next.url,
+							count_pages: paginate.pages,
+							current_page: paginate.current_page
+						%}
+						<div class="js-hidden">
+							{% render 'pagination', paginate: paginate %}
+						</div>
+					{% else %}
+						{% render 'pagination', paginate: paginate %}
+					{%- endif -%}
+				{%- endif -%}
+			</div>
+		</div>
+	</div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+	"name": "t:sections.main-blog.name",
+	"tag": "section",
+	"class": "section-main-blog",
+	"settings": [
+		{
+			"type": "range",
+			"id": "posts_per_page",
+			"min": 5,
+			"max": 23,
+			"step": 1,
+			"default": 9,
+			"label": "t:sections.main-blog.settings.per_page.label"
+		},
+		{
+			"type": "range",
+			"id": "per_row",
+			"min": 2,
+			"max": 6,
+			"step": 1,
+			"default": 3,
+			"label": "t:sections.all.column_per_row.label",
+			"info": "t:sections.all.column_per_row.info"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.all.article_card.header.content"
+		},
+		{
+			"type": "select",
+			"id": "image_size",
+			"default": "large",
+			"label": "t:sections.all.image.size.label",
+			"info": "t:sections.main-blog.settings.first_card.info",
+			"options": [
+				{
+					"value": "adapt",
+					"label": "t:sections.all.image.size.options__1.label"
+				},
+				{
+					"value": "small",
+					"label": "t:sections.all.image.size.options__2.label"
+				},
+				{
+					"value": "medium",
+					"label": "t:sections.all.image.size.options__3.label"
+				},
+				{
+					"value": "large",
+					"label": "t:sections.all.image.size.options__4.label"
+				}
+			]
+		},
+		{
+			"type": "checkbox",
+			"id": "show_image",
+			"default": true,
+			"label": "t:sections.all.article_card.show_image.label",
+			"info": "t:sections.all.article_card.show_image.info"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_tags",
+			"default": true,
+			"label": "t:sections.all.article_card.show_tags.label"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_date",
+			"default": true,
+			"label": "t:sections.all.article_card.show_date.label"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_author",
+			"default": false,
+			"label": "t:sections.all.article_card.show_author.label"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_excerpt",
+			"default": false,
+			"label": "t:sections.all.article_card.show_excerpt.label"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.all.image.header.content"
+		},
+		{
+			"type": "select",
+			"id": "image_ratio",
+			"default": "landscape",
+			"label": "t:sections.all.image.ratio.label",
+			"options": [
+				{
+					"value": "square",
+					"label": "t:sections.all.image.ratio.options__3.label"
+				},
+				{
+					"value": "landscape",
+					"label": "t:sections.all.image.ratio.options__1.label"
+				},
+				{
+					"value": "portrait",
+					"label": "t:sections.all.image.ratio.options__2.label"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "image_fit",
+			"label": "t:sections.all.image.fit.label",
+			"options": [
+				{
+					"value": "contain",
+					"label": "t:sections.all.image.fit.options__1.label"
+				},
+				{
+					"value": "cover",
+					"label": "t:sections.all.image.fit.options__2.label"
+				}
+			],
+			"default": "cover"
+		},
+		{
+			"type": "paragraph",
+			"content": "t:sections.all.article_card.paragraph.content"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.all.section_margin.header.content"
+		},
+		{
+			"type": "range",
+			"id": "margin_top",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 0,
+			"unit": "px",
+			"label": "t:sections.all.section_margin.margin_top.label"
+		},
+		{
+			"type": "range",
+			"id": "margin_bottom",
+			"min": 0,
+			"max": 200,
+			"step": 10,
+			"default": 0,
+			"unit": "px",
+			"label": "t:sections.all.section_margin.margin_bottom.label"
+		}
+	]
+}
+{% endschema %}

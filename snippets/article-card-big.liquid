@@ -1,0 +1,90 @@
+{% if article != blank %}
+	<article class="article__wrapper article-wrapper__big article__border article">
+		<div class="article__block color-background-4 have-overlay color-border-1">
+			<a href="{{ article.url }}" class="article_img">
+				{% if article.image != blank %}
+					{% assign image_height = article.image.width
+						| divided_by: article.image.aspect_ratio
+					%}
+					{{
+						article.image
+						| image_url: width: 3840
+						| image_tag:
+							loading: 'lazy',
+							width: article.image.width,
+							height: image_height,
+							sizes: '100vw',
+							widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+					}}
+				{% else %}
+					{{ 'lifestyle-1' | placeholder_svg_tag }}
+				{% endif %}
+			</a>
+			<div class="article__text">
+				{% if show_tags != false
+					or show_date != false
+					or show_author != false
+					or show_excerpt != false
+				%}
+					<div class="article__info subtitle">
+						{% if article.tags != blank and show_tags %}
+							<ul class="article__tags">
+								{% for tag in article.tags %}
+									<li>
+										<a
+											href="{{ blog.url }}/tagged/{{ tag | handle }}"
+											class="full-unstyled-link"
+										>
+											<span title="{{ tag }}">{{ tag }}</span>
+										</a>
+									</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+						{% if show_date %}
+							<div class="article__date">
+								{{- article.published_at | time_tag: format: 'article_published' -}}
+							</div>
+						{% endif %}
+						{% if show_author %}
+							<div class="article__author">
+								by <span>{{- article.author -}}</span>
+							</div>
+						{% endif %}
+					</div>
+				{% endif %}
+				<h2 class="article__title">
+					<a href="{{ article.url }}" class="full-unstyled-link">
+						{{- article.title | escape -}}
+					</a>
+				</h2>
+				{% if article.excerpt_or_content.size > 0 and show_excerpt %}
+					<div class="article__desc richtext__content">
+						{{ article.excerpt_or_content | strip_html | truncate: 70 }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</article>
+{% else %}
+	<article class="article__wrapper article-wrapper__big article__border article">
+		<div class="article__block color-background-4 have-overlay color-border-1">
+			<div class="article_img">
+				{{ 'lifestyle-1' | placeholder_svg_tag }}
+			</div>
+			<div class="article__text">
+				<div class="article__info subtitle">
+					<div class="article__date">
+						{{ 'sections.featured_blog.onboarding_date' | t }}
+					</div>
+				</div>
+				<h2 class="article__title">
+					{{- 'sections.featured_blog.onboarding_title' | t -}}
+				</h2>
+				{% comment %}<div class="article__desc richtext__content">
+					{{- 'sections.featured_blog.onboarding_content' | t -}}
+				</div>{% endcomment %}
+			</div>
+		</div>
+	</article>
+{% endif %}

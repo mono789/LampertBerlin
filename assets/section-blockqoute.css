@@ -1,0 +1,100 @@
+.blockqoute__wrapper {
+  flex-wrap: wrap;
+  display: flex;
+  gap: 2rem;
+  word-break: break-word;
+}
+@media screen and (min-width: 990px) {
+  .blockqoute__wrapper {
+    flex-wrap: nowrap;
+    gap: 3.2rem;
+  }
+}
+.blockqoute__wrapper .blockqoute__image {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+@media screen and (min-width: 990px) {
+  .blockqoute__wrapper .blockqoute__image {
+    flex: 0 0 40%;
+    max-width: 40%;
+  }
+}
+.blockqoute__wrapper .blockqoute__image__block {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.blockqoute__wrapper .blockqoute__image__block::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: rgb(var(--color-border));
+}
+@media screen and (min-width: 990px) {
+  .blockqoute__wrapper .blockqoute__image__block::after {
+    width: 1px;
+  }
+}
+.blockqoute__wrapper .blockqoute__image__block img {
+  width: 100%;
+  height: 100%;
+}
+.blockqoute__wrapper .image-position-left .blockqoute__image__block::after {
+  right: 0;
+  transform: translate(1.6rem);
+}
+.blockqoute__wrapper .image-position-right {
+  display: flex;
+  order: 2;
+}
+.blockqoute__wrapper .image-position-right .blockqoute__image__block::after {
+  left: 0;
+  transform: translate(-1.6rem);
+}
+.blockqoute__wrapper .blockqoute__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+@media screen and (min-width: 990px) {
+  .blockqoute__wrapper .blockqoute__box {
+    flex: 0 0 calc(60% - 3.2rem);
+    max-width: calc(60% - 3.2rem);
+  }
+}
+.blockqoute__wrapper .blockqoute__box-text {
+  position: relative;
+  margin: 0 0 4rem;
+  word-break: break-word;
+}
+.blockqoute__wrapper .blockqoute__box-text__elem {
+  display: block;
+  font-family: inherit;
+}
+.blockqoute__wrapper .blockqoute__box-author__name {
+  color: rgb(var(--color-foreground-title));
+}
+.blockqoute__wrapper .blockqoute__box-author__position {
+  margin: 0;
+}
+.blockqoute__wrapper .blockqoute__box .blockqoute__block {
+  max-width: 90rem;
+  padding: 0;
+}
+@media screen and (min-width: 990px) {
+  .blockqoute__wrapper .blockqoute__box .blockqoute__block {
+    padding: 7rem 0;
+  }
+}
+
+.blockqoute__wrapper.blockqoute__wrapper-flex .blockqoute__box {
+  flex: 0 0 100%;
+  max-width: 100%;
+}

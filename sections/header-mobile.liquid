@@ -1,0 +1,810 @@
+{% style %}
+	:root {
+		--header-mobile-height : {{ section.settings.height }}px;
+	}
+	@media screen and (max-width: 1099px) {
+		.search-modal {
+			display: none;
+		}
+	}
+	{% if section.settings.sticky_header_type == 'on-scroll-up' or section.settings.sticky_header_type == 'always' %}
+		.header-mobile-section {
+			position: sticky;
+			top: 0;
+		}
+	{% endif %}
+{% endstyle %}
+{% liquid
+	if section.settings.sticky_header_type == 'on-scroll-up'
+		assign header_class = 'sticky-header'
+	elsif section.settings.sticky_header_type == 'always'
+		assign header_class = 'sticky-header sticky-header-always'
+	endif
+%}
+<header
+	class="header-mobile {{ header_class }} color-background-1"
+	id="header-mobile-menu"
+>
+	<div class="header-mobile__header header-mobile-position-{{ section.settings.logo_position }}">
+		{% if section.settings.logo_position == 'left' %}
+			{% render 'header-mobile-logo' %}
+		{% endif %}
+		<div class="header-mobile__left">
+			<div class="header-mobile__burger-wrraper">
+				<a
+					href="#header-mobile-menu"
+					class="header-mobile__burger header-mobile__btn full-unstyled-link"
+					aria-label="burger menu button"
+				>
+					{% render 'icon-hamburger' %}
+					{% render 'icon-close' %}
+				</a>
+				<noscript>
+					<a
+						href="##"
+						class="header-mobile__no-js-close header-mobile__btn"
+						aria-label="close menu button"
+					>
+						{%- render 'icon-close' -%}
+					</a>
+				</noscript>
+			</div>
+			{% if section.settings.enable_search %}
+				<a
+					href="{{ routes.search_url }}"
+					class="header-mobile__search header-mobile__btn full-unstyled-link {% if request.page_type != 'search' and settings.enable_search_modal %} search-modal-trigger {% endif %}"
+					aria-label="search button"
+				>
+					{% render 'icon-search' %}
+				</a>
+			{% endif %}
+		</div>
+		{% if section.settings.logo_position == 'center' %}
+			{% render 'header-mobile-logo' %}
+		{% endif %}
+		<div class="header-mobile__right">
+			{%- if settings.dark_mode_toggle -%}
+				<div class="no-js-hidden header__toggle-scheme hover-opacity">
+					<span
+						class="header__toggle-scheme-item header__toggle-scheme-item--light"
+						aria-label="{{- 'general.dark_mode.light' | t -}}"
+						role="button"
+					>
+						{% render 'icon-light-mode' %}
+					</span>
+					<span
+						class="header__toggle-scheme-item header__toggle-scheme-item--dark"
+						aria-label="{{- 'general.dark_mode.dark' | t -}}"
+						role="button"
+					>
+						{% render 'icon-dark-mode' %}
+					</span>
+				</div>
+			{%- endif -%}
+
+			{% render 'header-account', is_mobile: true %}
+
+			<a
+				href="{{ routes.cart_url }}"
+				id="cart-icon-bubble-mobile"
+				class="header-mobile__cart header-mobile__btn full-unstyled-link header__cart cart-open-trigger"
+				aria-label="{{ 'accessibility.cart_link' | t }}"
+			>
+				{% render 'icon-cart' %}
+				<span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+				{%- if cart != empty -%}
+					<div class="header-mobile__cart-count-bubble">
+						{%- if cart.item_count < 100 -%}
+							<span aria-hidden="true">
+								{{- cart.item_count -}}
+							</span>
+						{%- endif -%}
+						<span class="visually-hidden">
+							{{- 'sections.header.cart_count' | t: count: cart.item_count -}}
+						</span>
+					</div>
+				{%- endif -%}
+			</a>
+		</div>
+	</div>
+	<div class="animate-bg color-background-4">
+		{%- if section.settings.logo_2 != blank -%}
+			{%- assign image_size_2x = section.settings.logo_width | times: 2 -%}
+			{% capture srcset %}
+				{{ section.settings.logo_2 | image_url: width: section.settings.logo_width }}, {{ section.settings.logo_2 | image_url: width: image_size_2x }} 2x
+			{% endcapture %}
+			{%- assign image_size = section.settings.logo_width | append: 'x' -%}
+			{% assign image_height = section.settings.logo_width
+				| divided_by: section.settings.logo_2.aspect_ratio
+			%}
+			{{
+				section.settings.logo_2
+				| image_url: width: section.settings.logo_width
+				| image_tag:
+					loading: 'lazy',
+					width: section.settings.logo_width,
+					srcset: srcset,
+					height: image_height,
+					widths: '150, 375, 550, 750',
+					class: 'header-mobile__logo-img header__heading-logo header__heading-logo--overlay show-animate header-mobile__logo'
+			}}
+		{%- else -%}
+			<span class="h4 show-animate">{{ shop.name }}</span>
+		{%- endif -%}
+	</div>
+	<div class="header-mobile__menu color-background-4">
+		{% if section.blocks.size != 0 %}
+			<ul class="header-mobile__menu-header list-unstyled no-js-hidden">
+				<li class="active">
+					<a href="#menu-main" class="full-unstyled-link h6">
+						{{- section.settings.heading -}}
+					</a>
+				</li>
+				{% for block in section.blocks %}
+					{% if block.settings.collection_list != blank
+						or block.settings.blog != blank
+						or block.settings.additional_menu != blank
+					%}
+						<li>
+							<a href="#menu-{{ block.id }}" class="full-unstyled-link h6">
+								{{- block.settings.menu_heading -}}
+							</a>
+						</li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+		{% endif %}
+		<ul class="header-mobile__menus list-unstyled">
+			<li id="menu-main" style="display:block">
+				<ul class="header-mobile__menu-main list-unstyled">
+					{%- for link in section.settings.menu.links -%}
+						<li class="{% if link.active %}current-link {% endif %} {% if link.links != blank %}have-submenu{% endif %}">
+							{% if link.links != blank %}
+								<details>
+									<summary class="h6">
+										<span>
+											{{- link.title | escape }}
+											{% render 'icon-caret' -%}
+										</span>
+									</summary>
+									<ul class="header-mobile__submenu list-unstyled">
+										{%- for childlink in link.links -%}
+											<li class="{% if childlink.current %}current-link{% endif %} {% if childlink.links != blank %}have-submenu{% endif %}">
+												{%- if childlink.links != blank -%}
+													<details>
+														<summary>
+															<span>
+																{{- childlink.title | escape }}
+																{% render 'icon-caret' -%}
+															</span>
+														</summary>
+														<ul class="header-mobile__submenu header-mobile__submenu-child list-unstyled">
+															{%- for grandchildlink in childlink.links -%}
+																<li class="{% if grandchildlink.current %}current-link{% endif %}">
+																	<a
+																		href="{{ grandchildlink.url }}"
+																		class="unstyled-link"
+																	>
+																		{{- grandchildlink.title | escape -}}
+																	</a>
+																</li>
+															{%- endfor -%}
+															{% if section.settings.show_view_all %}
+																<li>
+																	<a
+																		href="{{ link.url }}"
+																		class="unstyled-link view-all-link"
+																	>
+																		{{-
+																			'sections.header.mega-menu.submenu-view-all'
+																			| t
+																		-}}
+																	</a>
+																</li>
+															{% endif %}
+														</ul>
+													</details>
+												{%- else -%}
+													<a href="{{ childlink.url }}" class="unstyled-link">
+														{{- childlink.title | escape -}}
+													</a>
+												{%- endif -%}
+											</li>
+										{%- endfor -%}
+										{% if section.settings.show_view_all %}
+											<li>
+												<a
+													href="{{ link.url }}"
+													class="unstyled-link view-all-link"
+												>
+													{{-
+														'sections.header.mega-menu.submenu-view-all'
+														| t
+													-}}
+												</a>
+											</li>
+										{%- endif -%}
+									</ul>
+								</details>
+							{% else %}
+								<a href="{{ link.url }}" class="unstyled-link h6">
+									{{- link.title | escape -}}
+								</a>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ul>
+			</li>
+			{% for block in section.blocks %}
+				<li id="menu-{{ block.id }}">
+					{% case block.type %}
+						{% when 'collection-menu' %}
+							<ul class="header-mobile__menu-item header-mobile__menu-collection list-unstyled">
+								{% for collection in block.settings.collection_list %}
+									<li class="color-background-4">
+										{% render 'collection-card',
+											block_collection: collection,
+											media_size: block.settings.image_ratio,
+											url: collection.url,
+											collection_title: collection.title,
+											collection_image: collection.image,
+											block_id: block.id,
+											index: forloop.index
+										%}
+									</li>
+								{% endfor %}
+							</ul>
+						{% when 'article-menu' %}
+							<ul class="header-mobile__menu-item header-mobile__menu-article list-unstyled">
+								{% assign article_limit = block.settings.article_count %}
+								{% for article in block.settings.blog.articles
+									limit: article_limit
+								%}
+									<li class="color-background-4">
+										{% render 'collection-card',
+											block_collection: article,
+											media_size: block.settings.image_ratio,
+											url: article.url,
+											collection_title: article.title,
+											collection_image: article.image,
+											block_id: block.id,
+											index: forloop.index
+										%}
+									</li>
+								{% endfor %}
+							</ul>
+						{% when 'additional-menu' %}
+							<ul class="header-mobile__menu-main list-unstyled">
+								{%- for link in block.settings.additional_menu.links -%}
+									<li class="{% if link.active %}current-link {% endif %} {% if link.links != blank %}have-submenu{% endif %}">
+										{% if link.links != blank %}
+											<details>
+												<summary class="h6">
+													<span>
+														{{- link.title | escape }}
+														{% render 'icon-caret' -%}
+													</span>
+												</summary>
+												<ul class="header-mobile__submenu list-unstyled">
+													{%- for childlink in link.links -%}
+														<li class="{% if childlink.current %}current-link{% endif %} {% if childlink.links != blank %}have-submenu{% endif %}">
+															{%- if childlink.links != blank -%}
+																<details>
+																	<summary>
+																		<span>
+																			{{- childlink.title | escape }}
+																			{% render 'icon-caret' -%}
+																		</span>
+																	</summary>
+																	<ul class="header-mobile__submenu header-mobile__submenu-child list-unstyled">
+																		{%- for grandchildlink in childlink.links -%}
+																			<li class="{% if grandchildlink.current %}current-link{% endif %}">
+																				<a
+																					href="{{ grandchildlink.url }}"
+																					class="unstyled-link"
+																				>
+																					{{- grandchildlink.title | escape -}}
+																				</a>
+																			</li>
+																		{%- endfor -%}
+																		{% if block.settings.show_view_all %}
+																			<li>
+																				<a
+																					href="{{ link.url }}"
+																					class="unstyled-link view-all-link"
+																				>
+																					{{-
+																						'sections.header.mega-menu.submenu-view-all'
+																						| t
+																					-}}
+																				</a>
+																			</li>
+																		{%- endif -%}
+																	</ul>
+																</details>
+															{%- else -%}
+																<a
+																	href="{{ childlink.url }}"
+																	class="unstyled-link"
+																>
+																	{{- childlink.title | escape -}}
+																</a>
+															{%- endif -%}
+														</li>
+													{%- endfor -%}
+													{% if block.settings.show_view_all %}
+														<li>
+															<a
+																href="{{ link.url }}"
+																class="unstyled-link view-all-link"
+															>
+																{{-
+																	'sections.header.mega-menu.submenu-view-all'
+																	| t
+																-}}
+															</a>
+														</li>
+													{%- endif -%}
+												</ul>
+											</details>
+										{% else %}
+											<a href="{{ link.url }}" class="unstyled-link h6">
+												{{- link.title | escape -}}
+											</a>
+										{% endif %}
+									</li>
+								{% endfor %}
+							</ul>
+					{% endcase %}
+				</li>
+			{% endfor %}
+		</ul>
+		{% liquid
+			if section.settings.enable_country_selector and localization.available_countries.size > 1
+				assign country_selector = true
+			else
+				assign country_selector = false
+			endif
+			if section.settings.enable_language_selector and localization.available_languages.size > 1
+				assign language_selector = true
+			else
+				assign language_selector = false
+			endif
+		%}
+		{%- if country_selector or language_selector -%}
+			<div class="header-mobile__localization ">
+				{%- if country_selector %}
+					<noscript>
+						{%- form 'localization',
+							id: 'HeaderCountryFormNoScript',
+							class: 'localization-form'
+						-%}
+							<div class="localization-form__select">
+								<select
+									class="localization-selector link"
+									name="country_code"
+									aria-labelledby="FooterCountryLabelNoScript"
+								>
+									{%- for country in localization.available_countries -%}
+										<option
+											value="{{ country.iso_code }}"
+											{%- if country.iso_code == localization.country.iso_code
+											%}
+												selected
+											{% endif %}
+										>
+											{{ country.name }} ({{ country.currency.iso_code }}
+											{{ country.currency.symbol }})
+										</option>
+									{%- endfor -%}
+								</select>
+								{% render 'icon-caret' %}
+							</div>
+							<button class="button button--small button--primary">
+								{{ 'localization.update_country' | t }}
+							</button>
+						{%- endform -%}
+					</noscript>
+					<localization-form class="no-js-hidden">
+						{%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
+							<div>
+								<div class="disclosure">
+									<p id="HeaderCountryLabel" class="visually-hidden">
+										{{ 'localization.country_label' | t }}
+									</p>
+									<button type="button"
+										class="header__localization-button disclosure__button localization-form__select localization-selector link link--text caption-large"
+										aria-expanded="false" aria-controls="HeaderCountryList" aria-describedby="HeaderCountryLabel"
+										aria-label="Localization">
+										{%- if section.settings.show_country_flag -%}
+											<span class="currency-flag currency-country" aria-hidden="true">
+												{{- localization.country | image_url: width: 40 | image_tag: class: 'currency-flag-img' -}}
+											</span>
+										{%- endif -%}
+										<span class="currency-country">
+											{{- localization.country.iso_code -}}
+										</span>
+										<span class="currency-symbol">
+											({{ localization.country.currency.symbol }})
+										</span>
+										{% render 'icon-caret' %}
+									</button>
+									<ul id="HeaderCountryList" role="list" class="disclosure__list list-unstyled" hidden>
+										{%- for country in localization.available_countries -%}
+										<li class="disclosure__item" tabindex="-1">
+											<a class="link link--text disclosure__link caption-large{% if country.iso_code == localization.country.iso_code %} disclosure__link--active{% endif %} focus-inset" href="#"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
+													{%- if section.settings.show_country_flag -%}
+														<span class="currency-flag" aria-hidden="true">
+															{{- country | image_url: width: 40 | image_tag: class: 'currency-flag-img' -}}
+														</span>
+													{%- endif -%}
+													<span class="disclosure__country-name">
+														{{ country.name }}
+													</span>
+													<span class="localization-form__currency">({{ country.currency.iso_code }} {{ country.currency.symbol }})</span>
+											</a>
+										</li>
+										{%- endfor -%}
+									</ul>
+								</div>
+								<input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+							</div>
+						{%- endform -%}
+					</localization-form>
+				{% endif %}
+				{%- if language_selector -%}
+					<noscript>
+						{%- form 'localization',
+							id: 'HeaderLanguageFormNoScript',
+							class: 'localization-form'
+						-%}
+							<div class="localization-form__select">
+								<h2
+									class="visually-hidden"
+									id="HeaderLanguageLabelNoScript"
+								>
+									{{ 'localization.language_label' | t }}
+								</h2>
+								<select
+									class="localization-selector link"
+									name="locale_code"
+									aria-labelledby="HeaderLanguageLabelNoScript"
+								>
+									{%- for language in localization.available_languages -%}
+										<option
+											value="{{ language.iso_code }}"
+											lang="{{ language.iso_code }}"
+											{%- if language.iso_code == localization.language.iso_code
+											%}
+												selected
+											{% endif %}
+										>
+											{{ language.endonym_name | capitalize }}
+										</option>
+									{%- endfor -%}
+								</select>
+								{% render 'icon-caret' %}
+							</div>
+							<button class="button button--primary">
+								{{ 'localization.update_language' | t }}
+							</button>
+						{%- endform -%}
+					</noscript>
+					<localization-form>
+						{%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+						<div class="no-js-hidden">
+							<div class="disclosure">
+								<p id="HeaderLanguageLabel" class="visually-hidden">
+									{{ 'localization.language_label' | t }}
+								</p>
+								<button type="button"
+									class="disclosure__button header__localization-lang-button localization-form__select localization-selector link link--text caption-large"
+									aria-expanded="false" aria-controls="HeaderLanguageList" aria-describedby="HeaderLanguageLabel"
+									aria-label="Language">
+									<span class="language-code">
+										{{- localization.language.iso_code | upcase -}}
+									</span>
+									{% render 'icon-caret' %}
+								</button>
+								<ul id="HeaderLanguageList" role="list" class="disclosure__list list-unstyled" hidden>
+									{%- for language in localization.available_languages -%}
+									<li class="disclosure__item" tabindex="-1">
+										<a class="link link--text disclosure__link caption-large
+					                {% if language.iso_code == localization.language.iso_code %} disclosure__link--active{% endif %} focus-inset"
+											href="#" hreflang="{{ language.iso_code }}" lang="{{ language.iso_code }}"
+											data-value="{{ language.iso_code }}" {% if language.iso_code==localization.language.iso_code %}
+											aria-current="true" {% endif %} aria-label="language">
+											<span class="disclosure__language-name">
+												{{ language.endonym_name | capitalize }}
+											</span>
+										</a>
+									</li>
+									{%- endfor -%}
+								</ul>
+							</div>
+							<input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+						</div>
+						{%- endform -%}
+					</localization-form>
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+	</div>
+</header>
+<script src="{{ 'header-mobile.js' | asset_url }}" defer="defer"></script>
+
+<script>
+	const calcMobileHeader = () => {
+		const mobileHeader = document.querySelector('.header-mobile-section');
+
+		const mobileHeaderObserver = new ResizeObserver(entries => {
+			const mobileHeaderHeight = mobileHeader.getBoundingClientRect().height;
+			document.documentElement.style.setProperty('--header-mobile-dynamic-height', `${mobileHeaderHeight}px`);
+		});
+
+		if (mobileHeader) mobileHeaderObserver.observe(mobileHeader);
+	}
+
+	calcMobileHeader();
+
+	document.addEventListener('shopify:section:load', calcMobileHeader);
+	document.addEventListener('shopify:section:unload', calcMobileHeader);
+	document.addEventListener('shopify:section:reorder', calcMobileHeader);
+</script>
+
+{% schema %}
+{
+	"name": "t:sections.header_mobile.name",
+	"class": "header-mobile-section",
+	"max_blocks": 2,
+	"settings": [
+		{
+			"type": "range",
+			"id": "height",
+			"min": 65,
+			"max": 120,
+			"step": 5,
+			"default": 75,
+			"label": "t:sections.header.settings.height.label",
+			"info": "t:sections.header.settings.height.info"
+		},
+		{
+			"type": "image_picker",
+			"id": "logo",
+			"label": "t:sections.header.settings.logo.label"
+		},
+		{
+			"type": "image_picker",
+			"id": "logo_2",
+			"label": "t:sections.header.settings.logo_2.label",
+			"info": "t:sections.header.settings.logo_2.info"
+		},
+		{
+			"type": "range",
+			"id": "logo_width",
+			"min": 50,
+			"max": 300,
+			"step": 5,
+			"default": 60,
+			"unit": "t:sections.header.settings.logo_width.unit",
+			"label": "t:sections.header.settings.logo_width.label"
+		},
+		{
+			"type": "select",
+			"id": "logo_position",
+			"default": "center",
+			"label": "t:sections.header.settings.logo_position.label",
+			"options": [
+				{
+					"value": "center",
+					"label": "t:sections.header.settings.logo_position.options__1.label"
+				},
+				{
+					"value": "left",
+					"label": "t:sections.header.settings.logo_position.options__2.label"
+				}
+			]
+		},
+		{
+			"type": "link_list",
+			"id": "menu",
+			"default": "main-menu",
+			"label": "t:sections.header.settings.menu.label"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "t:sections.header_mobile.settings.heading.label",
+			"info": "t:sections.header_mobile.settings.heading.info",
+			"default": "t:sections.header_mobile.settings.heading.default"
+		},
+		{
+			"type": "select",
+			"id": "sticky_header_type",
+			"default": "on-scroll-up",
+			"label": "t:sections.header.settings.sticky_header_type.label",
+			"options": [
+				{
+					"value": "none",
+					"label": "t:sections.header.settings.sticky_header_type.options__1.label"
+				},
+				{
+					"value": "on-scroll-up",
+					"label": "t:sections.header.settings.sticky_header_type.options__2.label"
+				},
+				{
+					"value": "always",
+					"label": "t:sections.header.settings.sticky_header_type.options__3.label"
+				}
+			]
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_country_selector",
+			"default": true,
+			"label": "t:sections.header.settings.enable_country_selector.label"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_country_flag",
+			"default": true,
+			"label": "t:sections.header.settings.show_country_flag.label",
+			"visible_if": "{{ section.settings.enable_country_selector }}"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_language_selector",
+			"default": true,
+			"label": "t:sections.header.settings.enable_language_selector.label"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_search",
+			"default": true,
+			"label": "t:sections.header.settings.enable_search.label"
+		},
+		{
+			"type": "header",
+			"content": "t:sections.header.settings.header__account.content"
+		},
+		{
+			"type": "paragraph",
+			"content": "t:sections.header.settings.account_info.content"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_account_btn",
+			"default": true,
+			"label": "t:sections.header.settings.enable_account_btn.label"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_account_modal_component",
+			"default": true,
+			"label": "t:sections.header.settings.enable_account_modal_component.label",
+			"info": "t:sections.header.settings.enable_account_modal_component.info"
+		},
+		{
+			"type": "link_list",
+			"id": "customer_account_menu",
+			"default": "customer-account-main-menu",
+			"label": "t:sections.header.settings.customer_account_menu.label"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_view_all",
+			"default": true,
+			"label": "t:sections.header_mobile.settings.show_view_all.label"
+		}
+	],
+	"blocks": [
+		{
+			"type": "additional-menu",
+			"name": "t:sections.header_mobile.blocks.additional_menu.name",
+			"settings": [
+				{
+					"type": "text",
+					"id": "menu_heading",
+					"label": "t:sections.header_mobile.blocks.all.heading.label",
+					"default": "t:sections.header_mobile.blocks.all.heading.default"
+				},
+				{
+					"type": "link_list",
+					"id": "additional_menu",
+					"default": "main-menu",
+					"label": "t:sections.header.settings.menu.label"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_view_all",
+					"default": true,
+					"label": "t:sections.header_mobile.settings.show_view_all.label"
+				}
+			]
+		},
+		{
+			"type": "collection-menu",
+			"name": "t:sections.header_mobile.blocks.collection_menu.name",
+			"settings": [
+				{
+					"type": "text",
+					"id": "menu_heading",
+					"label": "t:sections.header_mobile.blocks.all.heading.label",
+					"default": "t:sections.header_mobile.blocks.all.heading.default_collection"
+				},
+				{
+					"type": "collection_list",
+					"id": "collection_list",
+					"label": "t:sections.all.collection.label"
+				},
+				{
+					"type": "select",
+					"id": "image_ratio",
+					"options": [
+						{
+							"value": "landscape",
+							"label": "t:sections.all.image.ratio.options__1.label"
+						},
+						{
+							"value": "portrait",
+							"label": "t:sections.all.image.ratio.options__2.label"
+						},
+						{
+							"value": "square",
+							"label": "t:sections.all.image.ratio.options__3.label"
+						}
+					],
+					"default": "square",
+					"label": "t:sections.all.image.ratio.label"
+				}
+			]
+		},
+		{
+			"type": "article-menu",
+			"name": "t:sections.header_mobile.blocks.article_menu.name",
+			"settings": [
+				{
+					"type": "text",
+					"id": "menu_heading",
+					"label": "t:sections.header_mobile.blocks.all.heading.label",
+					"default": "t:sections.header_mobile.blocks.all.heading.default_articles"
+				},
+				{
+					"type": "blog",
+					"id": "blog",
+					"label": "t:sections.header_mobile.blocks.article_menu.blog.label"
+				},
+				{
+					"type": "range",
+					"id": "article_count",
+					"label": "t:sections.header_mobile.blocks.article_menu.article_count.label",
+					"min": 1,
+					"max": 5,
+					"default": 3
+				},
+				{
+					"type": "select",
+					"id": "image_ratio",
+					"options": [
+						{
+							"value": "landscape",
+							"label": "t:sections.all.image.ratio.options__1.label"
+						},
+						{
+							"value": "portrait",
+							"label": "t:sections.all.image.ratio.options__2.label"
+						},
+						{
+							"value": "square",
+							"label": "t:sections.all.image.ratio.options__3.label"
+						}
+					],
+					"default": "square",
+					"label": "t:sections.all.image.ratio.label"
+				}
+			]
+		}
+	],
+	"default": {}
+}
+{% endschema %}

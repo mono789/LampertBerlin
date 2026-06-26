@@ -1,0 +1,316 @@
+.rte_container img,
+.rte_container figure, .rte blockquote {
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(var(--color-border));
+}
+@media screen and (min-width: 990px) {
+  .rte_container img,
+  .rte_container figure, .rte blockquote {
+    padding-bottom: 4rem;
+    padding-top: 4rem;
+    margin-bottom: 4rem;
+    margin-top: 4rem;
+  }
+}
+@media screen and (min-width: 1100px) {
+  .rte_container img,
+  .rte_container figure, .rte blockquote {
+    padding-bottom: 8rem;
+    padding-top: 8rem;
+    margin-bottom: 8rem;
+    margin-top: 8rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .rte {
+    margin-bottom: 6.4rem;
+  }
+}
+.rte:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+.rte * {
+  line-height: var(--font-body-line-height);
+}
+.rte h1,
+.rte h2,
+.rte h3,
+.rte h4,
+.rte h5,
+.rte h6 {
+  margin-top: 0;
+  margin-bottom: 2.4rem;
+  line-height: var(--font-heading-line-height);
+}
+@media screen and (min-width: 990px) {
+  .rte h1,
+  .rte h2,
+  .rte h3,
+  .rte h4,
+  .rte h5,
+  .rte h6 {
+    margin-bottom: 4.8rem;
+  }
+}
+.rte blockquote {
+  border: 0;
+  background: rgb(var(--color-base-background-4));
+  color: rgb(255, 255, 255);
+  text-align: center;
+  font-family: var(--font-heading-family);
+  margin-left: 0;
+  margin-right: 0;
+  text-transform: uppercase;
+  width: 100vw;
+  left: calc((50vw - 50%) * -1);
+  position: relative;
+}
+.rte blockquote,
+.rte blockquote * {
+  line-height: 1.1;
+}
+.rte blockquote p {
+  font-size: 2.4rem;
+}
+@media only screen and (min-width: 750px) {
+  .rte blockquote p {
+    font-size: calc(var(--font-heading-h2-size) * 0.7);
+  }
+}
+@media only screen and (min-width: 1100px) {
+  .rte blockquote p {
+    font-size: calc(var(--font-heading-h2-size) * 0.8);
+  }
+}
+@media only screen and (min-width: 1540px) {
+  .rte blockquote p {
+    font-size: var(--font-heading-h2-size);
+  }
+}
+.rte blockquote > span,
+.rte blockquote > p,
+.rte blockquote > div {
+  max-width: 107rem;
+  margin: 0 auto;
+}
+.rte h1 {
+  font-size: calc(var(--font-heading-h1-size) * 0.6);
+}
+.rte h2 {
+  font-size: calc(var(--font-heading-h2-size) * 0.6);
+}
+.rte h3 {
+  font-size: calc(var(--font-heading-h3-size) * 0.6);
+}
+.rte h4 {
+  font-size: calc(var(--font-heading-h4-size) * 0.6);
+}
+.rte h5 {
+  font-size: calc(var(--font-heading-h5-size) * 0.6);
+}
+.rte h6 {
+  font-size: calc(var(--font-heading-h6-size) * 0.6);
+}
+@media screen and (min-width: 480px) {
+  .rte h1 {
+    font-size: calc(var(--font-heading-h1-size) * 0.8);
+  }
+  .rte h2 {
+    font-size: calc(var(--font-heading-h2-size) * 0.8);
+  }
+  .rte h3 {
+    font-size: calc(var(--font-heading-h3-size) * 0.8);
+  }
+  .rte h4 {
+    font-size: calc(var(--font-heading-h4-size) * 0.8);
+  }
+  .rte h5 {
+    font-size: calc(var(--font-heading-h5-size) * 0.8);
+  }
+  .rte h6 {
+    font-size: calc(var(--font-heading-h6-size) * 0.8);
+  }
+}
+@media screen and (min-width: 580px) {
+  .rte h1 {
+    font-size: var(--font-heading-h1-size);
+  }
+  .rte h2 {
+    font-size: var(--font-heading-h2-size);
+  }
+  .rte h3 {
+    font-size: var(--font-heading-h3-size);
+  }
+  .rte h4 {
+    font-size: var(--font-heading-h4-size);
+  }
+  .rte h5 {
+    font-size: var(--font-heading-h5-size);
+  }
+  .rte h6 {
+    font-size: var(--font-heading-h6-size);
+  }
+}
+.rte div {
+  margin: 0;
+}
+.rte p {
+  font-size: 2rem;
+  letter-spacing: normal;
+  margin: 1.6rem 0;
+}
+@media screen and (min-width: 990px) {
+  .rte p {
+    margin: 3.2rem 0;
+  }
+}
+.rte p:first-child {
+  margin-top: 0;
+}
+.rte p:last-child {
+  margin-bottom: 0;
+}
+.rte ol,
+.rte ul {
+  padding-left: 2rem;
+  margin: 0 0 1.6rem 2.4rem;
+}
+.rte li {
+  list-style: inherit;
+  padding-left: 0.8rem;
+  margin: 1.6rem 0rem;
+  font-size: 1.8rem;
+  letter-spacing: 0;
+}
+.rte li:last-child {
+  margin-bottom: 0;
+}
+.rte a {
+  color: rgb(var(--color-link));
+  text-underline-offset: 0.3rem;
+  text-decoration-thickness: 0.1rem;
+  text-decoration-color: rgb(var(--color-link));
+  transition: color var(--duration-short) ease;
+}
+.rte a:hover {
+  color: rgb(var(--color-link), 0.6);
+}
+.rte figcaption {
+  font-size: 1rem;
+  color: rgba(var(--color-foreground), 0.6);
+  text-align: center;
+}
+.rte table {
+  table-layout: fixed;
+  overflow: auto;
+  border-style: unset;
+  box-shadow: none;
+}
+@media screen and (min-width: 750px) {
+  .rte table td {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+}
+.rte table img,
+.rte table figure {
+  padding: 0;
+  border: none;
+  margin: 0 0 1.6rem 0;
+  left: 0;
+  transform: unset;
+  width: 100%;
+  height: 100%;
+}
+@media screen and (max-width: 420px) {
+  .rte:has(table) {
+    overflow-x: auto;
+  }
+}
+.rte iframe {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+}
+.rte pre {
+  white-space: break-spaces;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+.rte > * {
+  position: relative;
+}
+.rte img,
+.rte figure {
+  max-width: 100%;
+}
+
+.rte_container img,
+.rte_container figure {
+  margin-bottom: 0;
+  height: auto;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100vw - 4rem);
+}
+.rte_container img:nth-last-child(2),
+.rte_container img + img,
+.rte_container img + figure,
+.rte_container figure:nth-last-child(2),
+.rte_container figure + img,
+.rte_container figure + figure {
+  margin-top: 0;
+  margin-bottom: 0;
+  border: 0;
+}
+@media screen and (min-width: 750px) {
+  .rte_container img,
+  .rte_container figure {
+    padding-right: 1.6rem;
+  }
+  .rte_container img + img,
+  .rte_container img + figure,
+  .rte_container figure + img,
+  .rte_container figure + figure {
+    padding-left: 1.6rem;
+  }
+  .rte_container img:last-child, .rte_container img:only-child,
+  .rte_container figure:last-child,
+  .rte_container figure:only-child {
+    padding-right: 0;
+  }
+  .rte_container img:nth-last-child(2),
+  .rte_container img + img,
+  .rte_container img + figure,
+  .rte_container figure:nth-last-child(2),
+  .rte_container figure + img,
+  .rte_container figure + figure {
+    max-width: calc(50vw - 17px);
+  }
+  .rte_container img:nth-last-child(2),
+  .rte_container figure:nth-last-child(2) {
+    right: 0;
+    position: absolute;
+    max-height: 100%;
+    transform: translate(-100%);
+  }
+  .rte_container img + img,
+  .rte_container img + figure,
+  .rte_container figure + img,
+  .rte_container figure + figure {
+    transform: unset;
+  }
+}
+.rte_container figure > img {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+}

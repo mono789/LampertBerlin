@@ -1,0 +1,39 @@
+<div class="header-mobile__logo__wrapper">
+{%- if request.page_type == 'index' -%}
+	<h1 class="header-mobile__heading h4">
+{%- endif -%}
+	<a href="{{ routes.root_url }}" class="header-mobile__logo full-unstyled-link" aria-label="{{ shop.name }}">
+		{%- if section.settings.logo != blank -%}
+			{%- assign logo_height = section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio -%}
+				{%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
+				{%- assign image_size_2x = section.settings.logo_width | times: 2 -%}
+				{% capture srcset %}
+					{{ section.settings.logo | image_url: width: section.settings.logo_width }}, {{ section.settings.logo | image_url: width: image_size_2x }} 2x
+				{% endcapture %}
+				{{ section.settings.logo | image_url: width: section.settings.logo_width | image_tag:
+					class: 'header__heading-logo',
+					srcset: srcset,
+					height: logo_height,
+					width: section.settings.logo_width,
+					alt: logo_alt
+				}}
+				{%- if section.settings.logo_2 != blank -%}
+					{% capture srcset %}
+						{{ section.settings.logo_2 | image_url: width: section.settings.logo_width }}, {{ section.settings.logo_2 | image_url: width: image_size_2x }} 2x
+					{% endcapture %}
+					{{ section.settings.logo_2 | image_url: width: section.settings.logo_width | image_tag:
+						class: 'header__heading-logo header__heading-logo--overlay',
+						srcset: srcset,
+						height: logo_height,
+						width: section.settings.logo_width,
+						alt: logo_alt
+					}}
+				{%- endif -%}
+		{%- else -%}
+			<span class="h4">{{ shop.name }}</span>
+		{%- endif -%}
+	</a>
+{%- if request.page_type == 'index' -%}
+	</h1>
+{%- endif -%}
+</div>

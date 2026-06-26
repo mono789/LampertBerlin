@@ -1,0 +1,46 @@
+{% comment %}
+{% endcomment %}
+{% liquid
+	assign btn_label = layout.settings.button_label
+	assign btn_link = layout.settings.button_link
+	assign btn_style = layout.settings.button_style
+	assign enable_arrow = layout.settings.button_arrow
+	if blog_link != blank
+		assign btn_label = 'sections.header.read_all' | t
+		assign btn_link = blog_link
+	endif
+	if product_link != blank
+		assign btn_label = 'products.product.view_product' | t
+		assign btn_link = product_link
+	endif
+%}
+
+{% if btn_label != blank %}
+	<a
+		{% if btn_link != blank %}
+			href="{{ btn_link }}"
+		{% endif %}
+		class="button button--{% if simple != true %}{{ btn_style }} button--primary-size {% else %}simple{% endif %}"
+		{% if btn_link == blank %}
+			aria-disabled="true"
+		{% endif %}
+	>
+		{% if simple and icon != 'none' %}
+			<span>
+				{%- render 'icon-social', icon-social: icon -%}
+			</span>
+		{% endif %}
+		{% if simple %}
+			<span class="button-simpl__label">
+				{{ btn_label | escape }}
+			</span>
+		{% else %}
+			{{ btn_label | escape }}
+		{% endif %}
+		{% if enable_arrow and simple != true %}
+			<span>
+				{% render 'icon-button-arrow' %}
+			</span>
+		{% endif %}
+	</a>
+{% endif %}
