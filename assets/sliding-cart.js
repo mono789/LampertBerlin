@@ -1199,21 +1199,6 @@ class SlidingCart {
       }
     });
 
-    // Event listener específico para botones de eliminar (backup)
-    document.addEventListener('click', (e) => {
-      const removeButton = e.target.closest('.remove-item');
-      if (removeButton) {
-        e.preventDefault();
-        e.stopPropagation();
-        const key = removeButton.dataset.key;
-        if (key) {
-          this.removeItem(key);
-        } else {
-          console.error('No se encontró data-key en el botón de eliminar');
-        }
-      }
-    });
-
     // Ir al checkout
     document.addEventListener('click', (e) => {
       if (e.target.matches('#checkout-btn')) {
