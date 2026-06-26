@@ -17,15 +17,9 @@
   pointer-events: none !important;
 }
 
-/* Ocultar el botón del carrito del header del tema */
-.header__icon--cart,
-.header__cart-count,
-[data-cart-icon],
-.cart-icon,
-.cart-count {
-  display: none !important;
-  visibility: hidden !important;
-}
+/* En Berlin se conservan los íconos de carrito nativos del tema (tienen
+   data-cart-icon) y abren el sliding cart vía el interceptor del JS, por lo que
+   NO se ocultan. Solo se mantiene el contador propio del tema oculto si aplica. */
 
 /* Ocultar cualquier overlay del carrito del tema */
 .drawer__overlay[data-drawer="cart"],
