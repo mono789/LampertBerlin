@@ -64,7 +64,8 @@
         gap: 8px;
         text-decoration: none;
         color: inherit;
-        min-width: 120px;
+        flex: 0 0 120px;
+        width: 120px;
         scroll-snap-align: start;
         margin-right: 1rem;
       }
@@ -72,6 +73,7 @@
         border-radius: 12px;
         overflow: hidden;
         aspect-ratio: 1/1;
+        width: 100%;
         background-color: rgba(var(--color-foreground, 18, 18, 18), .06);
       }
       .design-scroll-card__image {
@@ -108,7 +110,8 @@
       }
       @media (min-width: 769px) {
         .design-scroll-card {
-          min-width: 160px;
+          flex: 0 0 160px;
+          width: 160px;
         }
       }
     </style>
