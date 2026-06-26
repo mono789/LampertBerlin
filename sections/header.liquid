@@ -361,7 +361,7 @@
 						{%- endif -%}
 							<li class="header__cart-wrapper">
 								<a href="{{ routes.cart_url }}" data-cart-icon class="{% if request.page_type != 'cart' %}header__cart{% endif %} unstyled-link hover-opacity cart-open-trigger" aria-label="{{ 'accessibility.cart_link' | t }}" aria-label="cart link">
-									{{ "general.cart.label" | t }}
+									{% render 'icon-cart' %}
 									<span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
 
 											{%- if cart.item_count < 100 -%}
