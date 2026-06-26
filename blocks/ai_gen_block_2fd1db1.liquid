@@ -1,0 +1,805 @@
+{% doc %}
+  @prompt
+    un bloque para poner las ubicaciones de las tiendas 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-store-locations-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: 40px 20px;
+    background-color: {{ block.settings.background_color }};
+    display: block;
+  }
+
+  .ai-store-locations-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .ai-store-locations-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+    margin-bottom: 40px;
+  }
+
+  .ai-store-locations-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 12px;
+  }
+
+  .ai-store-locations-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  .ai-store-locations-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.columns_desktop }}, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+  }
+
+  .ai-store-location-card-{{ ai_gen_id }} {
+    background-color: {{ block.settings.card_background }};
+    border: 1px solid {{ block.settings.card_border_color }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    padding: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .ai-store-location-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-store-location-image-{{ ai_gen_id }} {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: {{ block.settings.image_border_radius }}px;
+    overflow: hidden;
+  }
+
+  .ai-store-location-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-store-location-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 200px;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-store-location-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 120px;
+    max-height: 120px;
+  }
+
+  .ai-store-location-name-{{ ai_gen_id }} {
+    font-size: {{ block.settings.location_name_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+
+  .ai-store-location-info-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-store-location-info-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: {{ block.settings.info_text_size }}px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.5;
+  }
+
+  .ai-store-location-icon-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: {{ block.settings.icon_color }};
+  }
+
+  .ai-store-location-link-{{ ai_gen_id }} {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 10px 20px;
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: {{ block.settings.button_text_size }}px;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-store-location-link-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background }};
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-store-locations-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.columns_tablet }}, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-store-locations-grid-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-store-locations-{{ ai_gen_id }} {
+      padding: 30px 15px;
+    }
+
+    .ai-store-location-card-{{ ai_gen_id }} {
+      padding: 20px;
+    }
+  }
+{% endstyle %}
+
+<store-locations-{{ ai_gen_id }} class="ai-store-locations-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-store-locations-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank or block.settings.subtitle != blank %}
+      <div class="ai-store-locations-header-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-store-locations-title-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+        {% if block.settings.subtitle != blank %}
+          <div class="ai-store-locations-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-store-locations-grid-{{ ai_gen_id }}">
+      {% for i in (1..6) %}
+        {% liquid
+          assign enabled_key = 'location_' | append: i | append: '_enabled'
+          assign name_key = 'location_' | append: i | append: '_name'
+          assign address_key = 'location_' | append: i | append: '_address'
+          assign phone_key = 'location_' | append: i | append: '_phone'
+          assign email_key = 'location_' | append: i | append: '_email'
+          assign hours_key = 'location_' | append: i | append: '_hours'
+          assign image_key = 'location_' | append: i | append: '_image'
+          assign map_link_key = 'location_' | append: i | append: '_map_link'
+
+          assign enabled = block.settings[enabled_key]
+          assign name = block.settings[name_key]
+          assign address = block.settings[address_key]
+          assign phone = block.settings[phone_key]
+          assign email = block.settings[email_key]
+          assign hours = block.settings[hours_key]
+          assign image = block.settings[image_key]
+          assign map_link = block.settings[map_link_key]
+        %}
+
+        {% if enabled %}
+          <div class="ai-store-location-card-{{ ai_gen_id }}">
+            {% if image != blank %}
+              <div class="ai-store-location-image-{{ ai_gen_id }}">
+                <img
+                  src="{{ image | image_url: width: 600 }}"
+                  alt="{{ name | escape }}"
+                  loading="lazy"
+                  width="600"
+                  height="200"
+                >
+              </div>
+            {% else %}
+              <div class="ai-store-location-image-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+
+            {% if name != blank %}
+              <h3 class="ai-store-location-name-{{ ai_gen_id }}">{{ name }}</h3>
+            {% endif %}
+
+            <div class="ai-store-location-info-{{ ai_gen_id }}">
+              {% if address != blank %}
+                <div class="ai-store-location-info-item-{{ ai_gen_id }}">
+                  <svg class="ai-store-location-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  <span>{{ address }}</span>
+                </div>
+              {% endif %}
+
+              {% if phone != blank %}
+                <div class="ai-store-location-info-item-{{ ai_gen_id }}">
+                  <svg class="ai-store-location-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                  <span>{{ phone }}</span>
+                </div>
+              {% endif %}
+
+              {% if email != blank %}
+                <div class="ai-store-location-info-item-{{ ai_gen_id }}">
+                  <svg class="ai-store-location-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                  <span>{{ email }}</span>
+                </div>
+              {% endif %}
+
+              {% if hours != blank %}
+                <div class="ai-store-location-info-item-{{ ai_gen_id }}">
+                  <svg class="ai-store-location-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span>{{ hours }}</span>
+                </div>
+              {% endif %}
+            </div>
+
+            {% if map_link != blank %}
+              <a href="{{ map_link }}" class="ai-store-location-link-{{ ai_gen_id }}" target="_blank" rel="noopener">
+                {{ block.settings.button_text }}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</store-locations-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class StoreLocations{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('store-locations-{{ ai_gen_id }}', StoreLocations{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ubicaciones de tiendas",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Encabezado"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Título",
+      "default": "Nuestras tiendas"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Visítanos en cualquiera de nuestras ubicaciones"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alineación de texto",
+      "options": [
+        {
+          "value": "left",
+          "label": "Izquierda"
+        },
+        {
+          "value": "center",
+          "label": "Centro"
+        },
+        {
+          "value": "right",
+          "label": "Derecha"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Tamaño del título",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Tamaño del subtítulo",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Diseño"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columnas en escritorio",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Columnas en tablet",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Espacio entre tarjetas",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Ancho en escritorio",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Fondo de sección",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Fondo de tarjeta",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Borde de tarjeta",
+      "default": "#E5E5E5"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color de títulos",
+      "default": "#232322"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Color de texto",
+      "default": "#454544"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Color de iconos",
+      "default": "#232322"
+    },
+    {
+      "type": "header",
+      "content": "Estilo de tarjetas"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Radio de borde de tarjeta",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Radio de borde de imagen",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "location_name_size",
+      "label": "Tamaño nombre de tienda",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "info_text_size",
+      "label": "Tamaño texto de info",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Botón"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "button_text",
+      "label": "Texto del botón",
+      "default": "Ver en mapa"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Fondo del botón",
+      "default": "#232322"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Fondo del botón al pasar",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Color de texto del botón",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Radio de borde del botón",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "label": "Tamaño texto del botón",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Ubicación 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "location_1_enabled",
+      "label": "Activar ubicación 1",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "location_1_image",
+      "label": "Imagen"
+    },
+    {
+      "type": "text",
+      "id": "location_1_name",
+      "label": "Nombre de la tienda",
+      "default": "Tienda Centro"
+    },
+    {
+      "type": "textarea",
+      "id": "location_1_address",
+      "label": "Dirección",
+      "default": "Calle 123 #45-67, Bogotá, Colombia"
+    },
+    {
+      "type": "text",
+      "id": "location_1_phone",
+      "label": "Teléfono",
+      "default": "+57 1 234 5678"
+    },
+    {
+      "type": "text",
+      "id": "location_1_email",
+      "label": "Email",
+      "default": "centro@tienda.com"
+    },
+    {
+      "type": "text",
+      "id": "location_1_hours",
+      "label": "Horario",
+      "default": "Lun - Sáb: 9:00 AM - 8:00 PM"
+    },
+    {
+      "type": "url",
+      "id": "location_1_map_link",
+      "label": "Enlace a mapa"
+    },
+    {
+      "type": "header",
+      "content": "Ubicación 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "location_2_enabled",
+      "label": "Activar ubicación 2",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "location_2_image",
+      "label": "Imagen"
+    },
+    {
+      "type": "text",
+      "id": "location_2_name",
+      "label": "Nombre de la tienda",
+      "default": "Tienda Norte"
+    },
+    {
+      "type": "textarea",
+      "id": "location_2_address",
+      "label": "Dirección",
+      "default": "Carrera 15 #89-12, Bogotá, Colombia"
+    },
+    {
+      "type": "text",
+      "id": "location_2_phone",
+      "label": "Teléfono",
+      "default": "+57 1 234 5679"
+    },
+    {
+      "type": "text",
+      "id": "location_2_email",
+      "label": "Email",
+      "default": "norte@tienda.com"
+    },
+    {
+      "type": "text",
+      "id": "location_2_hours",
+      "label": "Horario",
+      "default": "Lun - Sáb: 10:00 AM - 9:00 PM"
+    },
+    {
+      "type": "url",
+      "id": "location_2_map_link",
+      "label": "Enlace a mapa"
+    },
+    {
+      "type": "header",
+      "content": "Ubicación 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "location_3_enabled",
+      "label": "Activar ubicación 3",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "location_3_image",
+      "label": "Imagen"
+    },
+    {
+      "type": "text",
+      "id": "location_3_name",
+      "label": "Nombre de la tienda",
+      "default": "Tienda Sur"
+    },
+    {
+      "type": "textarea",
+      "id": "location_3_address",
+      "label": "Dirección",
+      "default": "Avenida 68 #23-45, Bogotá, Colombia"
+    },
+    {
+      "type": "text",
+      "id": "location_3_phone",
+      "label": "Teléfono",
+      "default": "+57 1 234 5680"
+    },
+    {
+      "type": "text",
+      "id": "location_3_email",
+      "label": "Email",
+      "default": "sur@tienda.com"
+    },
+    {
+      "type": "text",
+      "id": "location_3_hours",
+      "label": "Horario",
+      "default": "Lun - Dom: 9:00 AM - 10:00 PM"
+    },
+    {
+      "type": "url",
+      "id": "location_3_map_link",
+      "label": "Enlace a mapa"
+    },
+    {
+      "type": "header",
+      "content": "Ubicación 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "location_4_enabled",
+      "label": "Activar ubicación 4",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "location_4_image",
+      "label": "Imagen"
+    },
+    {
+      "type": "text",
+      "id": "location_4_name",
+      "label": "Nombre de la tienda"
+    },
+    {
+      "type": "textarea",
+      "id": "location_4_address",
+      "label": "Dirección"
+    },
+    {
+      "type": "text",
+      "id": "location_4_phone",
+      "label": "Teléfono"
+    },
+    {
+      "type": "text",
+      "id": "location_4_email",
+      "label": "Email"
+    },
+    {
+      "type": "text",
+      "id": "location_4_hours",
+      "label": "Horario"
+    },
+    {
+      "type": "url",
+      "id": "location_4_map_link",
+      "label": "Enlace a mapa"
+    },
+    {
+      "type": "header",
+      "content": "Ubicación 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "location_5_enabled",
+      "label": "Activar ubicación 5",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "location_5_image",
+      "label": "Imagen"
+    },
+    {
+      "type": "text",
+      "id": "location_5_name",
+      "label": "Nombre de la tienda"
+    },
+    {
+      "type": "textarea",
+      "id": "location_5_address",
+      "label": "Dirección"
+    },
+    {
+      "type": "text",
+      "id": "location_5_phone",
+      "label": "Teléfono"
+    },
+    {
+      "type": "text",
+      "id": "location_5_email",
+      "label": "Email"
+    },
+    {
+      "type": "text",
+      "id": "location_5_hours",
+      "label": "Horario"
+    },
+    {
+      "type": "url",
+      "id": "location_5_map_link",
+      "label": "Enlace a mapa"
+    },
+    {
+      "type": "header",
+      "content": "Ubicación 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "location_6_enabled",
+      "label": "Activar ubicación 6",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "location_6_image",
+      "label": "Imagen"
+    },
+    {
+      "type": "text",
+      "id": "location_6_name",
+      "label": "Nombre de la tienda"
+    },
+    {
+      "type": "textarea",
+      "id": "location_6_address",
+      "label": "Dirección"
+    },
+    {
+      "type": "text",
+      "id": "location_6_phone",
+      "label": "Teléfono"
+    },
+    {
+      "type": "text",
+      "id": "location_6_email",
+      "label": "Email"
+    },
+    {
+      "type": "text",
+      "id": "location_6_hours",
+      "label": "Horario"
+    },
+    {
+      "type": "url",
+      "id": "location_6_map_link",
+      "label": "Enlace a mapa"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ubicaciones de tiendas"
+    }
+  ]
+}
+{% endschema %}

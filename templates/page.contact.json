@@ -1,1 +1,113 @@
-{"sections":{"main":{"type":"main-page","settings":{"padding_top":0,"padding_bottom":0}},"form":{"type":"contact-form","settings":{"heading":"Contact form","text":"Contact us today with your questions, comments, or feedback—we're here to help!","additional_text":"<p>Your message is important to us, and we aim to respond promptly.<\/p>","margin_top":20,"margin_bottom":80}}},"order":["main","form"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "1782495526a83d56d1": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_2fd1db1_Pic7PW": {
+          "type": "ai_gen_block_2fd1db1",
+          "settings": {
+            "heading": "Nuestras tiendas",
+            "subtitle": "Visítanos en cualquiera de nuestras ubicaciones",
+            "text_alignment": "center",
+            "heading_size": 36,
+            "subtitle_size": 16,
+            "columns_desktop": 4,
+            "columns_tablet": 3,
+            "grid_gap": 30,
+            "desktop_width_percent": 100,
+            "background_color": "#FFFFFF",
+            "card_background": "#FFFFFF",
+            "card_border_color": "#E5E5E5",
+            "heading_color": "#232322",
+            "text_color": "#454544",
+            "icon_color": "#232322",
+            "card_border_radius": 8,
+            "image_border_radius": 4,
+            "location_name_size": 20,
+            "info_text_size": 14,
+            "button_text": "Ver en mapa",
+            "button_background": "#232322",
+            "button_hover_background": "#000000",
+            "button_text_color": "#FFFFFF",
+            "button_border_radius": 4,
+            "button_text_size": 14,
+            "location_1_enabled": true,
+            "location_1_image": "shopify://shop_images/Viva_2.png",
+            "location_1_name": "Viva Envigado",
+            "location_1_address": "CC. Viva Envigado, Medellín - Colombia",
+            "location_1_phone": "+57 3008600047",
+            "location_1_email": "tom@tomlampert.com",
+            "location_1_hours": "",
+            "location_1_map_link": "https://www.google.com/maps/place/Tom+Lampert+C.C.+Viva+Envigado/data=!4m2!3m1!1s0x0:0x2ef2409effda8c38?sa=X&ved=1t:2428&ictx=111",
+            "location_2_enabled": true,
+            "location_2_image": "shopify://shop_images/Santa_Fe_1.png",
+            "location_2_name": "Santa Fe",
+            "location_2_address": "Centro Comercial Santafé Medellín",
+            "location_2_phone": "+57 3008600047",
+            "location_2_email": "tom@tomlampert.com",
+            "location_2_hours": "",
+            "location_2_map_link": "https://www.google.com/maps/place/Centro+Comercial+Santaf%C3%A9+Medell%C3%ADn/data=!4m2!3m1!1s0x0:0xf96762aa39ea4209?sa=X&ved=1t:2428&ictx=111",
+            "location_3_enabled": true,
+            "location_3_image": "shopify://shop_images/Image.jpg",
+            "location_3_name": "Jardines de Llanogrande",
+            "location_3_address": "Centro comercial Jardines de Llanogrande, Rionegro",
+            "location_3_phone": "+57 3008600047",
+            "location_3_email": "tom@tomlampert.com",
+            "location_3_hours": "",
+            "location_3_map_link": "https://www.google.com/maps/place/Tom+Lampert+C.C.+Jardines+Llanogrande/@6.1196779,-75.4361726,17z/data=!3m1!4b1!4m6!3m5!1s0x8e4699617e258045:0x87f74ef1075c7c5e!8m2!3d6.1196726!4d-75.4335977!16s%2Fg%2F11xkcz8jj6?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D",
+            "location_4_enabled": true,
+            "location_4_image": "shopify://shop_images/Jardin_Plaza_3.jpg",
+            "location_4_name": "Jardín Plaza",
+            "location_4_address": "Centro Comercial Jardín Plaza, Cali",
+            "location_4_phone": "+57 3008600047",
+            "location_4_email": "tom@tomlampert.com",
+            "location_4_hours": "",
+            "location_4_map_link": "https://www.google.com/maps/place/Tom+Lampert+C.C.+Jard%C3%ADn+Plaza/@3.3698394,-76.5292354,17z/data=!3m1!4b1!4m6!3m5!1s0x8e30a1149c2487c1:0xeba50467516d1fea!8m2!3d3.369834!4d-76.5266605!16s%2Fg%2F11xh3zrgvw?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D",
+            "location_5_enabled": true,
+            "location_5_image": "shopify://shop_images/Image_1.jpg",
+            "location_5_name": "Mall Buena Vista",
+            "location_5_address": "Centro comercial Mall Buena Vista - Barranquilla",
+            "location_5_phone": "+57 3008600047",
+            "location_5_email": "tom@tomlampert.com",
+            "location_5_hours": "",
+            "location_5_map_link": "https://www.google.com/maps/place/Centro+Comercial+Buenavista/@11.0141956,-74.8305434,17z/data=!4m10!1m2!2m1!1small+buena+vista+barranquilla!3m6!1s0x8ef42c4d4ad7ec73:0x9ab6eda3d5142548!8m2!3d11.0133099!4d-74.8274876!15sCh1tYWxsIGJ1ZW5hIHZpc3RhIGJhcnJhbnF1aWxsYVofIh1tYWxsIGJ1ZW5hIHZpc3RhIGJhcnJhbnF1aWxsYZIBD3Nob3BwaW5nX2NlbnRlcpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSYWEzQllUVGRuUlJBQuABAPoBBAgAEDg!16s%2Fg%2F1tgf483z?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D",
+            "location_6_enabled": true,
+            "location_6_image": "shopify://shop_images/Multimedia.jpg",
+            "location_6_name": "Fontanar",
+            "location_6_address": "Centro Comercial Fontanar - Chía Cundinamarca",
+            "location_6_phone": "+57 3008600047",
+            "location_6_email": "tom@tomlampert.com",
+            "location_6_hours": "",
+            "location_6_map_link": "https://www.google.com/maps/place/Centro+Comercial+Fontanar/@4.8851917,-74.0373899,17z/data=!3m1!4b1!4m6!3m5!1s0x8e40781ed29330e5:0xaf48274164aa1597!8m2!3d4.8851864!4d-74.034815!16s%2Fg%2F11bx8h9fh9?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_2fd1db1_Pic7PW"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "1782495526a83d56d1"
+  ]
+}
