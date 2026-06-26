@@ -68,7 +68,7 @@
     "popup_text_size": 13,
     "notification_heading_size": 20,
     "notification_text_size": 13,
-    "badge_sale_percentage": false,
+    "badge_sale_percentage": true,
     "badge_background_color": "#232322",
     "badge_text_color": "#FFFFFF",
     "background_card": "#FFFFFF",

@@ -159,7 +159,19 @@
 						class="badge badge--bottom-left"
 						aria-hidden="true"
 					>
-						{{- 'products.product.on_sale' | t -}}
+						{%- if settings.badge_sale_percentage -%}
+							{{ 'products.product.on_sale' | t }}
+							-
+							{{-
+								product_card_product.compare_at_price
+								| minus: product_card_product.price
+								| times: 100
+								| divided_by: product_card_product.compare_at_price
+								| append: '%'
+							-}}
+						{%- else -%}
+							{{- 'products.product.on_sale' | t -}}
+						{%- endif -%}
 					</span>
 				{%- endif -%}
 			</div>

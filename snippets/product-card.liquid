@@ -212,15 +212,15 @@
             aria-hidden="true"
           >
             {%- if settings.badge_sale_percentage -%}
-              {{
+              {{ 'products.product.on_sale' | t }}
+              -
+              {{-
                 product_card_product.selected_or_first_available_variant.compare_at_price
                 | minus: product_card_product.selected_or_first_available_variant.price
                 | times: 100
                 | divided_by: product_card_product.selected_or_first_available_variant.compare_at_price
+                | append: '%'
               -}}
-              %
-
-              {{ 'products.product.sale_percentage' | t }}
             {% else %}
               {{- 'products.product.on_sale' | t -}}
             {%- endif -%}

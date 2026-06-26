@@ -244,7 +244,8 @@
 		"product": {
 			"view_product": "Ver el producto",
 			"back": "Recopilación",
-			"on_sale": "Venta",
+			"on_sale": "Sale",
+			"sale_percentage": "Off",
 			"choose_product_options": "Elija opciones para {{ product_name }}",
 			"product_variants": "Product variants",
 			"buy_with": "Cómpralo con:",
