@@ -15,16 +15,16 @@
         "4a5ec1a7-b345-4129-abce-2e7df2982975": {
           "type": "slideshow_item",
           "settings": {
-            "image": "shopify://shop_images/banner_2.jpg",
-            "mobile_image": "shopify://shop_images/banner_4.jpg",
+            "image": "shopify://shop_images/prueba_de_banner_2jpg_jpg.jpg",
+            "mobile_image": "shopify://shop_images/IMG_2722.jpg",
             "color_scheme": "dark",
             "heading": "",
             "heading_tag": "h1",
             "text": "",
-            "button_label": "",
-            "button_link": "shopify://collections/colombia-social-club",
-            "button_style": "primary",
-            "button_arrow": true,
+            "button_label": "Comprar",
+            "button_link": "https://tomlampert.com/collections/colombia-social-club",
+            "button_style": "secondary",
+            "button_arrow": false,
             "overlay_enable": false,
             "overlay_opacity": 20
           }
@@ -32,7 +32,7 @@
         "block_1": {
           "type": "slideshow_item",
           "settings": {
-            "image": "shopify://shop_images/two_state_desk_jpg.jpg",
+            "image": "shopify://shop_images/Banner_desktop_WLB-2.jpg",
             "mobile_image": "shopify://shop_images/Banner_mobile-3.jpg",
             "color_scheme": "light",
             "heading": "",
