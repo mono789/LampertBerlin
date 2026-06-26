@@ -82,6 +82,8 @@ class SlidingCart {
     this.bindEvents();
     this.loadRecommendations();
     this.interceptAddToCart();
+    // Cargar el estado actual del carrito al iniciar (tras recargar la página)
+    this.refreshCartItems();
   }
 
   // Deshabilitar el carrito del tema
@@ -341,7 +343,10 @@ class SlidingCart {
       
       this.isOpen = true;
       this.setAutoClose();
-      
+
+      // Refrescar siempre los items/total del carrito al abrir
+      await this.refreshCartItems();
+
       // Inicializar recomendaciones si es la primera vez que se abre
       if (this.combinedRecommendations.length === 0) {
         await this.initializeCartRecommendations();
@@ -453,6 +458,7 @@ class SlidingCart {
 
       this.updateCartItems(cart.items);
       this.updateCartTotal(cart.total_price);
+      this.updateThemeCartCount(cart.item_count);
       return cart;
     } catch (error) {
       console.error('Error refreshing cart items:', error);
@@ -485,17 +491,17 @@ class SlidingCart {
 
     const itemsHTML = items.map(item => `
       <div class="cart-item" data-key="${item.key}">
+        <button class="remove-item" data-key="${item.key}" aria-label="Eliminar ${item.product_title}" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+          </svg>
+        </button>
         <div class="cart-item-image">
           <img src="${item.featured_image.url}" alt="${item.product_title}">
         </div>
         <div class="cart-item-details">
           <div class="cart-item-header">
             <h4 class="cart-item-title">${item.product_title}</h4>
-            <button class="remove-item" data-key="${item.key}" aria-label="Eliminar ${item.product_title}" type="button">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-              </svg>
-            </button>
           </div>
           <p class="cart-item-variant">${item.variant_title || ''}</p>
           <div class="cart-item-quantity">
@@ -538,6 +544,23 @@ class SlidingCart {
       } else {
         cartCountElement.classList.add('hidden');
       }
+    }
+  }
+
+  // Actualizar el contador nativo del header de Berlin (desktop y móvil)
+  updateThemeCartCount(itemCount) {
+    // Burbuja desktop
+    const bubble = document.getElementById('cart-icon-bubble');
+    if (bubble) {
+      if (itemCount < 100) {
+        bubble.textContent = `(${itemCount})`;
+      }
+      bubble.classList.toggle('hidden', itemCount === 0);
+    }
+    // Burbuja móvil
+    const mobileBubble = document.querySelector('#cart-icon-bubble-mobile .header-mobile__cart-count-bubble span[aria-hidden="true"]');
+    if (mobileBubble) {
+      mobileBubble.textContent = itemCount;
     }
   }
 
@@ -989,7 +1012,7 @@ class SlidingCart {
             <button class="add-recommendation-btn" 
                     data-product-id="${product.id}" 
                     data-variant-id="${defaultVariant.id}">
-              Añadir al carrito
+              Añadir
             </button>
           </div>
         </div>
