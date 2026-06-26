@@ -91,7 +91,7 @@
       "settings": {
         "header_overlay": false,
         "section_layout": "full",
-        "image_size": "adapt",
+        "image_size": "large",
         "is_autoplay": true,
         "is_hover_stop_autoplay": true,
         "show_arrows": true,
