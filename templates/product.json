@@ -80,7 +80,7 @@
         "3bab227a-c7ad-4bdd-99c1-6ce7db963f0d": {
           "type": "description",
           "settings": {
-            "description_heading": "Description",
+            "description_heading": "Descripción",
             "heading_tag": "h6",
             "default_open": false
           }
@@ -118,7 +118,7 @@
         "design_scroll_heading": "Más diseños",
         "design_scroll_view_all_label": "Ver todos",
         "design_scroll_view_all_link": "",
-        "design_scroll_items": 8
+        "design_scroll_items": 7
       }
     },
     "product-recommendations": {
