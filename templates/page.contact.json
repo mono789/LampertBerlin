@@ -63,7 +63,7 @@
             "location_2_phone": "+57 3008600047",
             "location_2_email": "tom@tomlampert.com",
             "location_2_hours": "",
-            "location_2_map_link": "",
+            "location_2_map_link": "https://www.google.com/maps/place/Centro+Comercial+Santaf%C3%A9+Medell%C3%ADn/data=!4m2!3m1!1s0x0:0xf96762aa39ea4209?sa=X&ved=1t:2428&ictx=111",
             "location_3_enabled": true,
             "location_3_image": "shopify://shop_images/Image.jpg",
             "location_3_name": "Jardines de Llanogrande",
@@ -71,7 +71,7 @@
             "location_3_phone": "+57 3008600047",
             "location_3_email": "tom@tomlampert.com",
             "location_3_hours": "",
-            "location_3_map_link": "",
+            "location_3_map_link": "https://www.google.com/maps/place/Tom+Lampert+C.C.+Jardines+Llanogrande/@6.1196779,-75.4361726,17z/data=!3m1!4b1!4m6!3m5!1s0x8e4699617e258045:0x87f74ef1075c7c5e!8m2!3d6.1196726!4d-75.4335977!16s%2Fg%2F11xkcz8jj6?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D",
             "location_4_enabled": true,
             "location_4_image": "shopify://shop_images/Jardin_Plaza_3.jpg",
             "location_4_name": "Jardín Plaza",
@@ -79,7 +79,7 @@
             "location_4_phone": "+57 3008600047",
             "location_4_email": "tom@tomlampert.com",
             "location_4_hours": "",
-            "location_4_map_link": "",
+            "location_4_map_link": "https://www.google.com/maps/place/Tom+Lampert+C.C.+Jard%C3%ADn+Plaza/@3.3698394,-76.5292354,17z/data=!3m1!4b1!4m6!3m5!1s0x8e30a1149c2487c1:0xeba50467516d1fea!8m2!3d3.369834!4d-76.5266605!16s%2Fg%2F11xh3zrgvw?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D",
             "location_5_enabled": true,
             "location_5_image": "shopify://shop_images/Image_1.jpg",
             "location_5_name": "Mall Buena Vista",
@@ -87,7 +87,7 @@
             "location_5_phone": "+57 3008600047",
             "location_5_email": "tom@tomlampert.com",
             "location_5_hours": "",
-            "location_5_map_link": "",
+            "location_5_map_link": "https://www.google.com/maps/place/Centro+Comercial+Buenavista/@11.0141956,-74.8305434,17z/data=!4m10!1m2!2m1!1small+buena+vista+barranquilla!3m6!1s0x8ef42c4d4ad7ec73:0x9ab6eda3d5142548!8m2!3d11.0133099!4d-74.8274876!15sCh1tYWxsIGJ1ZW5hIHZpc3RhIGJhcnJhbnF1aWxsYVofIh1tYWxsIGJ1ZW5hIHZpc3RhIGJhcnJhbnF1aWxsYZIBD3Nob3BwaW5nX2NlbnRlcpoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSYWEzQllUVGRuUlJBQuABAPoBBAgAEDg!16s%2Fg%2F1tgf483z?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D",
             "location_6_enabled": true,
             "location_6_image": "shopify://shop_images/Multimedia.jpg",
             "location_6_name": "Fontanar",
@@ -95,7 +95,7 @@
             "location_6_phone": "+57 3008600047",
             "location_6_email": "tom@tomlampert.com",
             "location_6_hours": "",
-            "location_6_map_link": ""
+            "location_6_map_link": "https://www.google.com/maps/place/Centro+Comercial+Fontanar/@4.8851917,-74.0373899,17z/data=!3m1!4b1!4m6!3m5!1s0x8e40781ed29330e5:0xaf48274164aa1597!8m2!3d4.8851864!4d-74.034815!16s%2Fg%2F11bx8h9fh9?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D"
           },
           "blocks": {}
         }
