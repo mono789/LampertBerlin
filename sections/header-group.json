@@ -29,11 +29,11 @@
         "logo_width": 110,
         "logo_position": "center",
         "menu": "main-menu-copia-1",
-        "enable_country_selector": true,
+        "enable_country_selector": false,
         "show_country_flag": true,
         "enable_language_selector": false,
         "sticky_header_type": "on-scroll-up",
-        "enable_account_btn": true,
+        "enable_account_btn": false,
         "enable_account_modal_component": true,
         "customer_account_menu": "customer-account-main-menu",
         "enable_search": true
