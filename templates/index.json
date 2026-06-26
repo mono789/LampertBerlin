@@ -21,10 +21,10 @@
             "heading": "",
             "heading_tag": "h1",
             "text": "",
-            "button_label": "",
+            "button_label": "Comprar",
             "button_link": "https://tomlampert.com/collections/colombia-social-club",
-            "button_style": "primary",
-            "button_arrow": true,
+            "button_style": "secondary",
+            "button_arrow": false,
             "overlay_enable": false,
             "overlay_opacity": 20
           }
