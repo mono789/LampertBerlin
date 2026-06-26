@@ -387,7 +387,7 @@
         "show_vendor": true,
         "show_desc": false,
         "padding_top": 0,
-        "padding_bottom": 40,
+        "padding_bottom": 0,
         "margin_top": 0,
         "margin_bottom": 0,
         "enable_border_top": false,
@@ -894,7 +894,7 @@
         "padding_top": 0,
         "padding_bottom": 0,
         "margin_top": 0,
-        "margin_bottom": 80,
+        "margin_bottom": 0,
         "enable_border_top": false,
         "enable_border_bottom": false,
         "enable_inner_border": false
