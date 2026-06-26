@@ -22,7 +22,7 @@
             "heading_tag": "h1",
             "text": "",
             "button_label": "",
-            "button_link": "shopify://collections/colombia-social-club",
+            "button_link": "https://tomlampert.com/collections/colombia-social-club",
             "button_style": "primary",
             "button_arrow": true,
             "overlay_enable": false,
@@ -270,7 +270,7 @@
           "type": "categories",
           "settings": {
             "collection": "colombia-social-club",
-            "collection_image": "shopify://shop_images/DSC07877_684fa9b2-dc44-4cb1-b12e-40f67c04bb0b.jpg"
+            "collection_image": "shopify://shop_images/DSC06763.jpg"
           }
         },
         "categories_DEPrAV": {
