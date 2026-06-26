@@ -74,7 +74,7 @@
     "background_card": "#FFFFFF",
     "badge_custom_show": false,
     "quickview_hover": true,
-    "quickview_show": true,
+    "quickview_show": false,
     "quickview": "",
     "predictive_search_enabled": true,
     "predictive_search_show_vendor": false,
