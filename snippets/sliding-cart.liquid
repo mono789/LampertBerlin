@@ -110,50 +110,9 @@
   {% endif %}
 
   // Función para crear botón de carrito personalizado
-  function createCustomCartButton() {
-    const cartButtonHTML = `
-      <button class="custom-cart-button" id="custom-cart-button" aria-label="Ver carrito">
-        <svg viewBox="0 0 24 24">
-          <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-        </svg>
-        <span class="custom-cart-count hidden" id="custom-cart-count">0</span>
-      </button>
-    `;
-
-    // Buscar el botón del carrito del tema y reemplazarlo
-    const themeCartButton = document.querySelector('.header__icon--cart, [data-cart-icon], .cart-icon');
-    if (themeCartButton) {
-      themeCartButton.outerHTML = cartButtonHTML;
-    } else {
-      // Si no encuentra el botón del tema, crear uno en el header
-      const header = document.querySelector('header, .header');
-      if (header) {
-        const headerIcons = header.querySelector('.header__icons, .header-icons');
-        if (headerIcons) {
-          headerIcons.insertAdjacentHTML('beforeend', cartButtonHTML);
-        }
-      }
-    }
-
-    // Añadir event listener al botón personalizado
-    const customButton = document.getElementById('custom-cart-button');
-    if (customButton) {
-      customButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (window.slidingCart) {
-          window.slidingCart.showCart();
-        }
-      });
-    }
-  }
-
-  // Crear el botón cuando el DOM esté listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createCustomCartButton);
-  } else {
-    createCustomCartButton();
-  }
+  // Nota: en Berlin se conservan los íconos de carrito nativos del tema (desktop y
+  // móvil) que ya tienen el atributo data-cart-icon. El JS (disableThemeCart)
+  // intercepta sus clicks y abre el sliding cart, por lo que NO se reemplaza el botón.
 </script>
 
 {{ 'sliding-cart.css' | asset_url | stylesheet_tag }}

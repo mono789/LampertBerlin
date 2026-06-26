@@ -62,7 +62,7 @@ class SlidingCart {
   }
 
   // Función para formatear precios con separadores de miles y moneda
-  formatPrice(priceInCents) {
+  formatPrice(priceInCents, showCurrency = true) {
     const price = priceInCents / 100;
     const currency = this.config.currency || 'COP';
     
@@ -72,8 +72,8 @@ class SlidingCart {
       maximumFractionDigits: 0
     }).format(price);
     
-    // Añadir la moneda al final
-    return `${formattedPrice} ${currency}`;
+    // Añadir la moneda al final solo si se solicita
+    return showCurrency ? `${formattedPrice} ${currency}` : `$${formattedPrice}`;
   }
 
   init() {
@@ -984,8 +984,7 @@ class SlidingCart {
             </a>
           ` : ''}
           <div class="recommendation-details">
-            <a class="recommendation-title" href="${productUrl}">${product.title}</a>
-            <p class="recommendation-price">${this.formatPrice(defaultVariant.price)}</p>
+            <p class="recommendation-price">${this.formatPrice(defaultVariant.price, false)}</p>
             ${message ? `<p class="recommendation-message">${message}</p>` : ''}
             <button class="add-recommendation-btn" 
                     data-product-id="${product.id}" 
