@@ -272,6 +272,23 @@
                             product_form_id: product_form_id,
                             section_id: section.id,
 										        need_update_page_url: true %}
+                {%- comment -%} Product design scroll "Más diseños" (migrado desde LampertTema) {%- endcomment -%}
+                {%- if section.settings.enable_design_scroll -%}
+                  {%- assign related_designs = product.metafields.custom.related_designs -%}
+                  {%- if related_designs != blank -%}
+                    {%- assign related_design_products = related_designs.value | default: empty -%}
+                    {%- if related_design_products != empty and related_design_products.size > 0 -%}
+                      {% render 'product-design-scroll',
+                        related_products: related_design_products,
+                        current_product: product,
+                        section: section,
+                        heading: section.settings.design_scroll_heading,
+                        view_all_label: section.settings.design_scroll_view_all_label,
+                        view_all_link: section.settings.design_scroll_view_all_link,
+                        limit: section.settings.design_scroll_items %}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endif -%}
               {% when 'buy_buttons' %}
                 <div {{ block.shopify_attributes }}>
                   {%- liquid
@@ -1350,6 +1367,42 @@
       "id": "show_share_copy",
       "default": true,
       "label": "t:sections.main-product.settings.share.settings.show_share_copy.label"
+    },
+    {
+      "type": "header",
+      "content": "Más diseños (Design scroll)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_design_scroll",
+      "label": "Mostrar carrusel de diseños relacionados",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "design_scroll_heading",
+      "label": "Título",
+      "default": "Más diseños"
+    },
+    {
+      "type": "text",
+      "id": "design_scroll_view_all_label",
+      "label": "Texto 'Ver todos'",
+      "default": "Ver todos"
+    },
+    {
+      "type": "url",
+      "id": "design_scroll_view_all_link",
+      "label": "Enlace 'Ver todos'"
+    },
+    {
+      "type": "range",
+      "id": "design_scroll_items",
+      "label": "Máximo de elementos a mostrar",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
     }
   ],
   "blocks": [

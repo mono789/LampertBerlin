@@ -400,9 +400,9 @@
 		{% if settings.show_back_to_top %}
       {% render 'scroll-top' %}
     {% endif %}
-    {%- if request.page_type != 'cart' and settings.cart_type == 'drawer' -%}
-      {%- render 'cart-drawer' -%}
-    {%- endif -%}
+    {% comment %} Sliding cart (migrado desde LampertTema) reemplaza al cart-drawer original {% endcomment %}
+    {% section 'cart-drawer-settings' %}
+    {% render 'sliding-cart' %}
 
     {%- if request.page_type != 'search' and settings.enable_search_modal -%}
       {%- render 'search-modal' -%}
