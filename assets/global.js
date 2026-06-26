@@ -1962,11 +1962,11 @@ if (!customElements.get("variant-radios")) {
       elListItems.forEach((li) => {
         li.addEventListener("click", function () {
           const input = li.querySelector("input");
-          const isNotifyMe = li
-            .querySelector(".pills-variant-labels")
-            ?.classList.contains("notify_me");
 
-          if ((input && !input.classList.contains("disabled")) || isNotifyMe) {
+          // Opción A: permitir seleccionar también variantes agotadas (preorder/notify).
+          // El texto visible del dropdown se actualiza para cualquier opción, no solo
+          // las disponibles, de modo que la variante agotada quede marcada visualmente.
+          if (input) {
             const span = selectedText.querySelector("span");
             if (span) {
               span.textContent = li.innerText.trim();

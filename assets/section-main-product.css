@@ -887,6 +887,25 @@
   justify-content: space-between;
   gap: 1.6rem;
 }
+/* Layout cuando la app Notify Me! inyecta su botón (variante agotada):
+   "Agotado" arriba a ancho completo y "Notificarme" debajo, con más peso. */
+.product-form__quantity__add__buttons:has(.nm-portal) {
+  flex-direction: column;
+  align-items: stretch;
+}
+.product-form__quantity__add__buttons .nm-portal {
+  width: 100%;
+  display: flex;
+}
+.product-form__quantity__add__buttons .nm-portal .restock-alerts-notify-button {
+  width: 100%;
+  height: 6rem;
+  justify-content: center !important;
+  align-items: center !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
 .product-form .add_to_cart_quantity {
   transform: rotate(0) !important;
 }
