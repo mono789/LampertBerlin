@@ -15,8 +15,8 @@
         "4a5ec1a7-b345-4129-abce-2e7df2982975": {
           "type": "slideshow_item",
           "settings": {
-            "image": "shopify://shop_images/banner_3.jpg",
-            "mobile_image": "shopify://shop_images/IMG_2722.jpg",
+            "image": "shopify://shop_images/banner_2.jpg",
+            "mobile_image": "shopify://shop_images/banner_4.jpg",
             "color_scheme": "dark",
             "heading": "",
             "heading_tag": "h1",
