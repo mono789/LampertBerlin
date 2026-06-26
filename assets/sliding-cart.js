@@ -84,6 +84,22 @@ class SlidingCart {
     this.interceptAddToCart();
     // Cargar el estado actual del carrito al iniciar (tras recargar la página)
     this.refreshCartItems();
+    // Precargar recomendaciones en segundo plano (cuando el navegador esté libre)
+    // para que el carrito ya las tenga listas al abrirse.
+    this.preloadRecommendations();
+  }
+
+  // Precargar recomendaciones sin bloquear el render inicial de la página
+  preloadRecommendations() {
+    if (this.config.showRecommendations === false) return;
+    const run = () => {
+      this.initializeCartRecommendations().catch(() => {});
+    };
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(run, { timeout: 3000 });
+    } else {
+      setTimeout(run, 1200);
+    }
   }
 
   // Deshabilitar el carrito del tema
@@ -372,8 +388,8 @@ class SlidingCart {
           })
         );
 
-        // Combinar todas las recomendaciones
-        await this.combineCartRecommendations();
+        // Combinar todas las recomendaciones (reutiliza el cart ya cargado)
+        await this.combineCartRecommendations(cart);
         this.displayRecommendations(this.combinedRecommendations);
       }
     } catch (error) {
@@ -472,7 +488,18 @@ class SlidingCart {
       const cart = await response.json();
 
       if (cart.items.length > 0) {
-        await this.combineCartRecommendations();
+        // Asegurar que cada producto del carrito tenga sus recomendaciones cargadas
+        await Promise.all(
+          cart.items.map(async (item) => {
+            const productId = item.product_id;
+            if (!this.cartRecommendations.has(productId)) {
+              const productRecommendations = await this.getProductRecommendations(productId);
+              this.cartRecommendations.set(productId, productRecommendations);
+            }
+          })
+        );
+
+        await this.combineCartRecommendations(cart);
         this.displayRecommendations(this.combinedRecommendations);
       }
     } catch (error) {
@@ -627,11 +654,13 @@ class SlidingCart {
   }
 
   // Combinar recomendaciones de todos los productos en el carrito
-  async combineCartRecommendations() {
+  async combineCartRecommendations(cart = null) {
     try {
-      // Obtener todos los productos del carrito
-      const cartResponse = await fetch('/cart.js');
-      const cart = await cartResponse.json();
+      // Reutilizar el cart si se pasó; si no, pedirlo
+      if (!cart) {
+        const cartResponse = await fetch('/cart.js');
+        cart = await cartResponse.json();
+      }
 
       let allRecommendations = [];
       let manualRecommendations = [];
@@ -718,31 +747,29 @@ class SlidingCart {
       if (this.metafieldsCache.has(productId)) {
         return this.metafieldsCache.get(productId);
       }
-      
-      // Si no está en cache, hacer la llamada API
-      const response = await fetch(`/products/${productId}.js`);
-      
+
+      // Reutilizar el producto desde el cache de productos (evita una llamada extra)
+      const product = await this.fetchProductCached(productId);
+
       let hasManualMetafields = false;
-      
-      if (response.ok) {
-        const product = await response.json();
-        
+
+      if (product) {
         // Verificar metafields de recomendaciones
         if (product.metafields && product.metafields.shopify__discovery__product_recommendation) {
           const relatedProducts = product.metafields.shopify__discovery__product_recommendation.related_products;
           hasManualMetafields = relatedProducts && relatedProducts.length > 0;
         }
-        
+
         // Verificar metafields legacy
         if (!hasManualMetafields && product.metafields && product.metafields.sliding_cart) {
           const relatedProducts = product.metafields.sliding_cart.related_products;
           hasManualMetafields = relatedProducts && relatedProducts.length > 0;
         }
-        
+
         // Almacenar en cache
         this.metafieldsCache.set(productId, hasManualMetafields);
       }
-      
+
       return hasManualMetafields;
     } catch (error) {
       console.warn(`Error verificando metafields del producto ${productId}:`, error);
@@ -805,11 +832,9 @@ class SlidingCart {
 
       const recommendations = [];
 
-      // 1. Verificar metafields del producto actual
-      const currentProductResponse = await fetch(`/products/${productId}.js`);
-      if (currentProductResponse.ok) {
-        const currentProduct = await currentProductResponse.json();
-
+      // 1. Verificar metafields del producto actual (usando cache para no repetir la llamada)
+      const currentProduct = await this.fetchProductCached(productId);
+      if (currentProduct) {
         // Productos relacionados desde el metafield configurado
         if (currentProduct.metafields && currentProduct.metafields.shopify__discovery__product_recommendation) {
           const relatedProducts = currentProduct.metafields.shopify__discovery__product_recommendation.related_products;
@@ -865,18 +890,9 @@ class SlidingCart {
     try {
       const recommendations = [];
       
-      // Obtener el producto actual para verificar sus tags
-      let currentProduct;
-      if (this.productCache.has(productId)) {
-        currentProduct = this.productCache.get(productId);
-      } else {
-        const currentProductResponse = await fetch(`/products/${productId}.js`);
-        if (!currentProductResponse.ok) return recommendations;
-        
-        currentProduct = await currentProductResponse.json();
-        // Almacenar en cache
-        this.productCache.set(productId, currentProduct);
-      }
+      // Obtener el producto actual para verificar sus tags (reutiliza cache)
+      const currentProduct = await this.fetchProductCached(productId);
+      if (!currentProduct) return recommendations;
       
       const tags = currentProduct.tags || [];
       
