@@ -9,8 +9,8 @@
  */
 {
   "current": {
-    "color_scheme": "auto",
-    "dark_mode_toggle": false,
+    "color_scheme": "light",
+    "dark_mode_toggle": true,
     "colors_solid_button_labels": "#FFFFFF",
     "colors_solid_button_background": "#232322",
     "colors_secondary_button_labels": "#232322",
@@ -89,6 +89,33 @@
     "cart_additional_text": "",
     "recently_product_record_lifetime": 15,
     "show_breadcrumbs": false,
+    "sections": {
+      "cart-drawer-settings": {
+        "type": "cart-drawer-settings",
+        "settings": {
+          "enable_sliding_cart": true,
+          "cart_position": "right",
+          "cart_width": 450,
+          "cart_auto_close_delay": 8000,
+          "show_cart_count": true,
+          "show_cart_total": true,
+          "show_cart_recommendations": true,
+          "cart_recommendations_limit": 6,
+          "recommendations_source": "hybrid",
+          "show_recommendations_title": true,
+          "recommendations_title": "También te puede interesar",
+          "cart_background_color": "#000000",
+          "cart_text_color": "#ffffff",
+          "cart_accent_color": "#ff6b6b",
+          "show_product_images": true,
+          "show_variant_titles": false,
+          "enable_quantity_controls": true,
+          "enable_remove_buttons": true,
+          "show_toast_notifications": true,
+          "toast_duration": 3000
+        }
+      }
+    },
     "content_for_index": [],
     "blocks": {
       "11349500561483629931": {
