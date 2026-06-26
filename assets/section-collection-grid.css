@@ -1,6 +1,7 @@
 .collection-grid {
   --gap: 1.6rem;
-  --grid-width: 100%;
+  --per-row-mobile: 2;
+  --grid-width: calc(100% / var(--per-row-mobile) - (var(--gap) * (1 - 1 / var(--per-row-mobile))));
 }
 .collection-grid.collection-grid-one {
   --grid-width: 100%;

@@ -4,7 +4,8 @@
   {% render 'spaced-section' %}
   {% render 'spaced-section-inner' %}
   #shopify-section-{{ section.id }} {
-  	--per-row : {{ section.settings.per_row }}
+  	--per-row : {{ section.settings.per_row }};
+  	--per-row-mobile : {{ section.settings.per_row_mobile }}
   }
 {% endstyle %}
 
@@ -145,6 +146,22 @@
       "default": 3,
       "label": "t:sections.all.column_per_row.label",
       "info": "t:sections.all.column_per_row.info"
+    },
+    {
+      "type": "select",
+      "id": "per_row_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2",
+      "label": "Columns per row (mobile)"
     },
     {
       "type": "header",
