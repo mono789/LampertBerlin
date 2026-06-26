@@ -15,8 +15,8 @@
         "4a5ec1a7-b345-4129-abce-2e7df2982975": {
           "type": "slideshow_item",
           "settings": {
-            "image": "shopify://shop_images/banner_2.jpg",
-            "mobile_image": "shopify://shop_images/banner_4.jpg",
+            "image": "shopify://shop_images/prueba_de_banner_2jpg_jpg.jpg",
+            "mobile_image": "shopify://shop_images/IMG_2722.jpg",
             "color_scheme": "dark",
             "heading": "",
             "heading_tag": "h1",
@@ -32,7 +32,7 @@
         "block_1": {
           "type": "slideshow_item",
           "settings": {
-            "image": "shopify://shop_images/two_state_desk_jpg.jpg",
+            "image": "shopify://shop_images/Banner_desktop_WLB-2.jpg",
             "mobile_image": "shopify://shop_images/Banner_mobile-3.jpg",
             "color_scheme": "light",
             "heading": "",
@@ -270,21 +270,21 @@
           "type": "categories",
           "settings": {
             "collection": "colombia-social-club",
-            "collection_image": "shopify://shop_images/DSC06763.jpg"
+            "collection_image": "shopify://shop_images/DSC07877_684fa9b2-dc44-4cb1-b12e-40f67c04bb0b.jpg"
           }
         },
         "categories_DEPrAV": {
           "type": "categories",
           "settings": {
             "collection": "two-states",
-            "collection_image": "shopify://shop_images/DSC07877_684fa9b2-dc44-4cb1-b12e-40f67c04bb0b.jpg"
+            "collection_image": "shopify://shop_images/FT_E-COMMERCE_FB_-14_51371bdd-518e-470e-b6c4-ac7263e4b5fc.jpg"
           }
         },
         "categories_XRijEF": {
           "type": "categories",
           "settings": {
             "collection": "nude-collection",
-            "collection_image": "shopify://shop_images/FT_E-COMMERCE_FB_-25.jpg"
+            "collection_image": "shopify://shop_images/FT_E-COMMERCE_FB_-9.jpg"
           }
         },
         "categories_8DL8BX": {
