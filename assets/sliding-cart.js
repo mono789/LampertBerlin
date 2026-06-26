@@ -974,15 +974,17 @@ class SlidingCart {
     const recommendationsHTML = products.map(product => {
       const defaultVariant = product.variants[0];
       const message = this.getRecommendationMessage(product);
-      
+      const productUrl = product.url || `/products/${product.handle}`;
+
       return `
         <div class="recommendation-item" data-product-id="${product.id}">
           ${this.config.showProductImages ? `
-            <div class="recommendation-image">
+            <a class="recommendation-image" href="${productUrl}">
               <img src="${product.featured_image}" alt="${product.title}">
-            </div>
+            </a>
           ` : ''}
           <div class="recommendation-details">
+            <a class="recommendation-title" href="${productUrl}">${product.title}</a>
             <p class="recommendation-price">${this.formatPrice(defaultVariant.price)}</p>
             ${message ? `<p class="recommendation-message">${message}</p>` : ''}
             <button class="add-recommendation-btn" 

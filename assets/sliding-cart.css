@@ -379,11 +379,13 @@ body[data-cart-type="drawer"] {
 }
 
 .recommendation-image {
+  display: block;
   width: 80px;
   height: 80px;
   margin: 0 auto 10px;
   border-radius: 6px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .recommendation-image img {
@@ -403,6 +405,12 @@ body[data-cart-type="drawer"] {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.recommendation-title:hover {
+  text-decoration: underline;
 }
 
 .recommendation-price {
