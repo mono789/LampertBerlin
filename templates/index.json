@@ -310,11 +310,12 @@
         "button_label": "",
         "button_link": "",
         "per_row": 4,
+        "per_row_mobile": "2",
         "image_ratio": "portrait",
         "padding_top": 0,
         "padding_bottom": 0,
-        "margin_top": 30,
-        "margin_bottom": 40,
+        "margin_top": 10,
+        "margin_bottom": 10,
         "enable_border_top": false,
         "enable_border_bottom": false,
         "heading_tag": "h2"
@@ -335,33 +336,6 @@
         "margin_bottom": 0
       }
     },
-    "image_banner_myCnF9": {
-      "type": "image-banner",
-      "name": "t:sections.image-banner.name",
-      "settings": {
-        "header_overlay": true,
-        "image": "shopify://shop_images/DSC05985_2.jpg",
-        "mobile_image": "shopify://shop_images/DSC05985.jpg",
-        "image_size": "medium",
-        "mobile_image_size": "large",
-        "overlay_enable": true,
-        "overlay_opacity": 49,
-        "subheading": "Lampert",
-        "heading": "COMPLEMENTOS",
-        "heading_tag": "h6",
-        "text": "",
-        "author_position": "",
-        "author_name": "",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "primary",
-        "button_arrow": true,
-        "padding_top": 200,
-        "padding_bottom": 200,
-        "margin_top": 30,
-        "margin_bottom": 0
-      }
-    },
     "popular-products-1": {
       "type": "popular-products",
       "settings": {
@@ -379,7 +353,7 @@
         "collection": "",
         "product_count": 4,
         "per_row": 4,
-        "mobile_card_count": false,
+        "mobile_card_count": true,
         "image_ratio": "portrait",
         "image_fit": "cover",
         "show_secondary_image": true,
@@ -910,7 +884,6 @@
     "countdown",
     "collection_grid_FeqnXp",
     "ticker",
-    "image_banner_myCnF9",
     "popular-products-1",
     "image-with-text",
     "product-markers",
