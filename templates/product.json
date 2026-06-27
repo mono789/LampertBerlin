@@ -192,6 +192,7 @@
         "column-2",
         "column-3"
       ],
+      "disabled": true,
       "settings": {
         "color_scheme": "background-1",
         "subheading": "",
