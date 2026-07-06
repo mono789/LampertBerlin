@@ -34,13 +34,13 @@
           "settings": {
             "image": "shopify://shop_images/Banner_desktop_WLB-2.jpg",
             "mobile_image": "shopify://shop_images/Banner_mobile-3.jpg",
-            "color_scheme": "light",
+            "color_scheme": "dark",
             "heading": "",
             "heading_tag": "h1",
             "text": "",
             "button_label": "Comprar",
             "button_link": "shopify://collections/two-states",
-            "button_style": "primary",
+            "button_style": "secondary",
             "button_arrow": false,
             "overlay_enable": false,
             "overlay_opacity": 10
@@ -55,9 +55,9 @@
             "heading": "",
             "heading_tag": "h1",
             "text": "",
-            "button_label": "",
+            "button_label": "Comprar",
             "button_link": "shopify://collections/undergold",
-            "button_style": "primary",
+            "button_style": "secondary",
             "button_arrow": true,
             "overlay_enable": false,
             "overlay_opacity": 20
