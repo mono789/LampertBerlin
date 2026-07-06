@@ -65,13 +65,13 @@
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
-        "products_per_page": 9,
-        "per_row": 4,
+        "products_per_page": 23,
+        "per_row": 3,
         "mobile_card_count": true,
         "taypes_position": "in_header",
         "show_secondary_image": true,
         "show_sku": false,
-        "show_vendor": false,
+        "show_vendor": true,
         "show_desc": false,
         "image_ratio": "portrait",
         "image_fit": "cover",
