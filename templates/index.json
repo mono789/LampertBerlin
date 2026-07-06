@@ -38,7 +38,7 @@
             "heading": "",
             "heading_tag": "h1",
             "text": "",
-            "button_label": "",
+            "button_label": "Comprar",
             "button_link": "shopify://collections/two-states",
             "button_style": "primary",
             "button_arrow": false,
