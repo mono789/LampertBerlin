@@ -96,23 +96,6 @@
             "overlay_enable": false,
             "overlay_opacity": 20
           }
-        },
-        "block_2": {
-          "type": "slideshow_item",
-          "settings": {
-            "image": "shopify://shop_images/IMG_2722.jpg",
-            "mobile_image": "shopify://shop_images/IMG_2722.jpg",
-            "color_scheme": "dark",
-            "heading": "",
-            "heading_tag": "h1",
-            "text": "",
-            "button_label": "",
-            "button_link": "",
-            "button_style": "primary",
-            "button_arrow": false,
-            "overlay_enable": false,
-            "overlay_opacity": 10
-          }
         }
       },
       "block_order": [
@@ -120,8 +103,7 @@
         "slideshow_item_CUnYCr",
         "4a5ec1a7-b345-4129-abce-2e7df2982975",
         "block_1",
-        "block_3",
-        "block_2"
+        "block_3"
       ],
       "settings": {
         "header_overlay": false,
