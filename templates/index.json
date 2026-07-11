@@ -23,8 +23,8 @@
             "text": "",
             "button_label": "Comprar",
             "button_link": "shopify://collections/art-of-desire",
-            "button_style": "primary",
-            "button_arrow": false,
+            "button_style": "secondary",
+            "button_arrow": true,
             "overlay_enable": false,
             "overlay_opacity": 20
           }
@@ -41,7 +41,7 @@
             "button_label": "Comprar",
             "button_link": "shopify://collections/art-of-desire",
             "button_style": "secondary",
-            "button_arrow": false,
+            "button_arrow": true,
             "overlay_enable": false,
             "overlay_opacity": 20
           }
@@ -58,7 +58,7 @@
             "button_label": "Comprar",
             "button_link": "https://tomlampert.com/collections/colombia-social-club",
             "button_style": "secondary",
-            "button_arrow": false,
+            "button_arrow": true,
             "overlay_enable": false,
             "overlay_opacity": 20
           }
@@ -75,7 +75,7 @@
             "button_label": "Comprar",
             "button_link": "shopify://collections/two-states",
             "button_style": "secondary",
-            "button_arrow": false,
+            "button_arrow": true,
             "overlay_enable": false,
             "overlay_opacity": 10
           }
