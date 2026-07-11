@@ -301,6 +301,13 @@
     "collection_grid_FeqnXp": {
       "type": "collection-grid",
       "blocks": {
+        "categories_fqNp8m": {
+          "type": "categories",
+          "settings": {
+            "collection": "art-of-desire",
+            "collection_image": "shopify://shop_images/Mobile_01_6d3f5e05-dc7c-40e6-8acf-8fd6d7b4fd7a.jpg"
+          }
+        },
         "categories_en6HcW": {
           "type": "categories",
           "settings": {
@@ -331,6 +338,7 @@
         }
       },
       "block_order": [
+        "categories_fqNp8m",
         "categories_en6HcW",
         "categories_DEPrAV",
         "categories_XRijEF",
