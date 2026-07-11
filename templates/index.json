@@ -22,10 +22,10 @@
             "heading_tag": "h1",
             "text": "",
             "button_label": "Comprar",
-            "button_link": "",
+            "button_link": "shopify://collections/art-of-desire",
             "button_style": "primary",
-            "button_arrow": true,
-            "overlay_enable": true,
+            "button_arrow": false,
+            "overlay_enable": false,
             "overlay_opacity": 20
           }
         },
@@ -39,7 +39,7 @@
             "heading_tag": "h1",
             "text": "",
             "button_label": "Comprar",
-            "button_link": "",
+            "button_link": "shopify://collections/art-of-desire",
             "button_style": "primary",
             "button_arrow": true,
             "overlay_enable": true,
