@@ -12,6 +12,40 @@
     "slideshow": {
       "type": "slideshow",
       "blocks": {
+        "slideshow_item_GpAjTh": {
+          "type": "slideshow_item",
+          "settings": {
+            "image": "shopify://shop_images/desktop_02.jpg",
+            "mobile_image": "shopify://shop_images/Mobile_02.jpg",
+            "color_scheme": "dark",
+            "heading": "Add a Title That Highlights This Slide’s Focus",
+            "heading_tag": "h1",
+            "text": "<p>Write a clear and compelling message that tells customers what makes this slide’s focus special</p>",
+            "button_label": "Shop Now",
+            "button_link": "",
+            "button_style": "primary",
+            "button_arrow": true,
+            "overlay_enable": true,
+            "overlay_opacity": 20
+          }
+        },
+        "slideshow_item_CUnYCr": {
+          "type": "slideshow_item",
+          "settings": {
+            "image": "shopify://shop_images/desktop_01.jpg",
+            "mobile_image": "shopify://shop_images/Mobile_01.jpg",
+            "color_scheme": "dark",
+            "heading": "",
+            "heading_tag": "h1",
+            "text": "<p>Write a clear and compelling message that tells customers what makes this slide’s focus special</p>",
+            "button_label": "Shop Now",
+            "button_link": "",
+            "button_style": "primary",
+            "button_arrow": true,
+            "overlay_enable": true,
+            "overlay_opacity": 20
+          }
+        },
         "4a5ec1a7-b345-4129-abce-2e7df2982975": {
           "type": "slideshow_item",
           "settings": {
@@ -83,6 +117,8 @@
         }
       },
       "block_order": [
+        "slideshow_item_GpAjTh",
+        "slideshow_item_CUnYCr",
         "4a5ec1a7-b345-4129-abce-2e7df2982975",
         "block_1",
         "block_3",
