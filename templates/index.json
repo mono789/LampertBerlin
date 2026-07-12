@@ -22,10 +22,10 @@
             "heading_tag": "h1",
             "text": "",
             "button_label": "Comprar",
-            "button_link": "shopify://collections/art-of-desire",
-            "button_style": "secondary",
+            "button_link": "",
+            "button_style": "primary",
             "button_arrow": true,
-            "overlay_enable": false,
+            "overlay_enable": true,
             "overlay_opacity": 20
           }
         },
@@ -39,10 +39,10 @@
             "heading_tag": "h1",
             "text": "",
             "button_label": "Comprar",
-            "button_link": "shopify://collections/art-of-desire",
-            "button_style": "secondary",
+            "button_link": "",
+            "button_style": "primary",
             "button_arrow": true,
-            "overlay_enable": false,
+            "overlay_enable": true,
             "overlay_opacity": 20
           }
         },
@@ -58,7 +58,7 @@
             "button_label": "Comprar",
             "button_link": "https://tomlampert.com/collections/colombia-social-club",
             "button_style": "secondary",
-            "button_arrow": true,
+            "button_arrow": false,
             "overlay_enable": false,
             "overlay_opacity": 20
           }
@@ -66,7 +66,7 @@
         "block_1": {
           "type": "slideshow_item",
           "settings": {
-            "image": "shopify://shop_images/Banner_desktop_WLB-2.jpg",
+            "image": "shopify://shop_images/Banner_TwoStates_1.png",
             "mobile_image": "shopify://shop_images/Banner_mobile-3.jpg",
             "color_scheme": "dark",
             "heading": "",
@@ -75,7 +75,7 @@
             "button_label": "Comprar",
             "button_link": "shopify://collections/two-states",
             "button_style": "secondary",
-            "button_arrow": true,
+            "button_arrow": false,
             "overlay_enable": false,
             "overlay_opacity": 10
           }
