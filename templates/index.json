@@ -58,7 +58,7 @@
             "button_label": "Comprar",
             "button_link": "https://tomlampert.com/collections/colombia-social-club",
             "button_style": "secondary",
-            "button_arrow": false,
+            "button_arrow": true,
             "overlay_enable": false,
             "overlay_opacity": 20
           }
