@@ -56,7 +56,7 @@
             "heading_tag": "h1",
             "text": "",
             "button_label": "Comprar",
-            "button_link": "https://tomlampert.com/collections/colombia-social-club",
+            "button_link": "shopify://collections/colombia-social-club",
             "button_style": "secondary",
             "button_arrow": true,
             "overlay_enable": false,
