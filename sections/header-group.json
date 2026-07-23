@@ -22,18 +22,6 @@
     },
     "header": {
       "type": "header",
-      "blocks": {
-        "mega_menu_collection_PjJeCc": {
-          "type": "mega_menu_collection",
-          "settings": {
-            "menu_trigger": "Art of design",
-            "collection": "art-of-desire"
-          }
-        }
-      },
-      "block_order": [
-        "mega_menu_collection_PjJeCc"
-      ],
       "settings": {
         "height": 115,
         "logo": "shopify://shop_images/mini_logo.jpg",
