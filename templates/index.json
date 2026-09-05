@@ -12,6 +12,23 @@
     "slideshow": {
       "type": "slideshow",
       "blocks": {
+        "slideshow_item_eAEtnX": {
+          "type": "slideshow_item",
+          "settings": {
+            "image": "shopify://shop_images/DSC02100_1.png",
+            "mobile_image": "shopify://shop_images/DSC02041_1.png",
+            "color_scheme": "dark",
+            "heading": "",
+            "heading_tag": "h1",
+            "text": "",
+            "button_label": "Comprar",
+            "button_link": "",
+            "button_style": "primary",
+            "button_arrow": true,
+            "overlay_enable": false,
+            "overlay_opacity": 20
+          }
+        },
         "slideshow_item_GpAjTh": {
           "type": "slideshow_item",
           "settings": {
@@ -27,57 +44,6 @@
             "button_arrow": true,
             "overlay_enable": false,
             "overlay_opacity": 20
-          }
-        },
-        "slideshow_item_CUnYCr": {
-          "type": "slideshow_item",
-          "settings": {
-            "image": "shopify://shop_images/Desktop_01_9967b819-013b-4aa8-8079-8eac10ebb334.jpg",
-            "mobile_image": "shopify://shop_images/Mobile_01.jpg",
-            "color_scheme": "dark",
-            "heading": "",
-            "heading_tag": "h1",
-            "text": "",
-            "button_label": "Comprar",
-            "button_link": "shopify://collections/art-of-desire",
-            "button_style": "secondary",
-            "button_arrow": true,
-            "overlay_enable": false,
-            "overlay_opacity": 20
-          }
-        },
-        "4a5ec1a7-b345-4129-abce-2e7df2982975": {
-          "type": "slideshow_item",
-          "settings": {
-            "image": "shopify://shop_images/prueba_de_banner_2jpg_jpg.jpg",
-            "mobile_image": "shopify://shop_images/IMG_2722.jpg",
-            "color_scheme": "dark",
-            "heading": "",
-            "heading_tag": "h1",
-            "text": "",
-            "button_label": "Comprar",
-            "button_link": "shopify://collections/colombia-social-club",
-            "button_style": "secondary",
-            "button_arrow": true,
-            "overlay_enable": false,
-            "overlay_opacity": 20
-          }
-        },
-        "block_1": {
-          "type": "slideshow_item",
-          "settings": {
-            "image": "shopify://shop_images/desktop_two_state.png",
-            "mobile_image": "shopify://shop_images/Banner_mobile-3.jpg",
-            "color_scheme": "dark",
-            "heading": "",
-            "heading_tag": "h1",
-            "text": "",
-            "button_label": "Comprar",
-            "button_link": "shopify://collections/two-states",
-            "button_style": "secondary",
-            "button_arrow": true,
-            "overlay_enable": false,
-            "overlay_opacity": 10
           }
         },
         "block_3": {
@@ -99,10 +65,8 @@
         }
       },
       "block_order": [
+        "slideshow_item_eAEtnX",
         "slideshow_item_GpAjTh",
-        "slideshow_item_CUnYCr",
-        "4a5ec1a7-b345-4129-abce-2e7df2982975",
-        "block_1",
         "block_3"
       ],
       "settings": {
