@@ -12,24 +12,24 @@
     "slideshow": {
       "type": "slideshow",
       "blocks": {
-        "slideshow_item_eAEtnX": {
+        "slideshow_item_GpAjTh": {
           "type": "slideshow_item",
           "settings": {
-            "image": "shopify://shop_images/DSC02100_1.png",
-            "mobile_image": "shopify://shop_images/DSC02041_1.png",
+            "image": "shopify://shop_images/New_Era.jpg",
+            "mobile_image": "shopify://shop_images/Banner_Mobile_New_Era_jpg.jpg",
             "color_scheme": "dark",
             "heading": "",
             "heading_tag": "h1",
             "text": "",
             "button_label": "Comprar",
             "button_link": "shopify://collections/new-era",
-            "button_style": "primary",
+            "button_style": "secondary",
             "button_arrow": true,
             "overlay_enable": false,
             "overlay_opacity": 20
           }
         },
-        "slideshow_item_GpAjTh": {
+        "slideshow_item_GerAix": {
           "type": "slideshow_item",
           "settings": {
             "image": "shopify://shop_images/desktop_02_2.jpg",
@@ -65,10 +65,11 @@
         }
       },
       "block_order": [
-        "slideshow_item_eAEtnX",
         "slideshow_item_GpAjTh",
+        "slideshow_item_GerAix",
         "block_3"
       ],
+      "custom_css": [],
       "settings": {
         "header_overlay": false,
         "section_layout": "full",
