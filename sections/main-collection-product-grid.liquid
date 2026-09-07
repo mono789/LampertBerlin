@@ -194,7 +194,8 @@
 											assign filter_opt_value = parts[1]
 											assign found = false
 											for product_option in product.options
-												if product_option | handle == filter_opt_name
+												assign product_option_handle = product_option | handle | strip
+												if product_option_handle == filter_opt_name
 													assign index = forloop.index0
 													if variant.options[index] == filter_opt_value
 														assign found = true
