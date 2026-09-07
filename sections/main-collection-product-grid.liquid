@@ -22,6 +22,14 @@
 	if section.settings.enable_filtering and filter_layout_setting == 'vertical'
 		assign use_vertical_filter_layout = true
 	endif
+
+	assign auto_filter_opt_name = section.settings.auto_filter_opt_name | strip
+	if auto_filter_opt_name != ''
+		assign auto_filter_opt_name_handle = auto_filter_opt_name | handle
+		assign auto_filter_value = collection.handle | replace: '-', ' '
+		assign auto_filter_entry = auto_filter_opt_name_handle | append: '||' | append: auto_filter_value
+		assign auto_filter_active = true
+	endif
 -%}
 {%- if collection.all_products_count > 0 -%}
 	{%- if section.settings.enable_filtering
@@ -125,6 +133,10 @@
 					id="product-grid"
 					data-id="{{ section.id }}"
 					class="collection-product-list load-more-grid{% if mobile_card_count %} collection-product-list-row{% endif %}"
+					{% if auto_filter_active %}
+						data-auto-filter-opt="{{ auto_filter_opt_name_handle }}"
+						data-auto-filter-val="{{ auto_filter_value }}"
+					{% endif %}
 				>
 					{%- liquid
 						assign active_option_filters = ''
@@ -171,6 +183,9 @@
 								endif
 							endif
 						endif
+						if auto_filter_active and active_option_filters == ''
+							assign active_option_filters = ';;' | append: auto_filter_entry
+						endif
 					-%}
 					{%- for product in collection.products -%}
 						{% liquid
@@ -197,7 +212,9 @@
 												assign product_option_handle = product_option | handle | strip
 												if product_option_handle == filter_opt_name
 													assign index = forloop.index0
-													if variant.options[index] == filter_opt_value
+													assign filter_value_handle = filter_opt_value | handle | strip
+												assign option_value_handle = variant.options[index] | handle | strip
+												if option_value_handle == filter_value_handle
 														assign found = true
 													endif
 													break
@@ -265,13 +282,18 @@
 	{%- endpaginate -%}
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
-			var params = new URLSearchParams(window.location.search);
 			var optionFilters = [];
-			var entries = Array.from(params.entries());
+			var entries = Array.from(new URLSearchParams(window.location.search).entries());
 			for (var ei = 0; ei < entries.length; ei++) {
 				var key = entries[ei][0], value = entries[ei][1];
 				if (key.indexOf('filter.v.option.') === 0 && value) {
 					optionFilters.push({ name: key.replace('filter.v.option.', ''), value: value });
+				}
+			}
+			if (optionFilters.length === 0) {
+				var grid = document.getElementById('product-grid');
+				if (grid && grid.dataset.autoFilterOpt && grid.dataset.autoFilterVal) {
+					optionFilters.push({ name: grid.dataset.autoFilterOpt, value: grid.dataset.autoFilterVal });
 				}
 			}
 			if (optionFilters.length === 0) return;
@@ -299,7 +321,10 @@
 						for (var oi = 0; oi < prodOptions.length; oi++) {
 							if (prodOptions[oi].toLowerCase().replace(/[^a-z0-9]/g, '') === fName) { idx = oi; break; }
 						}
-						if (idx === -1 || !v.options || v.options[idx] !== f.value) { ok = false; break; }
+						if (idx === -1 || !v.options) { ok = false; break; }
+						var vOpt = v.options[idx].toLowerCase().replace(/[^a-z0-9]/g, '');
+						var fVal = f.value.toLowerCase().replace(/[^a-z0-9]/g, '');
+						if (vOpt !== fVal) { ok = false; break; }
 					}
 					if (ok) { match = v; break; }
 				}
@@ -499,6 +524,13 @@
 			"id": "enable_sorting",
 			"default": true,
 			"label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+		},
+		{
+			"type": "text",
+			"id": "auto_filter_opt_name",
+			"default": "",
+			"label": "Auto-filter option name",
+			"info": "Nombre de la opción (ej. dispositivo). Cuando se configura, el valor del filtro se deriva automáticamente del handle de la colección (ej. coleccion 'iphone-17-pro' → valor 'iphone 17 pro'). Muestra precio real, imagen de variante y oculta agotados sin necesidad de URL."
 		},
 		{
 			"type": "select",
