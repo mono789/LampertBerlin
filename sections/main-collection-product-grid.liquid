@@ -232,7 +232,9 @@
 								endfor
 							endif
 						-%}
-						{%- if matching_variant != blank and matching_variant.available == false -%}
+						{%- if matching_variant == blank and auto_filter_active -%}
+							{%- continue -%}
+						{%- elsif matching_variant != blank and matching_variant.available == false -%}
 							{%- continue -%}
 						{%- endif -%}
 						<div class="collection-product-card {% if settings.quickview_hover %}quickview--hover{% endif %} {{ block_class }}">
@@ -297,6 +299,7 @@
 				}
 			}
 			if (optionFilters.length === 0) return;
+			var isAutoFilter = optionFilters.length === 1 && document.getElementById('product-grid') && document.getElementById('product-grid').dataset.autoFilterOpt != null;
 			var cards = document.querySelectorAll('.js-color-swatches-wrapper');
 			var fmt = function(v) {
 				var num = Math.round(v / 100);
@@ -328,7 +331,13 @@
 					}
 					if (ok) { match = v; break; }
 				}
-				if (!match) return;
+				if (!match) {
+					if (isAutoFilter) {
+						var pc = card.closest('.collection-product-card');
+						if (pc) pc.style.display = 'none';
+					}
+					return;
+				}
 				if (!match.available) {
 					var pc = card.closest('.collection-product-card');
 					if (pc) pc.style.display = 'none';
