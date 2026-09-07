@@ -22,19 +22,6 @@
 	if section.settings.enable_filtering and filter_layout_setting == 'vertical'
 		assign use_vertical_filter_layout = true
 	endif
-
-	assign active_option_filters = ''
-	if collection.filters != blank
-		for filter_obj in collection.filters
-			if filter_obj.param_name contains 'filter.v.option.'
-				for value in filter_obj.active_values
-					assign option_name = filter_obj.param_name | remove: 'filter.v.option.'
-					assign filter_entry = option_name | append: '||' | append: value.value
-					assign active_option_filters = active_option_filters | append: ';;' | append: filter_entry
-				endfor
-			endif
-		endfor
-	endif
 -%}
 {%- if collection.all_products_count > 0 -%}
 	{%- if section.settings.enable_filtering
@@ -139,6 +126,52 @@
 					data-id="{{ section.id }}"
 					class="collection-product-list load-more-grid{% if mobile_card_count %} collection-product-list-row{% endif %}"
 				>
+					{%- liquid
+						assign active_option_filters = ''
+						assign filter_url = paginate.next.url
+						if filter_url == blank
+							assign filter_url = paginate.previous.url
+						endif
+						if filter_url == blank
+							assign filter_url = collection.url
+						endif
+						if filter_url != blank and filter_url contains 'filter.v.option.'
+							assign query_string = filter_url | split: '?' | last
+							assign param_pairs = query_string | split: '&'
+							for param_pair in param_pairs
+								if param_pair contains 'filter.v.option.'
+									assign nv = param_pair | split: '='
+									assign opt_name = nv[0] | remove: 'filter.v.option.'
+									if nv.size > 1
+										assign opt_value = nv[1] | replace: '+', ' '
+										assign filter_entry = opt_name | append: '||' | append: opt_value
+										assign active_option_filters = active_option_filters | append: ';;' | append: filter_entry
+									endif
+								endif
+							endfor
+						endif
+						if active_option_filters == '' and content_for_header contains 'filter.v.option.'
+							assign header_parts = content_for_header | split: '"pageurl":"'
+							if header_parts.size > 1
+								assign pageurl = header_parts[1] | split: '"' | first
+								if pageurl contains 'filter.v.option.'
+									assign query_string = pageurl | split: '?' | last
+									assign param_pairs = query_string | split: '&'
+									for param_pair in param_pairs
+										if param_pair contains 'filter.v.option.'
+											assign nv = param_pair | split: '='
+											assign opt_name = nv[0] | remove: 'filter.v.option.'
+											if nv.size > 1
+												assign opt_value = nv[1] | replace: '+', ' '
+												assign filter_entry = opt_name | append: '||' | append: opt_value
+												assign active_option_filters = active_option_filters | append: ';;' | append: filter_entry
+											endif
+										endif
+									endfor
+								endif
+							endif
+						endif
+					-%}
 					{%- for product in collection.products -%}
 						{% liquid
 							assign condition = paginate.current_offset | plus: forloop.index | modulo: section.settings.per_row
@@ -197,6 +230,9 @@
 								show_sku: section.settings.show_sku
 							%}
 						</div>
+						<script type="application/json" class="product-variant-json" data-handle="{{ product.handle }}">
+							{"options":{{ product.options | json }},"variants":{{ product.variants | json }}}
+						</script>
 					{%- endfor -%}
 				</div>
 
@@ -226,6 +262,79 @@
 			</div>
 		{%- endif -%}
 	{%- endpaginate -%}
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var params = new URLSearchParams(window.location.search);
+			var optionFilters = [];
+			var entries = Array.from(params.entries());
+			for (var ei = 0; ei < entries.length; ei++) {
+				var key = entries[ei][0], value = entries[ei][1];
+				if (key.indexOf('filter.v.option.') === 0 && value) {
+					optionFilters.push({ name: key.replace('filter.v.option.', ''), value: value });
+				}
+			}
+			if (optionFilters.length === 0) return;
+			var cards = document.querySelectorAll('.js-color-swatches-wrapper');
+			var fmt = function(v) {
+				var num = Math.round(v / 100);
+				return '$' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+			};
+			cards.forEach(function(card) {
+				var handle = card.getAttribute('data-product');
+				if (!handle) return;
+				var scriptTag = document.querySelector('.product-variant-json[data-handle="' + handle + '"]');
+				if (!scriptTag) return;
+				var data;
+				try { data = JSON.parse(scriptTag.textContent); } catch(e) { return; }
+				var variants = data.variants, prodOptions = data.options || [];
+				if (!variants || !prodOptions.length) return;
+				var match = null;
+				for (var vi = 0; vi < variants.length; vi++) {
+					var v = variants[vi], ok = true;
+					for (var fi = 0; fi < optionFilters.length; fi++) {
+						var f = optionFilters[fi];
+						var fName = f.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+						var idx = -1;
+						for (var oi = 0; oi < prodOptions.length; oi++) {
+							if (prodOptions[oi].toLowerCase().replace(/[^a-z0-9]/g, '') === fName) { idx = oi; break; }
+						}
+						if (idx === -1 || !v.options || v.options[idx] !== f.value) { ok = false; break; }
+					}
+					if (ok) { match = v; break; }
+				}
+				if (!match) return;
+				if (!match.available) {
+					var pc = card.closest('.collection-product-card');
+					if (pc) pc.style.display = 'none';
+					return;
+				}
+				var img = card.querySelector('.media--first');
+				if (img && match.featured_image && match.featured_image.src) {
+					img.src = match.featured_image.src; img.srcset = match.featured_image.src + ' 1x';
+				}
+				var priceEl = card.querySelector('.price');
+				if (priceEl) {
+					var rp = priceEl.querySelector('.price-item--regular');
+					var sp = priceEl.querySelector('.price-item--sale');
+					var cp = priceEl.querySelector('.price__compare .price-item--regular');
+					if (rp) rp.textContent = fmt(match.price);
+					if (sp) sp.textContent = fmt(match.price);
+					if (match.compare_at_price > match.price) {
+						priceEl.classList.add('price--on-sale');
+						if (cp) cp.textContent = fmt(match.compare_at_price);
+					}
+				}
+				card.querySelectorAll('a').forEach(function(a) {
+					var h = a.getAttribute('href') || '';
+					if (h.indexOf('/products/') === 0 || h.indexOf('?variant=') >= 0) {
+						if (h.indexOf('?variant=') >= 0) a.href = h.replace(/variant=\d+/, 'variant=' + match.id);
+						else if (h.indexOf('?') >= 0) a.href += '&variant=' + match.id;
+						else a.href += '?variant=' + match.id;
+					}
+				});
+			});
+		});
+	</script>
 </div>
 {%- if collection.all_products_count > 0 -%}
 	{%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
