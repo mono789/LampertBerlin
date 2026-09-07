@@ -251,15 +251,15 @@
         "categories_fqNp8m": {
           "type": "categories",
           "settings": {
-            "collection": "art-of-desire",
-            "collection_image": "shopify://shop_images/Mobile_01_1.jpg"
+            "collection": "new-era",
+            "collection_image": "shopify://shop_images/Banner_Mobile_New_Era_jpg.jpg"
           }
         },
-        "categories_en6HcW": {
+        "categories_WAKe6c": {
           "type": "categories",
           "settings": {
-            "collection": "colombia-social-club",
-            "collection_image": "shopify://shop_images/DSC06720.jpg"
+            "collection": "art-of-desire",
+            "collection_image": "shopify://shop_images/Mobile_01_1.jpg"
           }
         },
         "categories_DEPrAV": {
@@ -286,7 +286,7 @@
       },
       "block_order": [
         "categories_fqNp8m",
-        "categories_en6HcW",
+        "categories_WAKe6c",
         "categories_DEPrAV",
         "categories_XRijEF",
         "categories_8DL8BX"
@@ -330,15 +330,13 @@
       "type": "popular-products",
       "settings": {
         "subheading": "",
-        "heading": "",
+        "heading": "Productos Populares",
         "heading_tag": "h2",
         "button_label": "",
         "button_link": "",
         "product_list": [
-          "ultra-safe-case-colab-laura-sanchez-espresso-copia",
-          "ultra-safe-case-marble-bond-copia-2",
-          "ultra-safe-case-vision-board-copia-copia",
-          "ultra-safe-case-colombian-boy-white-copia"
+          "ultra-safe-case-burgundy-copia-1",
+          "ultra-safe-case-basics-by-lampert-blue-copia"
         ],
         "collection": "",
         "product_count": 4,
