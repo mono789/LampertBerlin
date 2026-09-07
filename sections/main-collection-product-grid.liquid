@@ -22,6 +22,19 @@
 	if section.settings.enable_filtering and filter_layout_setting == 'vertical'
 		assign use_vertical_filter_layout = true
 	endif
+
+	assign active_option_filters = ''
+	if collection.filters != blank
+		for filter_obj in collection.filters
+			if filter_obj.param_name contains 'filter.v.option.'
+				for value in filter_obj.active_values
+					assign option_name = filter_obj.param_name | remove: 'filter.v.option.'
+					assign filter_entry = option_name | append: '||' | append: value.value
+					assign active_option_filters = active_option_filters | append: ';;' | append: filter_entry
+				endfor
+			endif
+		endfor
+	endif
 -%}
 {%- if collection.all_products_count > 0 -%}
 	{%- if section.settings.enable_filtering
@@ -135,9 +148,46 @@
 								assign block_class = ''
 							endif
 						%}
+						{%- liquid
+							assign matching_variant = nil
+							if active_option_filters != ''
+								assign filters_list = active_option_filters | split: ';;'
+								for variant in product.variants
+									assign matches_all = true
+									for filter_entry in filters_list
+										if filter_entry != ''
+											assign parts = filter_entry | split: '||'
+											assign filter_opt_name = parts[0]
+											assign filter_opt_value = parts[1]
+											assign found = false
+											for product_option in product.options
+												if product_option | handle == filter_opt_name
+													assign index = forloop.index0
+													if variant.options[index] == filter_opt_value
+														assign found = true
+													endif
+													break
+												endif
+											endfor
+											if found == false
+												assign matches_all = false
+											endif
+										endif
+									endfor
+									if matches_all
+										assign matching_variant = variant
+										break
+									endif
+								endfor
+							endif
+						-%}
+						{%- if matching_variant != blank and matching_variant.available == false -%}
+							{%- continue -%}
+						{%- endif -%}
 						<div class="collection-product-card {% if settings.quickview_hover %}quickview--hover{% endif %} {{ block_class }}">
 							{% render 'product-card',
 								product_card_product: product,
+								matching_variant: matching_variant,
 								media_size: section.settings.image_ratio,
 								media_fit: section.settings.image_fit,
 								show_secondary_image: section.settings.show_secondary_image,

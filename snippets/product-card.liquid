@@ -84,7 +84,13 @@
           style="padding-bottom: 100%;"
         {%- endif -%}
       >
-        {%- if product_card_product.featured_media -%}
+        {%- liquid
+        assign media = product_card_product.featured_media
+        if matching_variant != blank and matching_variant.featured_image != blank
+          assign media = matching_variant.featured_image
+        endif
+      -%}
+      {%- if media -%}
           {% liquid
             if media_fit == 'contain'
               assign image_style = 'object-fit: contain;'
@@ -97,10 +103,10 @@
 						(min-width: 1100px) 535px * {{ width_ratio }}, (min-width: 750px) calc(((100vw - 130px) / 2) * {{ width_ratio }}), calc(((100vw - 50px) / 2) * {{ width_ratio }})
 					{% endcapture %}
 
-          {{
-            product_card_product.featured_media
-            | image_url: width: product_card_product.featured_media.width
-            | image_tag:
+{{
+          media
+          | image_url: width: media.width
+          | image_tag:
               loading: 'lazy',
               widths: '360, 533, 720, 940, 1066, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600',
               sizes: sizes,
@@ -312,10 +318,16 @@
         {%- endif -%}
       {%- endif -%}
 
+      {%- liquid
+        assign product_url = product_card_product.url | default: '#'
+        if matching_variant != blank
+          assign product_url = product_url | append: '?variant=' | append: matching_variant.id
+        endif
+      -%}
       <h3 class="card__title {% if card_big %}h2{% else %}h5{% endif %}">
         <a
           class="full-unstyled-link"
-          href="{{ product_card_product.url | default: '#' }}"
+          href="{{ product_url }}"
           title="{{ product_card_product.title | escape }}"
         >
           {{ product_card_product.title | escape -}}
@@ -328,11 +340,15 @@
         </div>
       {%- endif -%}
 
-      {% render 'price', product: product_card_product, price_class: '' %}
+      {% if matching_variant != blank %}
+        {% render 'price', product: product_card_product, variant: matching_variant, price_class: '' %}
+      {% else %}
+        {% render 'price', product: product_card_product, price_class: '' %}
+      {% endif %}
     </div>
   </div>
   <a
-    href="{{ product_card_product.url | default: '#' }}"
+    href="{{ product_url }}"
     class="link link--overlay card-wrapper__link--overlay js-color-swatches-link"
     aria-label="{{ "accessibility.product_link" | t }}"
   ></a>
