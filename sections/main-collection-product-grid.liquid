@@ -26,7 +26,7 @@
 	assign auto_filter_opt_name = section.settings.auto_filter_opt_name | strip
 	if auto_filter_opt_name != ''
 		assign auto_filter_opt_name_handle = auto_filter_opt_name | handle
-		assign auto_filter_value = collection.handle | replace: '-', ' '
+		assign auto_filter_value = collection.handle
 		assign auto_filter_entry = auto_filter_opt_name_handle | append: '||' | append: auto_filter_value
 		assign auto_filter_active = true
 	endif
