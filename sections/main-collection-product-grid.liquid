@@ -24,7 +24,7 @@
 	endif
 
 	assign auto_filter_opt_name = section.settings.auto_filter_opt_name | strip
-	if auto_filter_opt_name != ''
+	if auto_filter_opt_name != '' and collection.metafields.custom.auto_filter_enabled
 		assign auto_filter_opt_name_handle = auto_filter_opt_name | handle
 		assign auto_filter_value = collection.handle
 		assign auto_filter_entry = auto_filter_opt_name_handle | append: '||' | append: auto_filter_value
