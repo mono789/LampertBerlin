@@ -15,6 +15,23 @@
         "slideshow_item_GpAjTh": {
           "type": "slideshow_item",
           "settings": {
+            "image": "shopify://shop_images/Banner_desktop_WLB_jpg.jpg",
+            "mobile_image": "shopify://shop_images/Banner_mobile_1__jpg.jpg",
+            "color_scheme": "dark",
+            "heading": "",
+            "heading_tag": "h1",
+            "text": "",
+            "button_label": "Comprar",
+            "button_link": "shopify://collections/the-dinasty",
+            "button_style": "secondary",
+            "button_arrow": true,
+            "overlay_enable": false,
+            "overlay_opacity": 20
+          }
+        },
+        "slideshow_item_qQVjA9": {
+          "type": "slideshow_item",
+          "settings": {
             "image": "shopify://shop_images/New_Era.jpg",
             "mobile_image": "shopify://shop_images/Banner_Mobile_New_Era_jpg.jpg",
             "color_scheme": "dark",
@@ -66,6 +83,7 @@
       },
       "block_order": [
         "slideshow_item_GpAjTh",
+        "slideshow_item_qQVjA9",
         "slideshow_item_GerAix",
         "block_3"
       ],
