@@ -88,7 +88,7 @@
         "block_3"
       ],
       "custom_css": [
-        "@media (max-width: 767px) {.slideshow-slide__img, .slideshow-slide__img.dynamic-image {aspect-ratio: 4 / 5 !important; height: auto !important; padding-bottom: 0 !important; } .slideshow-slide__img picture, .slideshow-slide__img img {width: 100%; height: 100%; object-fit: cover; }}"
+        "@media (max-width: 767px) {.slideshow__swiper, .slideshow__wrapper {height: auto !important; } .slideshow-swiper__slide, .slideshow-slide, .slideshow-slide__img {aspect-ratio: 2328 / 3160 !important; height: auto !important; min-height: 0 !important; max-height: none !important; padding: 0 !important; } .slideshow-slide__img img {width: 100% !important; height: 100% !important; object-fit: cover; }}"
       ],
       "settings": {
         "header_overlay": false,
