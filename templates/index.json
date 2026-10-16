@@ -91,14 +91,14 @@
       "settings": {
         "header_overlay": false,
         "section_layout": "full",
-        "image_size": "large",
+        "image_size": "adapt",
         "is_autoplay": true,
         "is_hover_stop_autoplay": true,
         "show_arrows": true,
         "show_bullets": true,
         "slideshow_speed": 0.5,
         "slideshow_delay": 3,
-        "parallax": true,
+        "parallax": false,
         "slide_effects": "slide",
         "margin_top": 0,
         "margin_bottom": 0
