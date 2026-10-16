@@ -88,7 +88,11 @@
         "block_3"
       ],
       "custom_css": [
-        "@media (max-width: 767px) {.slideshow__swiper, .slideshow__wrapper {height: auto !important; } .slideshow-swiper__slide, .slideshow-slide, .slideshow-slide__img {aspect-ratio: 2328 / 3160 !important; height: auto !important; min-height: 0 !important; max-height: none !important; padding: 0 !important; } .slideshow-slide__img img {width: 100% !important; height: 100% !important; object-fit: cover; }}"
+        ".slideshow__swiper,.slideshow__wrapper{height:auto!important}",
+        ".slideshow-swiper__slide,.slideshow-slide,.slideshow-slide__img{aspect-ratio:2565/830!important;height:auto!important;min-height:0!important;max-height:none!important;padding:0!important}",
+        ".slideshow-slide__img img{width:100%!important;height:100%!important;object-fit:cover}",
+        "@media(max-width:767px){.slideshow-swiper__slide,.slideshow-slide,.slideshow-slide__img{aspect-ratio:2328/3160!important}}",
+        "h2{font-size:32px}"
       ],
       "settings": {
         "header_overlay": false,
