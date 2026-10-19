@@ -209,8 +209,8 @@
           >
             {{- 'products.product.sold_out' | t -}}
           </span>
-        {%- elsif product_card_product.selected_or_first_available_variant.compare_at_price
-            > product_card_product.selected_or_first_available_variant.price
+        {%- elsif matching_variant != blank
+          and matching_variant.compare_at_price > matching_variant.price
           and product_card_product.available
         -%}
           <span
@@ -221,10 +221,10 @@
               {{ 'products.product.on_sale' | t }}
               -
               {{-
-                product_card_product.selected_or_first_available_variant.compare_at_price
-                | minus: product_card_product.selected_or_first_available_variant.price
+                matching_variant.compare_at_price
+                | minus: matching_variant.price
                 | times: 100
-                | divided_by: product_card_product.selected_or_first_available_variant.compare_at_price
+                | divided_by: matching_variant.compare_at_price
                 | append: '%'
               -}}
             {% else %}
@@ -343,7 +343,7 @@
       {% if matching_variant != blank %}
         {% render 'price', product: product_card_product, variant: matching_variant, price_class: '' %}
       {% else %}
-        {% render 'price', product: product_card_product, price_class: '' %}
+        {% render 'price', product: product_card_product, price_class: '', plain_price: true %}
       {% endif %}
     </div>
   </div>
