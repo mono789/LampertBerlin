@@ -608,6 +608,9 @@
       "contact": {
         "company_label": "Cédula o NIT",
         "optional_company_label": "Cédula o NIT"
+      },
+      "field_errors": {
+        "address_company_blank": "Ingresa tu Cédula o NIT para continuar."
       }
     }
   }
